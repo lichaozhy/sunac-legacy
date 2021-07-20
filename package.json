@@ -1,0 +1,32 @@
+{
+  "name": "sunac-legacy",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:server": "node ./script/server",
+    "dev:db": "node ./script/db.js",
+    "deps:install": "npm install && lerna bootstrap",
+    "deps:clean": "lerna clean -y",
+    "build:administrator": "lerna run --scope=@czbank/czbank-rusher-workbench build",
+    "build:manager": "lerna run --scope=@czbank/czbank-rusher-manager-client build",
+    "build:pkg": "node ./script/build",
+    "build": "npm run deps:install && npm run build:administrator && npm run build:manager && npm run build:pkg"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lichaozhy/sunac-legacy.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lichaozhy/sunac-legacy/issues"
+  },
+  "homepage": "https://github.com/lichaozhy/sunac-legacy#readme",
+  "devDependencies": {
+    "eslint": "^7.31.0",
+    "fs-extra": "^9.1.0",
+    "lerna": "^4.0.0",
+    "pkg": "^5.3.0"
+  }
+}

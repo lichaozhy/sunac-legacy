@@ -1,0 +1,17 @@
+{
+  "packages": [
+		"packages/server",
+		"packages/client/administrator",
+		"packages/client/customer"
+  ],
+  "npmClient": "npm",
+  "command": {
+    "publish": {
+			"registry": "https://registry.npmjs.com/",
+      "ignoreChanges": [
+        "*.md"
+      ]
+    }
+  },
+  "version": "independent"
+}
