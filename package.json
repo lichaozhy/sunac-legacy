@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev:server": "node ./script/server",
+    "dev:debug": "node ./script/debug",
     "dev:db": "node ./script/db.js",
     "deps:install": "npm install && lerna bootstrap",
     "deps:clean": "lerna clean -y",

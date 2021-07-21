@@ -7,10 +7,10 @@ module.exports = {
 
 	City: require('./City'),
 
-	Reference: require('./City/Reference'),
-	Photo: require('./City/Photo'),
-	Topic: require('./City/Topic'),
-	Share: require('./City/Share'),
-	Comment: require('./City/Comment'),
-	Post: require('./City/Post'),
+	// Reference: require('./City/Reference'),
+	// Photo: require('./City/Photo'),
+	// Topic: require('./City/Topic'),
+	// Share: require('./City/Share'),
+	// Comment: require('./City/Comment'),
+	// Post: require('./City/Post'),
 };

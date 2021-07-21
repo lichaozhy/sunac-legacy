@@ -5,11 +5,15 @@ const DuckWorkspace = require('@produck/duck-workspace');
 const http = require('http');
 const https = require('https');
 
+const utils = require('./src/utils');
 const meta = require('./package.json');
+const SunacLegacyDatabase = require('./src/sequelize');
+const normalize = require('./src/normalize');
 
 module.exports = Duck({
 	id: 'com.sunac.legacy',
 	name: meta.name,
+	namespace: 'sl',
 	components: [
 		DuckLog(),
 		DuckWorkspace(),
@@ -33,18 +37,57 @@ module.exports = Duck({
 		]),
 	]
 }, function SunacLegacy({
-	injection, Web, Log, Workspace
+	injection, Web, Log, Workspace, product
 }, options) {
+	/**
+	 * @type {import('./src/normalize/options').Options}
+	 */
+	const finalOptions = normalize(options);
+
+	injection.options = finalOptions;
+	injection.Utils = utils;
+
+	Workspace.root = finalOptions.storage.path;
+	Workspace.setPath('log', finalOptions.log.path);
+	Workspace.setPath('temp', 'tmp');
+	Workspace.setPath('db', 'db');
+
+	const { sequelize, Model } = SunacLegacyDatabase({
+		namespace: `${product.meta.namespace}`
+	});
+
+	injection.Sequelize = sequelize;
+	injection.Model = Model;
+
+	const Application = {
+		Administration: Web.Application('legacy.administration'),
+		Maintenance: Web.Application('legacy.maintenance'),
+		Customers: Web.Application('legacy.customers')
+	}
+
+	const LogWrapedApp = {
+		Administration: DuckLog.Adapter.HttpServer(Application.Administration, _ => Log.access(_)),
+		Maintenance: DuckLog.Adapter.HttpServer(Application.Maintenance, _ => Log.access(_)),
+		Customers: DuckLog.Adapter.HttpServer(Application.Customers, _ => Log.access(_)),
+	}
+
+	Log('system');
+	Log('access', {
+		AppenderList: [DuckLog.Appender.Console()],
+		format: DuckLog.Format.ApacheCLF()
+	});
 
 	return Object.freeze({
-		start() {
-
+		async start() {
+			http
+				.createServer(LogWrapedApp.Maintenance)
+				.listen(9000);
 		},
-		install() {
+		async install() {
 
 		},
 		get sequelize() {
-
+			return sequelize;
 		}
 	});
 });
