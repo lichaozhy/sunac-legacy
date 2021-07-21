@@ -16,7 +16,7 @@ function WechatOpenid(sequelize, namespace) {
 	}, {
 		tableName: `${namespace}customer`
 	});
-};
+}
 
 module.exports = {
 	WechatOpenid

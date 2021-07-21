@@ -26,5 +26,8 @@
 		"sequelize": "^6.6.5",
 		"sqlite3": "^5.0.2",
 		"yargs": "^17.0.1"
+	},
+	"devDependencies": {
+		"eslint": "^7.31.0"
 	}
 }

@@ -92,7 +92,7 @@ module.exports = Duck({
 			const salt = utils.salt();
 
 			await Model.Maintainer.create({
-				id: utils.encodeSHA256(`${Date.now}-root`),
+				id: utils.encodeSHA256(`${Date.now()}-root`),
 				name: 'root',
 				createdAt: new Date(),
 				credential: {

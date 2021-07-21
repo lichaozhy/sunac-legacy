@@ -1,5 +1,6 @@
 const { Router } = require('@produck/duck-web-koa-router');
-const { Principal } = require('./resource');
+const Resource = require('./resource');
+const { Maintainer } = require('../Maintainer/resource');
 
 module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 	Utils, Model, AccessControl: $ac
@@ -24,10 +25,18 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			}
 
 			ctx.session.maintainerId = maintainer.id;
-			ctx.body = Principal(maintainer);
+			ctx.body = Resource.Principal(maintainer);
 		})
 		.delete('/', async function signout(ctx) {
 			ctx.session = null;
-			ctx.body = Principal();
+			ctx.body = Resource.Principal();
+		})
+		.get('/maintainer', $ac('signed'), async function getMaintainerOfPrincipal(ctx) {
+			const maintainer = await Model.Maintainer.findOne({
+				where: { id: ctx.session.maintainerId },
+				include: [{ model: Model.MaintainerCredential, as: 'credential' }]
+			});
+
+			ctx.body = Maintainer(maintainer);
 		});
 });

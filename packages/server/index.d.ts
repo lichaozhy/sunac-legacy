@@ -19,4 +19,6 @@ interface SunacLegacy {
 	readonly sequelize: Sequelize;
 }
 
-export = function SunacLegacyConstructor(): SunacLegacy;
+function SunacLegacyConstructor(): SunacLegacy;
+
+export = SunacLegacyConstructor;
