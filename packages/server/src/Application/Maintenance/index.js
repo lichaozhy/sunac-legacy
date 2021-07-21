@@ -9,8 +9,10 @@ const path = require('path');
 const Router = require('./router');
 
 module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
-	AppRouter, Workspace
+	AppRouter, Workspace, Utils
 }) {
+	app.keys = [Utils.salt()];
+
 	app
 		.use(serve(path.resolve('www/maintenance')))
 		.use(KoaSession(app))
@@ -21,10 +23,10 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 		DuckWebKoaAcl({
 			asserts: [
 				function authenticated(ctx) {
-					return Boolean(ctx.session.managerId);
+					return Boolean(ctx.session.maintainerId);
 				},
 				function unauthenticated(ctx) {
-					return !ctx.session.managerId;
+					return !ctx.session.maintainerId;
 				}
 			],
 			table: {

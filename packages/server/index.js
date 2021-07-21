@@ -50,10 +50,11 @@ module.exports = Duck({
 	Workspace.root = finalOptions.storage.path;
 	Workspace.setPath('log', finalOptions.log.path);
 	Workspace.setPath('temp', 'tmp');
-	Workspace.setPath('db', 'db');
+	Workspace.setPath('root', '');
 
 	const { sequelize, Model } = SunacLegacyDatabase({
-		namespace: `${product.meta.namespace}`
+		namespace: `${product.meta.namespace}`,
+		storage: Workspace.resolve('root', finalOptions.database.options.path),
 	});
 
 	injection.Sequelize = sequelize;
@@ -72,6 +73,7 @@ module.exports = Duck({
 	}
 
 	Log('system');
+	Log('db');
 	Log('access', {
 		AppenderList: [DuckLog.Appender.Console()],
 		format: DuckLog.Format.ApacheCLF()
@@ -84,7 +86,22 @@ module.exports = Duck({
 				.listen(9000);
 		},
 		async install() {
+			await Workspace.buildAll();
+			await sequelize.sync({ force: true });
 
+			const salt = utils.salt();
+
+			await Model.Maintainer.create({
+				id: utils.encodeSHA256(`${Date.now}-root`),
+				name: 'root',
+				createdAt: new Date(),
+				credential: {
+					salt: salt,
+					password: utils.encodeSHA256(`root${salt}`)
+				}
+			}, {
+				include: 'credential',
+			});
 		},
 		get sequelize() {
 			return sequelize;

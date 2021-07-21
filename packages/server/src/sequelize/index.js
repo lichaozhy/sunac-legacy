@@ -7,19 +7,21 @@ const Content = require('./define/Content');
 const Wechat = require('./define/Wechat');
 
 const ModelFactory = {
-	Administrator: User.Administrator,
 	Maintainer: User.Maintainer,
-	Customer: User.Customer,
+	MaintainerCredential: User.MaintainerCredential,
 
-	Content: Content.Content,
-	Reference: Content.Reference,
-	Topic: Content.Topic,
-	Share: Content.Share,
-	Comment: Content.Comment,
-	Photo: Content.Photo,
-	Post: Content.Post,
+	// Administrator: User.Administrator,
+	// Customer: User.Customer,
 
-	WechatOpenid: Wechat.WechatOpenid
+	// Content: Content.Content,
+	// Reference: Content.Reference,
+	// Topic: Content.Topic,
+	// Share: Content.Share,
+	// Comment: Content.Comment,
+	// Photo: Content.Photo,
+	// Post: Content.Post,
+
+	// WechatOpenid: Wechat.WechatOpenid
 };
 
 module.exports = function SunacLegacySequelize(options) {
@@ -44,9 +46,18 @@ module.exports = function SunacLegacySequelize(options) {
 	 * Associations
 	 */
 	const Model = {
+		Maintainer: sequelize.model('Maintainer'),
+		MaintainerCredential: sequelize.model('MaintainerCredential')
 		// AccountData: sequelize.model('AccountData'),
 		// AccountProductData: sequelize.model('AccountProductData'),
 	};
+
+	Model.MaintainerCredential.belongsTo(Model.Maintainer, FK('maintainerId', {
+		as: 'credential'
+	}));
+	Model.Maintainer.hasOne(Model.MaintainerCredential, FK('maintainerId', {
+		as: 'credential'
+	}));
 
 	// Model.File.belongsTo(Model.Manager, FK('managerId'));
 	// Model.Manager.hasMany(Model.File, FK('managerId'));

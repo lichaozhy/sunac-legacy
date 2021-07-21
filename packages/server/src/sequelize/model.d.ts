@@ -4,6 +4,7 @@ export namespace Model {
 	const
 		Administrator: typeof Sequelize.Model,
 		Maintainer: typeof Sequelize.Model,
+		MaintainerCredential: typeof Sequelize.Model,
 		Customer: typeof Sequelize.Model,
 		Content: typeof Sequelize.Model,
 		Reference: typeof Sequelize.Model,

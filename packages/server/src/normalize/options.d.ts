@@ -21,7 +21,7 @@ namespace Server {
 interface Server {
 	host?: string;
 	port?: number;
-	tls?: ServerTls;
+	tls?: ServerTls | null;
 }
 
 interface WX {
@@ -46,13 +46,13 @@ interface Log {
 
 namespace Database {
 	interface Sqlite {
-		path: string;
+		path?: string;
 	}
 }
 
 interface Database {
-	type: 'sqlite' | 'mysql' | 'mssql' | 'mariadb' | 'postgre';
-	options: Database.Sqlite;
+	type?: 'sqlite' | 'mysql' | 'mssql' | 'mariadb' | 'postgre';
+	options?: Database.Sqlite;
 }
 
 export interface Options {
