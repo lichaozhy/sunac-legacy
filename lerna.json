@@ -1,8 +1,9 @@
 {
   "packages": [
 		"packages/server",
-		"packages/client/administrator",
-		"packages/client/customer"
+		"packages/client/administration",
+		"packages/client/customers",
+		"packages/client/maintenance"
   ],
   "npmClient": "npm",
   "command": {

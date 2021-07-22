@@ -5,16 +5,15 @@ const { DataTypes } = require('sequelize');
  */
 function WechatOpenid(sequelize, namespace) {
 	sequelize.define('WechatOpenid', {
-		id: {
-			type: DataTypes.CHAR(64),
-			primaryKey: true
-		},
-		name: DataTypes.STRING,
-		gender: DataTypes.TINYINT,
-		mobilePhone: DataTypes.CHAR(16),
-		identificationCode: DataTypes.CHAR(18)
+		openid: { type: DataTypes.CHAR(64), primaryKey: true },
+		nickname: DataTypes.STRING,
+		sex: DataTypes.TINYINT,
+		province: DataTypes.STRING,
+		city: DataTypes.STRING,
+		country: DataTypes.STRING,
+		headimgurl: DataTypes.STRING(512)
 	}, {
-		tableName: `${namespace}customer`
+		tableName: `${namespace}wechat_openid`
 	});
 }
 

@@ -9,7 +9,9 @@ function Customer(sequelize, namespace) {
 			type: DataTypes.CHAR(64),
 			primaryKey: true
 		},
-		name: DataTypes.STRING(32)
+		name: DataTypes.STRING(32),
+		cityAs: DataTypes.CHAR(6),
+		wechatOpenid: DataTypes.CHAR(64)
 	}, {
 		tableName: `${namespace}customer`
 	});
@@ -25,6 +27,7 @@ function Administrator(sequelize, namespace) {
 			primaryKey: true
 		},
 		name: DataTypes.STRING(32),
+		customerId: DataTypes.CHAR(64),
 		createdAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE
 	}, {

@@ -9,13 +9,19 @@ export namespace Model {
 		Maintainer: typeof Sequelize.Model,
 		MaintainerCredential: typeof Sequelize.Model,
 
-		Customer: typeof Sequelize.Model,
 		Content: typeof Sequelize.Model,
-		Reference: typeof Sequelize.Model,
-		Topic: typeof Sequelize.Model,
+
 		Share: typeof Sequelize.Model,
-		Comment: typeof Sequelize.Model,
+		ShareImage: typeof Sequelize.Model,
+
+		Reference: typeof Sequelize.Model,
+		ReferenceComment: typeof Sequelize.Model,
+
+		Topic: typeof Sequelize.Model,
+		TopicPost: typeof Sequelize.Model,
+		TopicPostImage: typeof Sequelize.Model,
+
 		Photo: typeof Sequelize.Model,
-		Post: typeof Sequelize.Model,
-		WechatOpenid: typeof Sequelize.Model;
+
+		Image: typeof Sequelize.Model;
 }

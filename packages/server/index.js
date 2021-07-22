@@ -82,9 +82,14 @@ module.exports = Duck({
 
 	return Object.freeze({
 		async start() {
-			http
-				.createServer(LogWrapedApp.Maintenance)
-				.listen(9000);
+			if (finalOptions.server.maintenance.tls === null) {
+				const { host, port } = finalOptions.server.maintenance;
+				http
+					.createServer(LogWrapedApp.Maintenance)
+					.listen(port, host);
+
+				Log.system(`Starting: Maintenance server running on host="${host}", port=${port}`);
+			}
 		},
 		async install() {
 			await Workspace.buildAll();

@@ -56,7 +56,7 @@ interface Database {
 }
 
 export interface Options {
-	server: Server;
+	server: Server.Assignment;
 	wx: WX;
 	database: Database;
 	storage: Storage;

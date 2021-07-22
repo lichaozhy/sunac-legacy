@@ -15,6 +15,9 @@ const ModelFactory = {
 	AdministratorCredential: User.AdministratorCredential,
 	AdministratorCity: User.AdministratorCity,
 
+	Customer: User.Customer,
+	WechatOpenid: Wechat.WechatOpenid,
+
 	Content: Content.Content,
 	Reference: Content.Reference,
 	Topic: Content.Topic,
@@ -22,8 +25,6 @@ const ModelFactory = {
 	Photo: Content.Photo,
 
 	Image: Image.Image
-
-	// WechatOpenid: Wechat.WechatOpenid
 };
 
 module.exports = function SunacLegacySequelize(options) {
@@ -54,6 +55,9 @@ module.exports = function SunacLegacySequelize(options) {
 		Administrator: sequelize.model('Administrator'),
 		AdministratorCredential: sequelize.model('AdministratorCredential'),
 		AdministratorCity: sequelize.model('AdministratorCity'),
+
+		Customer: sequelize.model('Customer'),
+		WechatOpenid: sequelize.model('WechatOpenid'),
 
 		Content: sequelize.model('Content'),
 
@@ -89,26 +93,30 @@ module.exports = function SunacLegacySequelize(options) {
 
 	Model.Administrator.hasMany(Model.AdministratorCity, administratorManagedCity);
 
+	Model.Customer.belongsTo(Model.WechatOpenid, FK('wechatOpenid'));
+	Model.Administrator.belongsTo(Model.Customer, FK('customerId'));
+	Model.Customer.hasOne(Model.Administrator, FK('customerId'));
+
 	/**
 	 * About content
 	 */
 	const contentFk = FK('contentId', { as: 'content' });
 
-	Model.Share.hasOne(Model.Content, contentFk);
-	Model.Reference.hasOne(Model.Content, contentFk);
-	Model.ReferenceComment.hasOne(Model.Content, contentFk);
-	Model.Topic.hasOne(Model.Content, contentFk);
-	Model.TopicPost.hasOne(Model.Content, contentFk);
-	Model.Photo.hasOne(Model.Content, contentFk);
+	Model.Share.belongsTo(Model.Content, contentFk);
+	Model.Reference.belongsTo(Model.Content, contentFk);
+	Model.ReferenceComment.belongsTo(Model.Content, contentFk);
+	Model.Topic.belongsTo(Model.Content, contentFk);
+	Model.TopicPost.belongsTo(Model.Content, contentFk);
+	Model.Photo.belongsTo(Model.Content, contentFk);
 
 	Model.Share.hasMany(Model.ShareImage, FK('shareId', { as: 'imageList' }));
 	Model.TopicPost.hasMany(Model.TopicPostImage, FK('topicPostId', { as: 'imageList' }));
 
-	Model.ShareImage.hasOne(Model.Image, FK('imageId'));
-	Model.Reference.hasOne(Model.Image, FK('thumb'));
-	Model.Topic.hasOne(Model.Image, FK('banner'));
-	Model.TopicPostImage.hasOne(Model.Image, FK('imageId'));
-	Model.Photo.hasOne(Model.Image, FK('imageId'));
+	Model.ShareImage.belongsTo(Model.Image, FK('imageId'));
+	Model.Reference.belongsTo(Model.Image, FK('thumb'));
+	Model.Topic.belongsTo(Model.Image, FK('banner'));
+	Model.TopicPostImage.belongsTo(Model.Image, FK('imageId'));
+	Model.Photo.belongsTo(Model.Image, FK('imageId'));
 
 	return { sequelize, Model };
 };
