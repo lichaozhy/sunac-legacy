@@ -48,12 +48,13 @@ module.exports = Duck({
 	injection.Utils = utils;
 
 	Workspace.root = finalOptions.storage.path;
+	Workspace.setPath('root', '');
 	Workspace.setPath('log', finalOptions.log.path);
 	Workspace.setPath('temp', 'tmp');
-	Workspace.setPath('root', '');
+	Workspace.setPath('image', 'images');
 
 	const { sequelize, Model } = SunacLegacyDatabase({
-		namespace: `${product.meta.namespace}`,
+		namespace: `${product.meta.namespace}_`,
 		storage: Workspace.resolve('root', finalOptions.database.options.path),
 	});
 
@@ -64,13 +65,13 @@ module.exports = Duck({
 		Administration: Web.Application('legacy.administration'),
 		Maintenance: Web.Application('legacy.maintenance'),
 		Customers: Web.Application('legacy.customers')
-	}
+	};
 
 	const LogWrapedApp = {
 		Administration: DuckLog.Adapter.HttpServer(Application.Administration, _ => Log.access(_)),
 		Maintenance: DuckLog.Adapter.HttpServer(Application.Maintenance, _ => Log.access(_)),
 		Customers: DuckLog.Adapter.HttpServer(Application.Customers, _ => Log.access(_)),
-	}
+	};
 
 	Log('system');
 	Log('db');

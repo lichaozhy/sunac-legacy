@@ -14,5 +14,12 @@ module.exports = Object.freeze({
 	},
 	getCityList() {
 		return list.slice(0);
+	},
+	isCityAdcode(adcode) {
+		if (typeof adcode !== 'string' || adcode.length !== 6) {
+			return false;
+		}
+
+		return Boolean(cityMap[adcode]);
 	}
 });

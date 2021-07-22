@@ -4,10 +4,16 @@ const Resource = require('./resource');
 module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 	Utils, Model, AccessControl: $ac
 }) {
+
+	const include = [
+		{ model: Model.MaintainerCredential, as: 'credential', required: true }
+	];
+
 	router
 		.get('/', $ac('signed'), async function getMaintainerList(ctx) {
 			const list = await Model.Maintainer.findAll({
-				include: [{ model: Model.MaintainerCredential, as: 'credential' }]
+				where: { deletedAt: null },
+				include
 			});
 
 			ctx.body = list.map(Resource.Maintainer);
@@ -16,7 +22,9 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			const { name, credential } = ctx.request.body;
 			const { password } = credential;
 
-			const existedMaintainer = await Model.Maintainer.findOne({ where: { name } });
+			const existedMaintainer = await Model.Maintainer.findOne({
+				where: { name, deletedAt: null }
+			});
 
 			if (existedMaintainer) {
 				return ctx.throw(400, 'Duplicated maintainer name.');
@@ -40,8 +48,8 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 		})
 		.param('maintainerId', async function fetchMaintainer(id, ctx, next) {
 			const maintainer = await Model.Maintainer.findOne({
-				where: { id },
-				include: [{ model: Model.MaintainerCredential, as: 'credential' }]
+				where: { id, deletedAt: null },
+				include
 			});
 
 			if (!maintainer) {
@@ -62,7 +70,8 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 				return ctx.throw(400, 'You can not delete yourself');
 			}
 
-			maintainer.destroy();
+			maintainer.deletedAt = new Date();
+			await maintainer.save();
 			ctx.body = Resource.Maintainer(maintainer);
 		});
 });

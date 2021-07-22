@@ -9,14 +9,11 @@ function Customer(sequelize, namespace) {
 			type: DataTypes.CHAR(64),
 			primaryKey: true
 		},
-		name: DataTypes.STRING,
-		gender: DataTypes.TINYINT,
-		mobilePhone: DataTypes.CHAR(16),
-		identificationCode: DataTypes.CHAR(18)
+		name: DataTypes.STRING(32)
 	}, {
 		tableName: `${namespace}customer`
 	});
-};
+}
 
 /**
  * @param {import('sequelize').Sequelize} sequelize
@@ -27,14 +24,46 @@ function Administrator(sequelize, namespace) {
 			type: DataTypes.CHAR(64),
 			primaryKey: true
 		},
-		name: DataTypes.STRING,
-		gender: DataTypes.TINYINT,
-		mobilePhone: DataTypes.CHAR(16),
-		identificationCode: DataTypes.CHAR(18)
+		name: DataTypes.STRING(32),
+		createdAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE
 	}, {
-		tableName: `${namespace}customer`
+		tableName: `${namespace}administrator`
 	});
-};
+}
+
+/**
+ * @param {import('sequelize').Sequelize} sequelize
+ */
+function AdministratorCity(sequelize, namespace) {
+	sequelize.define('AdministratorCity', {
+		id: {
+			type: DataTypes.INTEGER,
+			autoIncrement: true,
+			primaryKey: true
+		},
+		administratorId: DataTypes.CHAR(64),
+		adcode: DataTypes.CHAR(6)
+	}, {
+		tableName: `${namespace}administrator_city`
+	});
+}
+
+/**
+ * @param {import('sequelize').Sequelize} sequelize
+ */
+function AdministratorCredential(sequelize, namespace) {
+	sequelize.define('AdministratorCredential', {
+		administratorId: {
+			type: DataTypes.CHAR(64),
+			primaryKey: true
+		},
+		salt: DataTypes.CHAR(8),
+		password: DataTypes.CHAR(64)
+	}, {
+		tableName: `${namespace}administrator_credential`
+	});
+}
 
 /**
  * @param {import('sequelize').Sequelize} sequelize
@@ -46,11 +75,12 @@ function Maintainer(sequelize, namespace) {
 			primaryKey: true
 		},
 		name: DataTypes.STRING(32),
-		createdAt: DataTypes.DATE
+		createdAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE
 	}, {
 		tableName: `${namespace}maintainer`
 	});
-};
+}
 
 /**
  * @param {import('sequelize').Sequelize} sequelize
@@ -70,7 +100,11 @@ function MaintainerCredential(sequelize, namespace) {
 
 module.exports = {
 	Customer,
+
 	Administrator,
+	AdministratorCredential,
+	AdministratorCity,
+
 	Maintainer,
 	MaintainerCredential
 };

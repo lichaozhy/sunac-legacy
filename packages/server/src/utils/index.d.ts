@@ -8,6 +8,7 @@ export namespace City {
 
 	export function getCity(adcode: Adcode): CityObject | null;
 	export function getCityList(): CityObject[];
+	export function isCityAdcode(): boolean;
 }
 
 export function encodeSHA256(raw: Buffer | string): string;

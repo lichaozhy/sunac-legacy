@@ -42,4 +42,4 @@ module.exports = function normalize(_options = {}) {
 	};
 
 	return options;
-}
+};
