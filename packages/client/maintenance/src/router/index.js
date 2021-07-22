@@ -10,17 +10,24 @@ const router = new VueRouter({
 			path: '/',
 			name: 'Home',
 			redirect: {
-				name: 'workbench'
+				name: 'Workbench'
 			}
 		},
 		{
-			name: 'workbench',
-			path: '/workbench'
+			name: 'Workbench',
+			path: '/workbench',
+			component: Page.Workbench.Framework,
+			meta: {
+				principalRequired: true
+			}
 		},
 		{
-			name: 'signin',
+			name: 'Signin',
 			path: '/signin',
-			component: Page.Signin
+			component: Page.Signin,
+			meta: {
+				noPrincipalRequired: true
+			}
 		}
 	]
 });
