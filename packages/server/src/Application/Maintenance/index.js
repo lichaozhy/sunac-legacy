@@ -22,7 +22,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 	plugins: [
 		DuckWebKoaAcl({
 			asserts: [
-				function authenticated(ctx) {
+				async function authenticated(ctx) {
 					return Boolean(ctx.session.maintainerId);
 				},
 				function unauthenticated(ctx) {

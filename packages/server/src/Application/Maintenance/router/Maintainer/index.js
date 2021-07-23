@@ -11,10 +11,14 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 
 	router
 		.get('/', $ac('signed'), async function getMaintainerList(ctx) {
-			const list = await Model.Maintainer.findAll({
-				where: { deletedAt: null },
-				include
-			});
+			const { name } = ctx.query;
+			const where = { deletedAt: null };
+
+			if (name) {
+				where.name = name;
+			}
+
+			const list = await Model.Maintainer.findAll({ where, include });
 
 			ctx.body = list.map(Resource.Maintainer);
 		})

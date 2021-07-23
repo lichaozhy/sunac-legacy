@@ -15,8 +15,8 @@
 		"size": "sm"
   },
   "BToast": {
-    "toaster": "b-toaster-bottom-center",
-    "autoHideDelay": 2000,
+    "toaster": "b-toaster-top-center",
+    "autoHideDelay": 3000,
     "variant": "primary",
     "toastClass": null,
     "headerClass": null,

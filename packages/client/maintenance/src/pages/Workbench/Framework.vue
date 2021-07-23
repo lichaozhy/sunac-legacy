@@ -27,14 +27,15 @@
 					>
 						<b-nav vertical pills class="p-3">
 							<b-nav-item
+								class="mb-3"
+								:to="{ name: 'Workbench.Principal.Maintainer' }"
+							>我是:{{ currentMaintainer.name }}</b-nav-item>
+							<b-nav-item
 								:to="{ name: 'Workbench.Maintainer' }"
 							>运维管理员</b-nav-item>
 							<b-nav-item
 								:to="{ name: 'Workbench.Administrator' }"
 							>内容管理员</b-nav-item>
-							<b-nav-item
-								:to="{ name: 'Workbench.Principal.Maintainer' }"
-							>我是:{{ currentMaintainer.name }}</b-nav-item>
 						</b-nav>
 
 						<b-button-toolbar class="p-3">

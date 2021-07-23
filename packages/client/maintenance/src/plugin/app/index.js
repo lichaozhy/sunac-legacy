@@ -36,15 +36,24 @@ const app = {
 				update(options) {
 					return agent.put('/principal/maintainer', {
 						credential: {
+							_password: options.credential._password,
 							password: options.credential.password
 						}
 					}).then(pickData);
 				}
 			}
 		},
-		City: {
-
-		},
+		City: Object.assign(function City(adcode) {
+			return {
+				get() {
+					return agent.get(`/city/${adcode}`).then(pickData);
+				}
+			};
+		}, {
+			query() {
+				return agent.get('/city').then(pickData);
+			},
+		}),
 		Maintainer: Object.assign(function Maintainer(maintainerId) {
 			return {
 				get() {
@@ -62,12 +71,57 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/maintainer').then(pickData);
+			query(query = {}) {
+				return agent.get('/maintainer', {
+					params: {
+						name: query.name
+					}
+				}).then(pickData);
 			},
 			create(options) {
 				return agent.post('/maintainer', {
 					name: options.name,
+					credential: {
+						password: options.credential.password
+					}
+				}).then(pickData);
+			}
+		}),
+		Administrator: Object.assign(function Administrator(administratorId) {
+			return {
+				get() {
+					return agent.get(`/administrator/${administratorId}`).then(pickData);
+				},
+				update(options) {
+					return agent.put(`/administrator/${administratorId}`, {
+						credential: {
+							password: options.credential.password
+						}
+					}).then(pickData);
+				},
+				delete() {
+					return agent.delete(`/administrator/${administratorId}`).then(pickData);
+				},
+				City: {
+					create(options) {
+						return agent.post(`/administrator/${administratorId}/city`, {
+							administratorId,
+							adcode: options.adcode
+						}).then(pickData);
+					},
+					delete(adcode) {
+						return agent.delete(`/administrator/${administratorId}/city/${adcode}`).then(pickData);
+					}
+				}
+			};
+		}, {
+			query() {
+				return agent.get('/administrator').then(pickData);
+			},
+			create(options) {
+				return agent.post('/administrator', {
+					name: options.name,
+					cityList: options.cityList,
 					credential: {
 						password: options.credential.password
 					}

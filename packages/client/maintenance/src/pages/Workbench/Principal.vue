@@ -83,17 +83,18 @@ export default {
 			try {
 				await this.$app.Api.Principal.Maintainer.update({
 					credential: {
+						_password: this.form.origin,
 						password: this.form.target
 					}
 				});
 
 				this.$bvToast.toast('修改成功', {
-					variant: 'success', autoHideDelay: 3000
+					variant: 'success'
 				});
 				this.reset();
 			} catch (err) {
 				this.$bvToast.toast('修改失败', {
-					variant: 'danger', autoHideDelay: 3000
+					variant: 'danger'
 				});
 			}
 		}

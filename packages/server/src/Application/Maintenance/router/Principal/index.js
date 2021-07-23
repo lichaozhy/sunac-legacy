@@ -10,7 +10,7 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			const { username, password } = ctx.request.body;
 
 			const maintainer = await Model.Maintainer.findOne({
-				where: { name: username },
+				where: { name: username, deletedAt: null },
 				include: [{ model: Model.MaintainerCredential, as: 'credential' }]
 			});
 
@@ -31,12 +31,41 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			ctx.session = null;
 			ctx.body = Resource.Principal();
 		})
-		.get('/maintainer', $ac('signed'), async function getMaintainerOfPrincipal(ctx) {
+		.use(async function fetchPrincipalMaintainer(ctx, next) {
 			const maintainer = await Model.Maintainer.findOne({
 				where: { id: ctx.session.maintainerId },
 				include: [{ model: Model.MaintainerCredential, as: 'credential' }]
 			});
 
+			if (!maintainer) {
+				ctx.session = null;
+
+				return ctx.throw(403);
+			}
+
+			ctx.state.principal = { maintainer };
+
+			return next();
+		})
+		.get('/maintainer', $ac('signed'), async function getMaintainerOfPrincipal(ctx) {
+			ctx.body = Maintainer(ctx.state.principal.maintainer);
+		})
+		.put('/maintainer', $ac('signed'), async function updateMaintainer(ctx) {
+			const { credential } = ctx.request.body;
+			const { password, _password } = credential;
+			const { maintainer } = ctx.state.principal;
+
+			if (Utils.encodeSHA256(`${_password}${maintainer.credential.salt}`) !==
+				maintainer.credential.password) {
+
+				return ctx.throw(400, 'Incorrect original password');
+			}
+
+			const salt = Utils.salt();
+
+			maintainer.credential.salt = salt;
+			maintainer.credential.password = Utils.encodeSHA256(`${password}${salt}`);
+			await maintainer.credential.save();
 			ctx.body = Maintainer(maintainer);
 		});
 });

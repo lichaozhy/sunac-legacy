@@ -35,6 +35,12 @@ namespace Model {
 	}
 }
 
+namespace Query {
+	interface Maintainer {
+		name: string;
+	}
+}
+
 namespace Api {
 	interface PrincipalMaintainer {
 		get():  Promise<Model.Maintainer>;
@@ -65,7 +71,7 @@ namespace Api {
 
 	interface Maintainer {
 		(maintainerId: string): MaintainerInstance;
-		query(): Promise<Model.Maintainer>;
+		query(query: Query.Maintainer): Promise<Model.Maintainer>;
 		create(options: Model.Maintainer): Promise<Model.Maintainer>;
 	}
 
