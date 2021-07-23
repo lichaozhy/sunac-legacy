@@ -37,7 +37,7 @@
 			:disabled="selectedId === null"
 			:to="{
 				name: 'Workbench.Administrator.Detail',
-				params: { maintainerId: selectedId }
+				params: { administratorId: selectedId }
 			}"
 		>查看</b-button>
 
@@ -58,9 +58,18 @@
 		selectable
 		show-empty
 		@row-selected="setSelectedId"
+		:filter="keyword"
 	>
 		<template #cell(createdAt)="row">
 			{{ row.item.createdAt | localDatetime }}
+		</template>
+
+		<template #cell(cityCount)="row">
+			{{ row.item.cityList.length }}
+		</template>
+
+		<template #cell(customer)="row">
+			{{ row.item.customer ? '√' : '×' }}
 		</template>
 
 		<template #empty>
@@ -85,20 +94,26 @@ export default {
 	computed: {
 		administratorFieldList() {
 			return [
-				{ key: 'name', label: '用户名' },
+				{ key: 'name', label: '用户名', sortable: true },
+				{ key: 'cityCount', label: '城市数', class: '.col-short-number col-city-count' },
+				{ key: 'customer', label: '绑定微信?', class: 'col-checkbox col-bind' },
 				{ key: 'createdAt', label: '创建于', class: 'col-datetime', sortable: true }
 			];
 		}
 	},
 	methods: {
-		setSelectedId() {
-
+		setSelectedId(selectedList) {
+			this.selectedId = selectedList.length > 0
+				? selectedList[0].id
+				: null;
 		},
 		async getAdministratorList() {
 			this.administratorList = await this.$app.Api.Administrator.query();
 		},
-		deleteSelectedAdministrator() {
-
+		async deleteSelectedAdministrator() {
+			await this.$app.Api.Administrator(this.selectedId).delete();
+			await this.getAdministratorList();
+			this.selectedId = null;
 		}
 	},
 	mounted() {
@@ -106,3 +121,13 @@ export default {
 	}
 };
 </script>
+
+<style lang="scss">
+.col-bind {
+	width: 6em;
+}
+
+.col-city-count {
+	width: 4em;
+}
+</style>

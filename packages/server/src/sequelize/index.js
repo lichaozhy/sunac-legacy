@@ -94,8 +94,8 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Administrator.hasMany(Model.AdministratorCity, administratorManagedCity);
 
 	Model.Customer.belongsTo(Model.WechatOpenid, FK('wechatOpenid'));
-	Model.Administrator.belongsTo(Model.Customer, FK('customerId'));
-	Model.Customer.hasOne(Model.Administrator, FK('customerId'));
+	Model.Administrator.belongsTo(Model.Customer, FK('customerId', { as: 'customer' }));
+	Model.Customer.hasOne(Model.Administrator, FK('customerId', { as: 'customer' }));
 
 	/**
 	 * About content

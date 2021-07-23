@@ -60,6 +60,31 @@
 	</b-form>
 
 	<h3 class="mt-3">管理的城市</h3><hr>
+
+	<b-button-toolbar>
+		<b-button-group class="mx-auto">
+			<b-button
+				variant="primary"
+				@click="selectAll"
+			>全选</b-button>
+			<b-button
+				variant="primary"
+				@click="unselectAll"
+			>全不选</b-button>
+		</b-button-group>
+	</b-button-toolbar>
+
+	<b-row class="mt-3">
+		<b-col
+			cols="3"
+			v-for="city in cityList"
+			:key="city.adcode"
+		>
+			<b-form-checkbox
+				v-model="form.cityMap[city.adcode]"
+			>{{ city.name }}</b-form-checkbox>
+		</b-col>
+	</b-row>
 </b-container>
 
 </template>
@@ -82,6 +107,12 @@ export default {
 		}
 	},
 	methods: {
+		selectAll() {
+			this.cityList.forEach(city => this.form.cityMap[city.adcode] = true);
+		},
+		unselectAll() {
+			this.cityList.forEach(city => this.form.cityMap[city.adcode] = false);
+		},
 		resetPassword() {
 			this.form.password = '';
 		},
@@ -106,12 +137,16 @@ export default {
 					password: this.form.password
 				},
 				cityList: Object.keys(this.form.cityMap)
+					.filter(adcode => this.form.cityMap[adcode])
 			});
 
 			await this.$router.push({ name: 'Workbench.Administrator.Overview' });
 		},
 		async getCityList() {
 			this.cityList = await this.$app.Api.City.query();
+			this.cityList.forEach(city => {
+				this.$set(this.form.cityMap, city.adcode, false);
+			});
 		}
 	},
 	mounted() {

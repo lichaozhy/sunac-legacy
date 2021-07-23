@@ -115,8 +115,12 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/administrator').then(pickData);
+			query(query = {}) {
+				return agent.get('/administrator', {
+					params: {
+						name: query.name
+					}
+				}).then(pickData);
 			},
 			create(options) {
 				return agent.post('/administrator', {

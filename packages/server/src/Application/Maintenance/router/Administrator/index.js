@@ -8,11 +8,19 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 
 	router
 		.get('/', $ac('signed'), async function getAdministratorList(ctx) {
+			const { name } = ctx.query;
+			const where = { deletedAt: null };
+
+			if (name) {
+				where.name = name;
+			}
+
 			const list = await Model.Administrator.findAll({
-				where: { deletedAt: null },
+				where,
 				include: [
 					{ model: Model.AdministratorCredential, as: 'credential' },
-					{ model: Model.AdministratorCity, as: 'cityList' }
+					{ model: Model.AdministratorCity, as: 'cityList' },
+					{ model: Model.Customer, as: 'customer' }
 				]
 			});
 
@@ -72,11 +80,12 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			ctx.body = Resource.Administrator(administrator);
 		})
 		.param('administratorId', async function fetchAdministrator(id, ctx, next) {
-			const administrator = await Model.Administrator.findAll({
+			const administrator = await Model.Administrator.findOne({
 				where: { id, deletedAt: null },
 				include: [
 					{ model: Model.AdministratorCredential, as: 'credential' },
-					{ model: Model.AdministratorCity, as: 'cityList' }
+					{ model: Model.AdministratorCity, as: 'cityList' },
+					{ model: Model.Customer, as: 'customer' }
 				]
 			});
 
@@ -90,6 +99,17 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 		})
 		.get('/:administratorId', $ac('signed'), async function getAdministrator(ctx) {
 			ctx.body = Resource.Administrator(ctx.state.administrator);
+		})
+		.put('/:administratorId', $ac('signed'), async function updateAdministrator(ctx) {
+			const { credential } = ctx.request.body;
+			const { password } = credential;
+			const { administrator } = ctx.state;
+			const salt = Utils.salt();
+
+			administrator.credential.salt = salt;
+			administrator.credential.password = Utils.encodeSHA256(`${password}${salt}`);
+			await administrator.credential.save();
+			ctx.body = Resource.Administrator(administrator);
 		})
 		.delete('/:administratorId', $ac('signed'), async function deleteAdministrator(ctx) {
 			const { administrator } = ctx.state;
@@ -107,7 +127,7 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 
 			const { administratorId } = ctx.params;
 
-			const checked = await Model.AdministratorCity({
+			const checked = await Model.AdministratorCity.findOne({
 				where: { administratorId, adcode }
 			});
 

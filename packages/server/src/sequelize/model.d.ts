@@ -9,6 +9,9 @@ export namespace Model {
 		Maintainer: typeof Sequelize.Model,
 		MaintainerCredential: typeof Sequelize.Model,
 
+		Customer: typeof Sequelize.Model,
+		WechatOpenid: typeof Sequelize.Model,
+
 		Content: typeof Sequelize.Model,
 
 		Share: typeof Sequelize.Model,

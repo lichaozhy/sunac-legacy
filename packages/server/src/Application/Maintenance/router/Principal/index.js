@@ -32,6 +32,10 @@ module.exports = Router(function SunacLegacyMaintenanceCity(router, {
 			ctx.body = Resource.Principal();
 		})
 		.use(async function fetchPrincipalMaintainer(ctx, next) {
+			if (!ctx.session.maintainerId) {
+				return ctx.throw(403);
+			}
+
 			const maintainer = await Model.Maintainer.findOne({
 				where: { id: ctx.session.maintainerId },
 				include: [{ model: Model.MaintainerCredential, as: 'credential' }]

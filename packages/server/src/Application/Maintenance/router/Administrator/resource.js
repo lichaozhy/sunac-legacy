@@ -7,6 +7,7 @@ module.exports = {
 			name: data.name,
 			createdAt: data.createdAt,
 			cityList: data.cityList.map(ADDCODE_GETTER),
+			customer: data.customer,
 			credential: {}
 		};
 	},

@@ -81,9 +81,16 @@ namespace Api {
 		create(options: Model.Maintainer): Promise<Model.Maintainer>;
 	}
 
+	interface AdministratorInstanceCity {
+		create(options): Promise<void>;
+		delete(adcode: Adcode): Promise<void>;
+	}
+
 	interface AdministratorInstance {
 		get(): Promise<Model.Administrator>;
+		update(options: Model.Administrator): Promise<Model.Administrator>;
 		delete(): Promise<Model.Administrator>;
+		City: AdministratorInstanceCity;
 	}
 
 	interface Administrator {
