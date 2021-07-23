@@ -27,14 +27,53 @@ const app = {
 				}).then(pickData);
 			},
 			signout() {
-				return agent.delete('/pricipal').then(pickData);
+				return agent.delete('/principal').then(pickData);
 			},
 			Maintainer: {
 				get() {
 					return agent.get('/principal/maintainer').then(pickData);
+				},
+				update(options) {
+					return agent.put('/principal/maintainer', {
+						credential: {
+							password: options.credential.password
+						}
+					}).then(pickData);
 				}
 			}
-		}
+		},
+		City: {
+
+		},
+		Maintainer: Object.assign(function Maintainer(maintainerId) {
+			return {
+				get() {
+					return agent.get(`/maintainer/${maintainerId}`).then(pickData);
+				},
+				update(options) {
+					return agent.put(`/maintainer/${maintainerId}`, {
+						credential: {
+							password: options.credential.password
+						}
+					}).then(pickData);
+				},
+				delete() {
+					return agent.delete(`/maintainer/${maintainerId}`);
+				}
+			};
+		}, {
+			query() {
+				return agent.get('/maintainer').then(pickData);
+			},
+			create(options) {
+				return agent.post('/maintainer', {
+					name: options.name,
+					credential: {
+						password: options.credential.password
+					}
+				}).then(pickData);
+			}
+		})
 	}
 };
 

@@ -38,6 +38,10 @@ export default new Vuex.Store({
 			});
 
 			await dispatch('fetchPrincipal');
+		},
+		async signout({ dispatch }) {
+			await Vue.$app.Api.Principal.signout();
+			await dispatch('fetchPrincipal');
 		}
 	},
 	modules: {

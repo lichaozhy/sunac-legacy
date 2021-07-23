@@ -15,29 +15,74 @@ namespace Model {
 		password: null;
 	}
 
+	interface MaintainerCredential {
+		password: '';
+	}
+
 	interface Maintainer {
 		id: string;
 		name: string;
 		createdAt: string;
-		credential: {}
+		credential: MaintainerCredential;
+	}
+
+	interface Administrator {
+		id: string;
+		name: string;
+		createdAt: string;
+		credential: {};
+		cityList: Adcode[];
 	}
 }
 
 namespace Api {
-	namespace Principal {
-		function signin(options: Model.Principal): Promise<Model.Principal>;
-		function signout(): Promis<Model.Principal>;
-
-		namespace Maintainer {
-			function get():  Promise<Model.Maintainer>;
-		}
+	interface PrincipalMaintainer {
+		get():  Promise<Model.Maintainer>;
+		update(options: Model.Maintainer): Promise<Model.Maintainer>;
 	}
 
-	namespace City {
-		function query(): Promise<Model.City[]>;
-		function get(adcode: Adcode): Promise<Model.City>;
+	interface Principal {
+		signin(options: Model.Principal): Promise<Model.Principal>;
+		signout(): Promis<Model.Principal>;
+		Maintainer: PrincipalMaintainer;
 	}
 
+	interface CityInstance {
+		get(adcode: Adcode): Promise<Model.City>;
+	}
+
+	interface City {
+		(adcode: Adcode): CityInstance;
+		query(): Promise<Model.City[]>;
+	}
+
+	interface
+
+	interface MaintainerInstance {
+		get(): Promise<Model.Maintainer>;
+		delete(): Promise<Model.Maintainer>;
+	}
+
+	interface Maintainer {
+		(maintainerId: string): MaintainerInstance;
+		query(): Promise<Model.Maintainer>;
+		create(options: Model.Maintainer): Promise<Model.Maintainer>;
+	}
+
+	interface AdministratorInstance {
+		get(): Promise<Model.Administrator>;
+		delete(): Promise<Model.Administrator>;
+	}
+
+	interface Administrator {
+		(administratorId: string): AdministratorInstance;
+		query(): Promise<Model.Administrator[]>;
+		create(options: Model.Administrator): Model.Administrator;
+	}
+
+	const Maintainer: Maintainer;
+	const Administrator: Administrator;
+	const City: City;
 	const Principal: Principal;
 }
 

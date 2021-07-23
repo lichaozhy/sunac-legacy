@@ -1,4 +1,4 @@
-// @import '~bootswatch/dist/yeti/variables.scss';
+@import '~bootswatch/dist/yeti/variables.scss';
 
 // $border-radius: 0px !default;
 // $border-radius-lg: 0px !default;
@@ -22,7 +22,7 @@ $container-max-widths: (
 ) !default;
 
 @import '~bootstrap/scss/bootstrap.scss';
-// @import '~bootswatch/dist/yeti/bootswatch.scss';
+@import '~bootswatch/dist/yeti/bootswatch.scss';
 @import '~bootstrap-vue/src/index.scss';
 
 html, body {

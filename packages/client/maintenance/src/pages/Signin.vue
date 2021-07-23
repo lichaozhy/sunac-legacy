@@ -11,32 +11,35 @@
 			md="8" order-md="2"
 			sm="12"
 		>
-			<b-form
-				class="border"
-				@submit.prevent="signin"
+			<b-card
+				header="运维管理端登录"
 			>
-				<b-form-group
-					label="用户名"
+				<b-form
+					@submit.prevent="signin"
 				>
-					<b-form-input
-						v-model.trim="form.name"
-					/>
-				</b-form-group>
+					<b-form-group
+						label="用户名"
+					>
+						<b-form-input
+							v-model.trim="form.name"
+						/>
+					</b-form-group>
 
-				<b-form-group
-					label="密码"
-				>
-					<b-form-input
-						type="password"
-						v-model="form.password"
-					/>
-				</b-form-group>
-				<b-button
-					type="submit"
-					block
-					variant="success"
-				>登录</b-button>
-			</b-form>
+					<b-form-group
+						label="密码"
+					>
+						<b-form-input
+							type="password"
+							v-model="form.password"
+						/>
+					</b-form-group>
+					<b-button
+						type="submit"
+						block
+						variant="success"
+					>登录</b-button>
+				</b-form>
+			</b-card>
 		</b-col>
 	</b-row>
 </b-container>
