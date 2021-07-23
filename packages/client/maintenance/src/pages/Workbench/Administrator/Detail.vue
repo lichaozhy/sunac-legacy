@@ -1,7 +1,7 @@
 <template>
 
 <div>
-	Administrator
+	Administrator Detail
 </div>
 
 </template>

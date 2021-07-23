@@ -26,17 +26,25 @@ namespace Model {
 		credential: MaintainerCredential;
 	}
 
+	interface AdministratorCredential {
+		password: '';
+	}
+
 	interface Administrator {
 		id: string;
 		name: string;
 		createdAt: string;
-		credential: {};
+		credential: AdministratorCredential;
 		cityList: Adcode[];
 	}
 }
 
 namespace Query {
 	interface Maintainer {
+		name: string;
+	}
+
+	interface Administrator {
 		name: string;
 	}
 }
@@ -62,8 +70,6 @@ namespace Api {
 		query(): Promise<Model.City[]>;
 	}
 
-	interface
-
 	interface MaintainerInstance {
 		get(): Promise<Model.Maintainer>;
 		delete(): Promise<Model.Maintainer>;
@@ -82,7 +88,7 @@ namespace Api {
 
 	interface Administrator {
 		(administratorId: string): AdministratorInstance;
-		query(): Promise<Model.Administrator[]>;
+		query(query: Query.Administrator): Promise<Model.Administrator[]>;
 		create(options: Model.Administrator): Model.Administrator;
 	}
 

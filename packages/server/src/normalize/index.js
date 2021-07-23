@@ -1,4 +1,5 @@
 const path = require('path');
+const utils = require('../utils');
 
 module.exports = function normalize(_options = {}) {
 	const options = {
@@ -38,11 +39,18 @@ module.exports = function normalize(_options = {}) {
 				administration: 'maintenance/access.log',
 				customers: 'maintenance/access.log'
 			}
-		}
+		},
+		cityList: [
+			'310100', '320500', '320600', '320200', '320400',
+			'321000', '321100', '321200', '340200', '320100',
+			'341100', '340500', '320300', '320800', '321300',
+			'340400', '320900', '150100', '150200', '650000',
+		]
 	};
 
 	const {
-		server: _server = options.server
+		server: _server = options.server,
+		cityList: _cityList = options.cityList
 	} = _options;
 
 	if (typeof _server !== 'object') {
@@ -73,6 +81,18 @@ module.exports = function normalize(_options = {}) {
 			options.server.maintenance.host = _host;
 			options.server.maintenance.port = _port;
 		}
+	}
+
+	if (!Array.isArray(_cityList)) {
+		throw new Error('Invalid ".cityList", an array expected.');
+	} else {
+		options.cityList = _cityList.map((adcode, index) => {
+			if (utils.City.getCity(adcode) === null) {
+				throw new Error(`Invalid ".cityList[${index}]", an adcode expected.`);
+			}
+
+			return adcode;
+		});
 	}
 
 	return options;

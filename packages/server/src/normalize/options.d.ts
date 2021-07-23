@@ -21,7 +21,7 @@ namespace Server {
 interface Server {
 	host?: string;
 	port?: number;
-	tls?: ServerTls | null;
+	tls?: Server.Tls | null;
 }
 
 interface WX {
@@ -61,4 +61,5 @@ export interface Options {
 	database: Database;
 	storage: Storage;
 	log: Log;
+	cityList: string[];
 }

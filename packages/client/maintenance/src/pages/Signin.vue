@@ -47,23 +47,32 @@
 </template>
 
 <script>
+function Form() {
+	return {
+		name: '',
+		password: ''
+	};
+}
+
 export default {
 	data() {
 		return {
-			form: {
-				name: '',
-				password: ''
-			}
+			form: Form()
 		};
 	},
 	methods: {
 		async signin() {
-			await this.$store.dispatch('signin', {
-				username: this.form.name,
-				password: this.form.password
-			});
+			try {
+				await this.$store.dispatch('signin', {
+					username: this.form.name,
+					password: this.form.password
+				});
 
-			this.$router.push({ name: 'Workbench' });
+				this.$router.push({ name: 'Workbench' });
+			} catch (err) {
+				this.$bvToast.toast('用户名或密码错误', { variant: 'danger' });
+				this.form = Form();
+			}
 		}
 	}
 };

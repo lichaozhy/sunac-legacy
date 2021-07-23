@@ -7,8 +7,10 @@
 >
 	<b-row class="h-75">
 		<b-col
-			xl="8"
-			offset-xl="2"
+			xxl="8"
+			offset-xxl="2"
+			xl="10"
+			offset-xl="1"
 			cols="12"
 			class="h-100"
 		>

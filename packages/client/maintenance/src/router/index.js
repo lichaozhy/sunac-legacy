@@ -52,7 +52,22 @@ const router = new VueRouter({
 				{
 					name: 'Workbench.Administrator',
 					path: 'administrator',
-					component: Page.Workbench.Administrator
+					redirect: { name: 'Workbench.Administrator.Overview' }
+				},
+				{
+					name: 'Workbench.Administrator.Overview',
+					path: 'administrator/overview',
+					component: Page.Workbench.Administrator.Overview
+				},
+				{
+					name: 'Workbench.Administrator.Creation',
+					path: 'administrator/creation',
+					component: Page.Workbench.Administrator.Creation
+				},
+				{
+					name: 'Workbench.Administrator.Detail',
+					path: 'administrator/:administratorId/detail',
+					component: Page.Workbench.Administrator.Detail
 				}
 			]
 		},
