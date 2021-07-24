@@ -1,12 +1,14 @@
 const { Router } = require('@produck/duck-web-koa-router');
 const fetch = require('node-fetch');
+const crypto = require('crypto');
 
 const OPEN_WECHAT_ACCESS_TOKEN = 'https://api.weixin.qq.com/sns/oauth2/access_token';
 const OPEN_WECHAT_USERINFO = 'https://api.weixin.qq.com/sns/userinfo';
+
 const USERINFO_SCOPE_REG = /snsapi_userinfo/;
 
 module.exports = Router(function SunacLegacyApi(router, {
-	options, Model, Log, Utils
+	options, Model, Log, Utils, Wechat
 }) {
 	async function requestOpenWechatAuthorization(code) {
 		const queryString = [
@@ -34,7 +36,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 	}
 
 	router
-		.get('/', async function getCodeForToken(ctx) {
+		.get('/oauth', async function getCodeForToken(ctx) {
 			const { code } = ctx.query;
 
 			if (!code) {
@@ -97,5 +99,24 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 				ctx.redirect(oauthURL);
 			}
+		})
+		.get('/jssdk/config', async function generateConfig(ctx) {
+			const config = {
+				jsapi_ticket: Wechat.jsSdkTicket,
+				noncestr: Utils.salt(),
+				timestamp: Math.trunc(Date.now() / 1000),
+				url: `${options.server.customers.origin}/`
+			};
+
+			const raw = [
+				'jsapi_ticket','noncestr', 'timestamp', 'url'
+			].map(key => `${key}=${config[key]}`).join('&');
+
+			ctx.body = {
+				appId: options.wx.appid,
+				timestamp: config.timestamp,
+				nonceStr: config.noncestr,
+				signature: crypto.createHash('sha1').update(raw).digest().toString('hex')
+			};
 		});
 });

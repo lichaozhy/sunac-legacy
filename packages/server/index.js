@@ -9,6 +9,7 @@ const utils = require('./src/utils');
 const meta = require('./package.json');
 const SunacLegacyDatabase = require('./src/sequelize');
 const normalize = require('./src/normalize');
+const wechat = require('./src/wechat');
 
 module.exports = Duck({
 	id: 'com.sunac.legacy',
@@ -44,6 +45,8 @@ module.exports = Duck({
 	 */
 	const finalOptions = normalize(options);
 
+	wechat.setApp(finalOptions.wx.appid, finalOptions.wx.appsecret);
+
 	injection.options = finalOptions;
 	injection.Utils = utils;
 
@@ -52,6 +55,7 @@ module.exports = Duck({
 	Workspace.setPath('log', finalOptions.log.path);
 	Workspace.setPath('temp', 'tmp');
 	Workspace.setPath('image', 'images');
+	Workspace.setPath('wechat', 'wechat');
 
 	const { sequelize, Model } = SunacLegacyDatabase({
 		namespace: `${product.meta.namespace}_`,
@@ -60,6 +64,14 @@ module.exports = Duck({
 
 	injection.Sequelize = sequelize;
 	injection.Model = Model;
+	injection.Wechat = {
+		get accessToken() {
+			return wechat.fetchAccessToken();
+		},
+		get jsSdkTicket() {
+			return wechat.fetchJsSdkTicket();
+		}
+	};
 
 	const Application = {
 		Administration: Web.Application('legacy.administration'),
@@ -83,6 +95,8 @@ module.exports = Duck({
 
 	return Object.freeze({
 		async start() {
+			await wechat.setDir(Workspace.getPath('wechat'));
+
 			if (finalOptions.server.maintenance.tls === null) {
 				const { host, port } = finalOptions.server.maintenance;
 

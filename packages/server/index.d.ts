@@ -10,7 +10,13 @@ declare module '@produck/duck' {
 		Sequelize: Sequelize.Sequelize;
 		Utils: typeof Utils;
 		Model: typeof Model;
+		Wechat: Wechat;
 	}
+}
+
+interface Wechat {
+	readonly accessToken: string;
+	readonly jsSdkTicket: string;
 }
 
 interface SunacLegacy {

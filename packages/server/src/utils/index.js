@@ -20,7 +20,7 @@ module.exports = Object.freeze({
 	WechatOauthRedirectURL({ appid, origin, scope = 'snsapi_base', state = '' }) {
 		const queryList = [
 			`appid=${appid}`,
-			`redirect_uri=${encodeURIComponent(`${origin}/api/oauth/wechat`)}`,
+			`redirect_uri=${encodeURIComponent(`${origin}/api/wechat/oauth`)}`,
 			'response_type=code',
 			`scope=${scope}`,
 			`state=${state}`

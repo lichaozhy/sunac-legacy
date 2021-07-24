@@ -1,0 +1,84 @@
+@import '~bootswatch/dist/yeti/variables.scss';
+
+// $border-radius: 0px !default;
+// $border-radius-lg: 0px !default;
+// $border-radius-sm: 0px !default;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+	xxl: 1600px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+	xl: 1140px,
+	xxl: 1560px
+) !default;
+
+@import '~bootstrap/scss/bootstrap.scss';
+@import '~bootswatch/dist/yeti/bootswatch.scss';
+@import '~bootstrap-vue/src/index.scss';
+
+html, body {
+	height: 100%;
+}
+
+table.table.b-table td {
+	vertical-align: middle;
+}
+
+.b-table-sticky-header > .table.b-table > thead > tr > th {
+	top: -1px;
+}
+
+.custom-switch .custom-control-label {
+	vertical-align: middle;
+}
+
+.col-blank {
+	width: 2em;
+}
+
+.col-auto-blank {
+	min-width: 2em;
+}
+
+.col-datetime {
+	width: 12em;
+}
+
+.col-date {
+	width: 8em;
+}
+
+.col-short-number {
+	width: 6em;
+	text-align: right;
+}
+
+.col-number {
+	width: 8em;
+	text-align: right;
+}
+
+.col-short-string {
+	width: 8em;
+}
+
+.col-tiny-string {
+	width: 5em;
+}
+
+.col-string {
+	width: 16em;
+}
+
+.col-checkbox {
+	text-align: center;
+}

@@ -1,0 +1,35 @@
+{
+	"breakpoints": [
+    "xs",
+    "sm",
+    "md",
+    "lg",
+    "xl",
+		"xxl"
+	],
+  "formControls": {
+		"size": "sm"
+  },
+  "BButton": {
+		"variant": "secondary",
+		"size": "sm"
+  },
+  "BToast": {
+    "toaster": "b-toaster-top-center",
+    "autoHideDelay": 3000,
+    "variant": "primary",
+    "toastClass": null,
+    "headerClass": null,
+    "bodyClass": null
+	},
+	"BModal": {
+    "cancelVariant": "secondary",
+    "okVariant": "primary"
+	},
+	"BFormGroup": {
+		"size": "sm"
+	},
+	"BInputGroup": {
+		"size": "sm"
+	}
+}

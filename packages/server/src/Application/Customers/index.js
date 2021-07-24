@@ -16,20 +16,18 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 	app
 		.use(KoaSession(app))
 		.use(function validateSession(ctx, next) {
-			if (!ctx.session.customerId && ctx.path !== '/api/oauth/wechat') {
+			if (!ctx.session.customerId && ctx.path !== '/api/wechat/oauth') {
 				return ctx.redirect(Utils.WechatOauthRedirectURL({
 					appid: options.wx.appid,
 					origin: options.server.customers.origin,
 				}));
 			}
 
-			ctx.body = ctx.session.customerId;
-
 			return next();
 		})
 		.use(KoaBody())
 		.use(AppRouter().routes())
-		.use(serve(path.resolve('www/maintenance')));
+		.use(serve(path.resolve('www/customers')));
 }, {
 	plugins: [
 		DuckWebKoaAcl({
@@ -51,7 +49,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 			Router: Router.Api,
 			use: [
 				{
-					prefix: '/oauth/wechat',
+					prefix: '/wechat',
 					Router: Router.Wechat
 				}
 			]
