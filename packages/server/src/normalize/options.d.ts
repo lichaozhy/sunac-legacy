@@ -22,6 +22,7 @@ interface Server {
 	host?: string;
 	port?: number;
 	tls?: Server.Tls | null;
+	origin?: string;
 }
 
 interface WX {

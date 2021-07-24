@@ -9,13 +9,27 @@ const path = require('path');
 const Router = require('./router');
 
 module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
-	AppRouter, Workspace
+	AppRouter, Workspace, Utils, options
 }) {
+	app.keys = [Utils.salt()];
+
 	app
-		.use(serve(path.resolve('www/maintenance')))
 		.use(KoaSession(app))
+		.use(function validateSession(ctx, next) {
+			if (!ctx.session.customerId && ctx.path !== '/api/oauth/wechat') {
+				return ctx.redirect(Utils.WechatOauthRedirectURL({
+					appid: options.wx.appid,
+					origin: options.server.customers.origin,
+				}));
+			}
+
+			ctx.body = ctx.session.customerId;
+
+			return next();
+		})
 		.use(KoaBody())
-		.use(AppRouter().routes());
+		.use(AppRouter().routes())
+		.use(serve(path.resolve('www/maintenance')));
 }, {
 	plugins: [
 		DuckWebKoaAcl({
@@ -33,8 +47,14 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 			}
 		}),
 		DuckWebKoaRouter({
-			prefix: '/',
-			Router: function () {}
+			prefix: '/api',
+			Router: Router.Api,
+			use: [
+				{
+					prefix: '/oauth/wechat',
+					Router: Router.Wechat
+				}
+			]
 		})
 	]
 });

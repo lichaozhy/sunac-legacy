@@ -75,6 +75,7 @@ module.exports = Duck({
 
 	Log('system');
 	Log('db');
+	Log('wechat');
 	Log('access', {
 		AppenderList: [DuckLog.Appender.Console()],
 		format: DuckLog.Format.ApacheCLF()
@@ -84,11 +85,22 @@ module.exports = Duck({
 		async start() {
 			if (finalOptions.server.maintenance.tls === null) {
 				const { host, port } = finalOptions.server.maintenance;
+
 				http
 					.createServer(LogWrapedApp.Maintenance)
 					.listen(port, host);
 
-				Log.system(`Starting: Maintenance server running on host="${host}", port=${port}`);
+				Log.system(`Starting: <Maintenance> on host="${host}", port=${port}`);
+			}
+
+			{
+				const { host, port, origin } = finalOptions.server.customers;
+
+				http
+					.createServer(LogWrapedApp.Customers)
+					.listen(port, host);
+
+				Log.system(`Starting: <Customers> on host="${host}", port=${port}, origin=${origin}`);
 			}
 		},
 		async install() {

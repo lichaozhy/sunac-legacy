@@ -15,8 +15,9 @@ module.exports = function normalize(_options = {}) {
 				tls: null
 			},
 			customers: {
+				origin: 'http://sunac-shanghai-dev.produckjs.net',
 				host: '0.0.0.0',
-				port: 8000,
+				port: 80,
 				tls: {}
 			},
 		},
@@ -50,7 +51,8 @@ module.exports = function normalize(_options = {}) {
 
 	const {
 		server: _server = options.server,
-		cityList: _cityList = options.cityList
+		cityList: _cityList = options.cityList,
+		wx: _wx = options.wx
 	} = _options;
 
 	if (typeof _server !== 'object') {
@@ -81,6 +83,32 @@ module.exports = function normalize(_options = {}) {
 			options.server.maintenance.host = _host;
 			options.server.maintenance.port = _port;
 		}
+
+		if (!isObject(_customers)) {
+			throw new Error('Invalid ".server.customers", an object expected.');
+		} else {
+			const {
+				host: _host = options.server.customers.host,
+				port: _port = options.server.customers.port,
+				origin: _origin = options.server.customers.origin
+			} = _customers;
+
+			if (typeof _host !== 'string') {
+				throw new Error('Invalid ".server.customers.host", a string expected.');
+			}
+
+			if (typeof _port !== 'number') {
+				throw new Error('Invalid ".server.customers.port", a port number expected.');
+			}
+
+			if (!isString(_origin)) {
+				throw new Error('Invalid ".server.customers.origin", a string expected.');
+			}
+
+			options.server.customers.host = _host;
+			options.server.customers.port = _port;
+			options.server.customers.origin = _origin;
+		}
 	}
 
 	if (!Array.isArray(_cityList)) {
@@ -95,5 +123,33 @@ module.exports = function normalize(_options = {}) {
 		});
 	}
 
+	if (typeof _wx !== 'object') {
+		throw new Error('Invalid ".wx", an object expected.');
+	} else {
+		const {
+			appid: _appid,
+			appsecret: _appsecret
+		} = _wx;
+
+		if (!isString(_appid)) {
+			throw new Error('Invalid ".wx.appid, a string expected, required.');
+		}
+
+		if (!isString(_appsecret)) {
+			throw new Error('Invalid ".wx.appsecret, a string expected, required.');
+		}
+
+		options.wx.appid = _appid;
+		options.wx.appsecret = _appsecret;
+	}
+
 	return options;
 };
+
+function isObject(any) {
+	return typeof any === 'object';
+}
+
+function isString(any) {
+	return typeof any === 'string';
+}

@@ -10,8 +10,7 @@ function Customer(sequelize, namespace) {
 			primaryKey: true
 		},
 		name: DataTypes.STRING(32),
-		cityAs: DataTypes.CHAR(6),
-		wechatOpenid: DataTypes.CHAR(64)
+		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}customer`
 	});

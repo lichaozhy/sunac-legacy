@@ -93,7 +93,11 @@ module.exports = function SunacLegacySequelize(options) {
 
 	Model.Administrator.hasMany(Model.AdministratorCity, administratorManagedCity);
 
-	Model.Customer.belongsTo(Model.WechatOpenid, FK('wechatOpenid'));
+	const customerWithWechat = FK('customerId', { as: 'wechat' });
+
+	Model.Customer.hasOne(Model.WechatOpenid, customerWithWechat);
+	Model.WechatOpenid.belongsTo(Model.Customer, customerWithWechat);
+
 	Model.Administrator.belongsTo(Model.Customer, FK('customerId', { as: 'customer' }));
 	Model.Customer.hasOne(Model.Administrator, FK('customerId', { as: 'customer' }));
 

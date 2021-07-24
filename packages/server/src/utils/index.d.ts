@@ -14,3 +14,12 @@ export namespace City {
 export function encodeSHA256(raw: Buffer | string): string;
 export function randomInt(from: number, to: number): number;
 export function salt(length: number): string;
+
+interface WechatOauthOptions {
+	appid: string;
+	origin: string;
+	scope?: 'snsapi_base' | 'snsapi_userinfo';
+	state?: string;
+}
+
+export function WechatOauthRedirectURL(options: WechatOauthOptions): string;

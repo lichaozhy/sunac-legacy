@@ -5,6 +5,10 @@ const product = SunacLegacy({
 	},
 	log: {
 		path: ''
+	},
+	wx: {
+		appid: '',
+		appsecret: ''
 	}
 });
 

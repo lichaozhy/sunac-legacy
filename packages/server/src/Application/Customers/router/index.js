@@ -1,5 +1,6 @@
 module.exports = {
 	Api: require('./Api'),
+	Wechat: require('./Wechat'),
 	Principal: require('./Principal'),
 	// Administrator: require('./Principal/Administrator'),
 
