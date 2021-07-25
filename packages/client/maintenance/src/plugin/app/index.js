@@ -1,8 +1,6 @@
 import axios from 'axios';
 import dateformat from 'dateformat';
 
-const pickData = res => res.data;
-
 export function localDatetime(value) {
 	return dateformat(value, 'yyyy-mm-dd HH:MM:ss');
 }
@@ -16,6 +14,7 @@ export function localTime(value) {
 }
 
 const agent = axios.create({ baseURL: '/api' });
+const pickData = res => res.data;
 
 const app = {
 	Api: {

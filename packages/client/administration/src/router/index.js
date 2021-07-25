@@ -13,7 +13,7 @@ const routes = [
 	{
 		name: 'Workbench',
 		path: '/workbench',
-		redirect: { name: 'Workbench.Maintainer.Overview' },
+		// redirect: { name: 'Workbench.Administrator.Overview' },
 		component: Page.Workbench.Framework,
 		meta: {
 			principalRequired: true
