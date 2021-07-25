@@ -1,7 +1,6 @@
 module.exports = {
 	Api: require('./Api'),
 	Principal: require('./Principal'),
-	Administrator: require('./Principal/Administrator'),
 
 	Customer: require('./Customer'),
 

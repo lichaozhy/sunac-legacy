@@ -62,7 +62,7 @@ async function refreshJsSdkTicket() {
 // 如果没有主动观察，可能会失效
 // 一次失败就续上了
 
-module.exports = {
+const wechat = {
 	fetchAccessToken() {
 		if (config.access_token.createdAt - Date.now() > 3600) {
 			refreshToken();
@@ -91,6 +91,7 @@ module.exports = {
 
 			config.access_token.value = access_token;
 			config.access_token.createdAt = new Date(createdAt);
+			wechat.fetchAccessToken();
 		} catch (err) {
 			await refreshToken();
 		}
@@ -100,6 +101,7 @@ module.exports = {
 
 			config.jsapi.ticket = ticket;
 			config.jsapi.createdAt = new Date(createdAt);
+			wechat.fetchJsSdkTicket();
 		} catch (err) {
 			await refreshJsSdkTicket();
 		}
@@ -109,3 +111,5 @@ module.exports = {
 		config.app.secret = secret;
 	}
 };
+
+module.exports = wechat;

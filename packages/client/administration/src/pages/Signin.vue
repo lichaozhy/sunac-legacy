@@ -30,6 +30,7 @@
 					>
 						<b-form-input
 							type="password"
+							autocomplete="on"
 							v-model="form.password"
 						/>
 					</b-form-group>

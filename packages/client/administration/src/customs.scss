@@ -29,6 +29,10 @@ html, body {
 	height: 100%;
 }
 
+.nav-link.active {
+	background-color: rgba(255,255,255,0.1);
+}
+
 table.table.b-table td {
 	vertical-align: middle;
 }

@@ -9,7 +9,7 @@ const path = require('path');
 const Router = require('./router');
 
 module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
-	AppRouter, Workspace
+	AppRouter, Workspace, Utils
 }) {
 	const bodyparser = KoaBody({
 		multipart: true,
@@ -17,6 +17,8 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 			uploadDir: Workspace.getPath('temp')
 		}
 	});
+
+	app.keys = [Utils.salt()];
 
 	app
 		.use(serve(path.resolve('www/administration')))
@@ -28,10 +30,10 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 		DuckWebKoaAcl({
 			asserts: [
 				function authenticated(ctx) {
-					return Boolean(ctx.session.managerId);
+					return Boolean(ctx.session.administratorId);
 				},
 				function unauthenticated(ctx) {
-					return !ctx.session.managerId;
+					return !ctx.session.administratorId;
 				}
 			],
 			table: {
@@ -46,12 +48,6 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 				{
 					prefix: '/principal',
 					Router: Router.Principal,
-					use: [
-						{
-							prefix: '/administrator',
-							Router: Router.Administrator
-						}
-					]
 				},
 				{
 					prefix: '/customer',

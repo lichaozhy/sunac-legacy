@@ -108,6 +108,16 @@ module.exports = Duck({
 			}
 
 			{
+				const { host, port } = finalOptions.server.administration;
+
+				http
+					.createServer(LogWrapedApp.Administration)
+					.listen(port, host);
+
+				Log.system(`Starting: <Administration> on host="${host}", port=${port}`);
+			}
+
+			{
 				const { host, port, origin } = finalOptions.server.customers;
 
 				http
