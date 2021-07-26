@@ -127,14 +127,6 @@ const app = {
 				delete() {
 					return agent.delete(`/reference/${referenceId}`).then(pickData);
 				},
-				Comment: {
-					create() {
-						return agent.post(`/reference/${referenceId}/comment`).then(pickData);
-					},
-					query() {
-						return agent.get(`/reference/${referenceId}/comment`).then(pickData);
-					}
-				}
 			};
 		}, {
 			create(options) {
@@ -142,30 +134,37 @@ const app = {
 					title: options.title,
 					abstract: options.abstract,
 					href: options.href,
+					cityAs: options.cityAs,
 					thumb: {
 						id: options.thumb.id
 					}
 				}).then(pickData);
 			},
-			query() {
-				return agent.get('/reference').then(pickData);
-			},
-			Comment: Object.assign(function Comment(commentId) {
-				return {
-					update(options) {
-						return agent.put(`/reference/comment/${commentId}`, {
-							valid: options.valid
-						}).then(pickData);
-					},
-					delete() {
-						return agent.put(`/reference/comment/${commentId}`).then(pickData);
-					}
-				};
-			}, {
-				query() {
-					return agent.get('/reference/comment').then(pickData);
+			query(query) {
+				const params = {};
+
+				if (query.title) {
+					params.title = query.title;
 				}
-			})
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				if ('sortBy' in query) {
+					params.sortBy = query.sortBy || 'createdAt';
+				}
+
+				if ('sortDesc' in query) {
+					params.sortDesc = query.sortDesc;
+				}
+
+				return agent.get('/reference', { params }).then(pickData);
+			},
 		}),
 		Share: Object.assign(function Share(shareId) {
 			return {
@@ -256,6 +255,11 @@ const app = {
 				}
 			})
 		}),
+		Image: {
+			create(options) {
+				return agent.post('/image', options).then(pickData);
+			}
+		}
 	},
 	Filter: {
 		localDate,

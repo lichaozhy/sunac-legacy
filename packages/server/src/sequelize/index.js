@@ -107,11 +107,13 @@ module.exports = function SunacLegacySequelize(options) {
 	const contentFk = FK('contentId', { as: 'content' });
 
 	Model.Share.belongsTo(Model.Content, contentFk);
-	Model.Reference.belongsTo(Model.Content, contentFk);
 	Model.ReferenceComment.belongsTo(Model.Content, contentFk);
 	Model.Topic.belongsTo(Model.Content, contentFk);
 	Model.TopicPost.belongsTo(Model.Content, contentFk);
 	Model.Photo.belongsTo(Model.Content, contentFk);
+	Model.Reference.belongsTo(Model.Content, contentFk);
+
+	Model.Content.hasOne(Model.Reference, FK('contentId', { as: 'reference' }));
 
 	Model.Share.hasMany(Model.ShareImage, FK('shareId', { as: 'imageList' }));
 	Model.TopicPost.hasMany(Model.TopicPostImage, FK('topicPostId', { as: 'imageList' }));

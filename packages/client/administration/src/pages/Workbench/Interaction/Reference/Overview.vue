@@ -45,12 +45,17 @@
 			没有符合要求的条目
 		</template>
 	</b-table>
+
+	<app-creation ref="creation" />
 </div>
 
 </template>
 
 <script>
+import Creation from './Creation.vue';
+
 export default {
+	components: { AppCreation: Creation },
 	data() {
 		return {
 			keyword: '',
@@ -70,9 +75,15 @@ export default {
 				{ key: 'like', label: '赞👍', class: 'col-short-number' },
 				{ key: 'createdAt', label: '创建于', class: 'col-datetime', sortable: true },
 			];
+		},
+		isNewReferenceValid() {
+			return this.$refs['creation-form'].isValid;
 		}
 	},
 	methods: {
+		requestCreatingReference() {
+			this.$refs.creation.open();
+		},
 		async provideReferenceList(ctx) {
 			const { list, total } = await this.$app.Api.Reference.query({
 				title: this.keyword,
@@ -84,9 +95,10 @@ export default {
 
 			this.pagination.total = total;
 
-			list.map(reference => {
+			return list.map(reference => {
 				return {
 					id: reference.id,
+					title: reference.title,
 					href: reference.href,
 					read: reference.read,
 					like: reference.like,
@@ -97,8 +109,8 @@ export default {
 		async refreshTable() {
 			this.$refs.table.refresh();
 		},
-		requestCreatingReference() {
-
+		async createReference() {
+			await this.$refs.creation.create();
 		}
 	}
 };

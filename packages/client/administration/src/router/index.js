@@ -37,11 +37,11 @@ const router = new VueRouter({
 							path: 'comment',
 							component: Page.Workbench.Interaction.Reference.Overview
 						},
-						{
-							name: 'Workbench.Interaction.Comment',
-							path: 'comment',
-							component: Page.Workbench.Interaction.Comment
-						},
+						// {
+						// 	name: 'Workbench.Interaction.Comment',
+						// 	path: 'comment',
+						// 	component: Page.Workbench.Interaction.Comment
+						// },
 						{
 							name: 'Workbench.Interaction.Share',
 							path: 'share',
@@ -58,7 +58,7 @@ const router = new VueRouter({
 				{
 					name: 'Workbench.Validation',
 					path: 'validation',
-					redirect: { name: 'Workbench.Validation.Comment' },
+					redirect: { name: 'Workbench.Validation.Share' },
 					component: Page.Workbench.Validation.Framework,
 					children: [
 						{
@@ -66,11 +66,11 @@ const router = new VueRouter({
 							path: 'post',
 							component: Page.Workbench.Validation.Post
 						},
-						{
-							name: 'Workbench.Validation.Comment',
-							path: 'comment',
-							component: Page.Workbench.Validation.Comment
-						},
+						// {
+						// 	name: 'Workbench.Validation.Comment',
+						// 	path: 'comment',
+						// 	component: Page.Workbench.Validation.Comment
+						// },
 						{
 							name: 'Workbench.Validation.Share',
 							path: 'share',

@@ -70,7 +70,6 @@ namespace Model {
 		abstract: string;
 		thumb: Image;
 		href: string;
-		read: number;
 	}
 
 	interface Comment extends Content {
@@ -160,21 +159,21 @@ namespace Api {
 		Comment: ReferenceInstanceComment;
 	}
 
-	interface ReferenceInstanceComment {
-		create(options: Model.Comment): Promise<Model.Comment>;
-		query(): Promise<Model.Page<Model.Comment>>;
-	}
+	// interface ReferenceInstanceComment {
+	// 	create(options: Model.Comment): Promise<Model.Comment>;
+	// 	query(): Promise<Model.Page<Model.Comment>>;
+	// }
 
-	interface ReferenceComment {
-		(commentId: string): ReferenceCommentInstance;
-		query(): Promise<Model.Page<Model.Comment>>;
-		create(options: Model.Comment): Promise<Model.Comment>;
-	}
+	// interface ReferenceComment {
+	// 	(commentId: string): ReferenceCommentInstance;
+	// 	query(): Promise<Model.Page<Model.Comment>>;
+	// 	create(options: Model.Comment): Promise<Model.Comment>;
+	// }
 
-	interface ReferenceCommentInstance {
-		update(options: Model.Comment): Promise<Model.Comment>;
-		delete(): Promise<Model.Comment>;
-	}
+	// interface ReferenceCommentInstance {
+	// 	update(options: Model.Comment): Promise<Model.Comment>;
+	// 	delete(): Promise<Model.Comment>;
+	// }
 
 	interface Share {
 		(shareId: string): ShareInstance;
@@ -217,6 +216,10 @@ namespace Api {
 		update(options: Model.Post): Promise<Model.Post>;
 		delete(): Promise<Model.Post>;
 	}
+
+	interface Image {
+		create(options: FormData): Promise<Model.Image>;
+	}
 }
 
 interface Api {
@@ -227,6 +230,7 @@ interface Api {
 	Reference: Api.Reference;
 	Share: Api.Share;
 	Topic: Api.Topic;
+	Image: Api.Image;
 }
 
 namespace Filter {

@@ -3,7 +3,8 @@ module.exports = {
 	Principal: require('./Principal'),
 	Customer: require('./Customer'),
 	City: require('./City'),
-	Reference: require('./Reference')
+	Reference: require('./Reference'),
+	Image: require('./Image')
 
 	// Reference: require('./City/Reference'),
 	// Photo: require('./City/Photo'),

@@ -109,7 +109,6 @@
 					variant="success"
 					class="mt-3"
 					:disabled="!isPasswordValid"
-					@click="changePassword"
 				>确认修改</b-button>
 			</b-form>
 		</b-col>

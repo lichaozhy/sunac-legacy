@@ -14,7 +14,7 @@
 		<b-col xxl="2" xl="3">
 			<b-list-group>
 				<b-list-group-item
-					:to="{ name: 'Workbench.Interaction.Comment' }"
+					:to="{ name: 'Workbench.Interaction.Reference' }"
 				>外引用</b-list-group-item>
 				<b-list-group-item
 					:to="{ name: 'Workbench.Interaction.Topic' }"

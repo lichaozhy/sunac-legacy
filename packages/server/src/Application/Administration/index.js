@@ -57,11 +57,14 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 					prefix: '/city',
 					Router: Router.City,
 				},
-
-				// {
-				// 	prefix: '/reference',
-				// 	Router: Router.Reference
-				// },
+				{
+					prefix: '/image',
+					Router: Router.Image
+				},
+				{
+					prefix: '/reference',
+					Router: Router.Reference
+				},
 				// {
 				// 	prefix: '/photo',
 				// 	Router: Router.Photo
@@ -78,6 +81,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 				// 	prefix: '/share',
 				// 	Router: Router.Share
 				// },
+
 				// {
 				// 	prefix: '/comment',
 				// 	Router: Router.Comment
