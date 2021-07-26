@@ -42,13 +42,10 @@ const app = {
 					}).then(pickData);
 				},
 				Customer: {
-					create(options) {
-						return agent.post('/principal/administrator/customer', {
+					update(options) {
+						return agent.put('/principal/administrator/customer', {
 							id: options.id
 						}).then(pickData);
-					},
-					delete() {
-						return agent.delete('/principal/administrator/customer').then(pickData);
 					}
 				}
 			}
@@ -71,8 +68,14 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.query('/customer').then(pickData);
+			query(query) {
+				const params = {};
+
+				if (query.name) {
+					params.name = query.name;
+				}
+
+				return agent.get('/customer', { params }).then(pickData);
 			}
 		}),
 		Photo: Object.assign(function Photo(photoId) {
@@ -252,6 +255,11 @@ const app = {
 				}
 			})
 		}),
+	},
+	Filter: {
+		localDate,
+		localDatetime,
+		localTime
 	}
 };
 

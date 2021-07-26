@@ -64,14 +64,14 @@ async function refreshJsSdkTicket() {
 
 const wechat = {
 	fetchAccessToken() {
-		if (config.access_token.createdAt - Date.now() > 3600) {
+		if (new Date() - config.access_token.createdAt > 3600) {
 			refreshToken();
 		}
 
 		return config.access_token.value;
 	},
 	fetchJsSdkTicket() {
-		if (config.jsapi.createdAt - Date.now() > 3600) {
+		if (new Date() - config.jsapi.createdAt > 3600) {
 			refreshJsSdkTicket();
 		}
 

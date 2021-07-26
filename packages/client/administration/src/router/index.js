@@ -104,9 +104,17 @@ const router = new VueRouter({
 				},
 
 				{
-					name: 'Workbench.Profile',
-					path: 'profile',
-					component: Page.Workbench.Profile
+					name: 'Workbench.Setting',
+					path: 'setting',
+					component: Page.Workbench.Setting.Framework,
+					redirect: { name: 'Workbench.Setting.Profile' },
+					children: [
+						{
+							name: 'Workbench.Setting.Profile',
+							path: 'profile',
+							component: Page.Workbench.Setting.Profile
+						}
+					]
 				}
 			]
 		},

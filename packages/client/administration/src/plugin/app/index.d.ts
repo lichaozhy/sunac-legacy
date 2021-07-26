@@ -113,8 +113,7 @@ namespace Api {
 	}
 
 	interface PrincipalAdministratorCustomer {
-		create(options: Model.Customer): Promise<Model.Customer>;
-		delete(): Promise<Model.Customer>;
+		update(options: Model.Customer): Promise<Model.Customer>;
 	}
 
 	interface City {
@@ -230,8 +229,13 @@ interface Api {
 	Topic: Api.Topic;
 }
 
+namespace Filter {
+	export function localDatetime(any): string;
+}
+
 interface App {
 	Api: Api;
+	Filter: typeof Filter;
 }
 
 declare module "vue/types/vue" {

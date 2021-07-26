@@ -24,7 +24,7 @@
 
 		<b-navbar-nav class="ml-auto">
 			<b-nav-item
-				:to="{ name: 'Workbench.Profile' }"
+				:to="{ name: 'Workbench.Setting' }"
 			>运营管理员：{{ administrator.name }}</b-nav-item>
 
 			<b-nav-item
@@ -33,7 +33,7 @@
 		</b-navbar-nav>
 	</b-navbar>
 
-	<router-view>Workbench Framework</router-view>
+	<router-view style="padding-bottom:400px">Workbench Framework</router-view>
 </div>
 
 </template>

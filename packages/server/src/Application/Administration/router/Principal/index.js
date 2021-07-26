@@ -32,15 +32,9 @@ function Administrator(data) {
 	return {
 		id: data.id,
 		name: data.name,
-		createdAt: data.name,
+		createdAt: data.createdAt,
 		cityList: data.cityList.map(ADDCODE_GETTER),
-		customer: data.customer ? {
-			id: data.customer.id,
-			createdAt: data.customer.createdAt,
-			cityAs: data.customer.cityAs,
-			wechat: {
-			}
-		}: null
+		customer: data.customer ? Customer(data.customer) : null
 	};
 }
 
@@ -123,10 +117,10 @@ module.exports = Router(function SunacLegacyAdministrationPrincipal(router, {
 			ctx.body = Administrator(administrator);
 		})
 		.put('/administrator/customer', async function assignCustomer(ctx) {
-			const { customer } = ctx.request.body;
+			const { id } = ctx.request.body;
 
 			const existed = await Model.Customer.findOne({
-				where: { id: customer.id },
+				where: { id },
 				include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
 			});
 
@@ -136,7 +130,7 @@ module.exports = Router(function SunacLegacyAdministrationPrincipal(router, {
 
 			const { administrator } = ctx.state.principal;
 
-			administrator.customerId = customer.id;
+			administrator.customerId = id;
 			await administrator.save();
 			ctx.body = Customer(existed);
 		});
