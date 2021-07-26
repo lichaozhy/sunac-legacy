@@ -6,11 +6,13 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		principal: {
-			administratorId: null
+			administratorId: null,
+			customer: null
 		}
 	},
 	getters: {
 		hasPrincipal: state => state.principal.administratorId !== null,
+		hasCustomer: state => state.principal.customer !== null
 	},
 	mutations: {
 		setPrincipal(state, id) {
@@ -19,13 +21,21 @@ export default new Vuex.Store({
 		resetPrincipal(state) {
 			state.principal.administratorId = null;
 		},
+		setCustomer(state, id) {
+			state.principal.customer = id;
+		}
 	},
 	actions: {
 		async fetchPrincipal({ commit }) {
 			try {
 				const administrator = await Vue.$app.Api.Principal.Administrator.get();
+				const { customer } = administrator;
 
 				commit('setPrincipal', administrator.id);
+
+				if (customer !== null) {
+					commit('setCustomer', customer.id);
+				}
 			} catch (err) {
 				console.log('Fetching principal failed.');
 				commit('resetPrincipal');

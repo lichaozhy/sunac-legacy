@@ -23,7 +23,7 @@ const router = new VueRouter({
 				{
 					name: 'Workbench.Interaction',
 					path: 'interaction',
-					redirect: { name: 'Workbench.Interaction.Topic' },
+					redirect: { name: 'Workbench.Interaction.Reference' },
 					component: Page.Workbench.Interaction.Framework,
 					meta: { customerRequired: true },
 					children: [

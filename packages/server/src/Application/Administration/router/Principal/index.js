@@ -117,21 +117,30 @@ module.exports = Router(function SunacLegacyAdministrationPrincipal(router, {
 			ctx.body = Administrator(administrator);
 		})
 		.put('/administrator/customer', async function assignCustomer(ctx) {
-			const { id } = ctx.request.body;
+			let { id, cityAs } = ctx.request.body;
+			const { administrator } = ctx.state.principal;
 
-			const existed = await Model.Customer.findOne({
+			if (administrator.customer) {
+				id = id ? id : administrator.customer.id;
+			}
+
+			const customer = await Model.Customer.findOne({
 				where: { id },
 				include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
 			});
 
-			if (!existed) {
+			if (!customer) {
 				return ctx.throw(400, 'Invalid customer.');
 			}
 
-			const { administrator } = ctx.state.principal;
-
 			administrator.customerId = id;
 			await administrator.save();
-			ctx.body = Customer(existed);
+
+			if (cityAs) {
+				customer.cityAs = cityAs;
+				await customer.save();
+			}
+
+			ctx.body = Customer(customer);
 		});
 });

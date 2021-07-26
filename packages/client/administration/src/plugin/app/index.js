@@ -44,7 +44,8 @@ const app = {
 				Customer: {
 					update(options) {
 						return agent.put('/principal/administrator/customer', {
-							id: options.id
+							id: options.id,
+							cityAs: options.cityAs
 						}).then(pickData);
 					}
 				}
