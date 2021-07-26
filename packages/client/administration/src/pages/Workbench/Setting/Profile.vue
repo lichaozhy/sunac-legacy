@@ -81,6 +81,7 @@
 					label="原始密码"
 				>
 					<b-form-input
+					type="password"
 						v-model="form.password.origin"
 					/>
 				</b-form-group>
@@ -88,6 +89,7 @@
 					label="新密码"
 				>
 					<b-form-input
+					type="password"
 						v-model="form.password.target"
 					/>
 				</b-form-group>
@@ -95,6 +97,7 @@
 					label="确认新密码"
 				>
 					<b-form-input
+					type="password"
 						v-model="form.password.confirm"
 					/>
 				</b-form-group>
@@ -102,8 +105,11 @@
 				<b-form-text>密码长度至少为1位</b-form-text>
 
 				<b-button
+					type="submit"
 					variant="success"
 					class="mt-3"
+					:disabled="!isPasswordValid"
+					@click="changePassword"
 				>确认修改</b-button>
 			</b-form>
 		</b-col>
@@ -130,6 +136,7 @@
 					size="sm"
 					class="mb-0 mx-auto"
 				/>
+
 				<b-button
 					variant="success"
 					:disabled="customerSelector.selectedCustomerId === null"
@@ -213,6 +220,11 @@ export default {
 				{ key: 'sex', label: '性别', class: 'col-tiny-string text-center' },
 				{ key: 'createdAt', label: '首次登录于', class: 'col-datetime' }
 			];
+		},
+		isPasswordValid() {
+			return this.form.password.origin.length > 0 &&
+				this.form.password.target.length > 1 &&
+				this.form.password.confirm === this.form.password.target;
 		}
 	},
 	methods: {
@@ -277,7 +289,23 @@ export default {
 			await this.getPrincipalAdministrator();
 		},
 		async changePassword() {
+			try {
+				await this.$app.Api.Principal.Administrator.update({
+					credential: {
+						_password: this.form.password.origin,
+						password: this.form.password.target
+					}
+				});
 
+				this.$bvToast.toast('密码修改成功', { variant: 'success' });
+
+				this.form.password.target = '';
+				this.form.password.confirm = '';
+			} catch (err) {
+				this.$bvToast.toast('密码修改失败', { variant: 'danger' });
+			} finally {
+				this.form.password.origin = '';
+			}
 		}
 	},
 	async mounted() {

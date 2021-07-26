@@ -108,7 +108,7 @@ namespace Api {
 
 	interface PrincipalAdministrator {
 		get(): Promise<Model.Administrator>;
-		create(options: Model.Administrator): Promise<Model.Administrator>;
+		update(options: Model.Administrator): Promise<Model.Administrator>;
 		Customer: PrincipalAdministratorCustomer;
 	}
 
