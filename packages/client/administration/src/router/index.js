@@ -35,7 +35,7 @@ const router = new VueRouter({
 						{
 							name: 'Workbench.Interaction.Reference',
 							path: 'comment',
-							component: Page.Workbench.Interaction.Reference
+							component: Page.Workbench.Interaction.Reference.Overview
 						},
 						{
 							name: 'Workbench.Interaction.Comment',

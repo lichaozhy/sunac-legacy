@@ -1,6 +1,8 @@
 <template>
 
-<div></div>
+<b-modal>
+
+</b-modal>
 
 </template>
 

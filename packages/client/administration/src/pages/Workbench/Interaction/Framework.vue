@@ -36,10 +36,15 @@
 				></b-form-select>
 				<b-form-text
 					v-if="!hasCustomer"
+					text-variant="danger"
 				>您尚未绑定普通用户身份，不能参与互动，点击<b-link
 					class="mx-1"
 					:to="{ name: 'Workbench.Setting.Profile' }"
 				>绑定</b-link></b-form-text>
+				<b-form-text
+					v-if="hasCustomer && currentCity === null"
+					text-variant="danger"
+				>请设置城市以正确参与互动</b-form-text>
 				<b-form-text
 					v-if="hasCustomer"
 				>提示：此处“所代表城市”不同于“管辖城市”，其内涵与您以普通用户在公众号H5端的定义一致</b-form-text>

@@ -28,7 +28,8 @@ function Content(sequelize, namespace) {
 function Share(sequelize, namespace) {
 	sequelize.define('Share', {
 		contentId: { type: TYPE_SHA_ID, primaryKey: true },
-		raw: DataTypes.TEXT
+		raw: DataTypes.TEXT,
+		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_share`
 	});
@@ -52,7 +53,8 @@ function Reference(sequelize, namespace) {
 		abstract: DataTypes.TEXT,
 		thumb: TYPE_SHA_ID,
 		href: DataTypes.STRING(512),
-		read: DataTypes.INTEGER
+		read: DataTypes.INTEGER,
+		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_reference`
 	});
@@ -75,7 +77,8 @@ function Topic(sequelize, namespace) {
 		title: DataTypes.STRING,
 		banner: TYPE_SHA_ID,
 		description: DataTypes.STRING,
-		read: DataTypes.INTEGER
+		read: DataTypes.INTEGER,
+		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_topic`
 	});
@@ -104,7 +107,8 @@ function Photo(sequelize, namespace) {
 	sequelize.define('Photo', {
 		contentId: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING(64),
-		imageId: TYPE_SHA_ID
+		imageId: TYPE_SHA_ID,
+		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_photo`
 	});

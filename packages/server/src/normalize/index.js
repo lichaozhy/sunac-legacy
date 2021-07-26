@@ -15,7 +15,7 @@ module.exports = function normalize(_options = {}) {
 				tls: null
 			},
 			customers: {
-				origin: 'http://192.168.31.228',
+				origin: 'http://127.0.0.1',
 				host: '0.0.0.0',
 				port: 80,
 				tls: {}

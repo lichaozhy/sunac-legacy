@@ -1,5 +1,10 @@
 const SunacLegacy = require('../packages/server');
 const product = SunacLegacy({
+	server: {
+		customers: {
+			origin: 'http://127.0.0.1'
+		}
+	},
 	storage: {
 		path: process.cwd()
 	},
