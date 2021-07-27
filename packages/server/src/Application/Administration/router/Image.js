@@ -15,8 +15,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 	product, AccessControl: $ac, Utils, Workspace, Model
 }) {
 	router
-		.use($ac('signed'))
-		.post('/', async function createImage(ctx) {
+		.post('/', $ac('signed'), async function createImage(ctx) {
 			const { image } = ctx.request.files;
 			const imageFileBuffer = await fs.readFile(image.path);
 			const hash = Utils.encodeSHA256(imageFileBuffer);
@@ -43,5 +42,18 @@ module.exports = Router(function SunacLegacyApi(router, {
 			});
 
 			ctx.body = Image(imageData);
+		})
+		.get('/:imageId/image.png', async function getImage(ctx) {
+			const { imageId } = ctx.params;
+			const image = await Model.Image.findOne({ where: { id: imageId } });
+
+			if (!image) {
+				return ctx.throw(404, 'image is not found.');
+			}
+
+			const filepath = Workspace.resolve('image', path.join(imageId, 'image.png'));
+
+			ctx.type = 'png';
+			ctx.body = fs.createReadStream(filepath);
 		});
 });
