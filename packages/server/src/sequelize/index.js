@@ -18,7 +18,6 @@ const ModelFactory = {
 	Customer: User.Customer,
 	WechatOpenid: Wechat.WechatOpenid,
 
-	Content: Content.Content,
 	Reference: Content.Reference,
 	Topic: Content.Topic,
 	Share: Content.Share,
@@ -59,17 +58,15 @@ module.exports = function SunacLegacySequelize(options) {
 		Customer: sequelize.model('Customer'),
 		WechatOpenid: sequelize.model('WechatOpenid'),
 
-		Content: sequelize.model('Content'),
-
 		Share: sequelize.model('Share'),
 		ShareImage: sequelize.model('ShareImage'),
+		CustomerLikeShare: sequelize.model('CustomerLikeShare'),
 
 		Reference: sequelize.model('Reference'),
-		ReferenceComment: sequelize.model('ReferenceComment'),
 
 		Topic: sequelize.model('Topic'),
-		TopicPost: sequelize.model('TopicPost'),
-		TopicPostImage: sequelize.model('TopicPostImage'),
+		Post: sequelize.model('Post'),
+		PostImage: sequelize.model('PostImage'),
 
 		Photo: sequelize.model('Photo'),
 
@@ -104,26 +101,14 @@ module.exports = function SunacLegacySequelize(options) {
 	/**
 	 * About content
 	 */
-	const contentFk = FK('contentId', { as: 'content' });
+	Model.Share.hasMany(Model.ShareImage, FK('share', { as: 'imageList' }));
+	Model.Post.hasMany(Model.PostImage, FK('post', { as: 'imageList' }));
 
-	Model.Share.belongsTo(Model.Content, contentFk);
-	Model.ReferenceComment.belongsTo(Model.Content, contentFk);
-	Model.Topic.belongsTo(Model.Content, contentFk);
-	Model.TopicPost.belongsTo(Model.Content, contentFk);
-	Model.Photo.belongsTo(Model.Content, contentFk);
-	Model.Reference.belongsTo(Model.Content, contentFk);
-
-	Model.Content.hasOne(Model.Reference, FK('contentId', { as: 'reference' }));
-	Model.Content.hasOne(Model.Photo, FK('contentId', { as: 'photo' }));
-
-	Model.Share.hasMany(Model.ShareImage, FK('shareId', { as: 'imageList' }));
-	Model.TopicPost.hasMany(Model.TopicPostImage, FK('topicPostId', { as: 'imageList' }));
-
-	Model.ShareImage.belongsTo(Model.Image, FK('imageId'));
+	Model.ShareImage.belongsTo(Model.Image, FK('image'));
 	Model.Reference.belongsTo(Model.Image, FK('thumb'));
 	Model.Topic.belongsTo(Model.Image, FK('banner'));
-	Model.TopicPostImage.belongsTo(Model.Image, FK('imageId'));
-	Model.Photo.belongsTo(Model.Image, FK('imageId'));
+	Model.PostImage.belongsTo(Model.Image, FK('image'));
+	Model.Photo.belongsTo(Model.Image, FK('image'));
 
 	return { sequelize, Model };
 };

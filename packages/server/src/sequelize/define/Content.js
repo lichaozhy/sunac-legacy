@@ -4,42 +4,39 @@ const TYPE_SHA_ID = DataTypes.CHAR(64);
 /**
  * @param {import('sequelize').Sequelize} sequelize
  */
-function Content(sequelize, namespace) {
-	sequelize.define('Content', {
+function Share(sequelize, namespace) {
+	sequelize.define('Share', {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
-
+		raw: DataTypes.TEXT,
+		cityAs: DataTypes.CHAR(6),
 		like: DataTypes.INTEGER,
+
+		createdBy: TYPE_SHA_ID,
+		validatedBy: TYPE_SHA_ID,
 
 		createdAt: DataTypes.DATE,
 		updatedAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 		validatedAt: DataTypes.DATE,
-
-		validatedBy: TYPE_SHA_ID, // An administrator
-		createdBy: TYPE_SHA_ID // A customer
-	}, {
-		tableName: `${namespace}content`
-	});
-}
-
-/**
- * @param {import('sequelize').Sequelize} sequelize
- */
-function Share(sequelize, namespace) {
-	sequelize.define('Share', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
-		raw: DataTypes.TEXT,
-		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_share`
 	});
 
 	sequelize.define('ShareImage', {
 		id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-		shareId: TYPE_SHA_ID,
-		imageId: TYPE_SHA_ID
+		share: TYPE_SHA_ID,
+		image: TYPE_SHA_ID
 	}, {
 		tableName: `${namespace}content_share_image`
+	});
+
+	sequelize.define('CustomerLikeShare', {
+		id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+		customer: TYPE_SHA_ID,
+		share: TYPE_SHA_ID,
+		createdAt: DataTypes.DATE
+	}, {
+		tableName: `${namespace}customer_like_share`
 	});
 }
 
@@ -48,23 +45,18 @@ function Share(sequelize, namespace) {
  */
 function Reference(sequelize, namespace) {
 	sequelize.define('Reference', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
+		id: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING,
 		abstract: DataTypes.TEXT,
 		thumb: TYPE_SHA_ID,
 		href: DataTypes.STRING(512),
 		read: DataTypes.INTEGER,
-		cityAs: DataTypes.CHAR(6)
+		cityAs: DataTypes.CHAR(6),
+		createdAt: DataTypes.DATE,
+		updatedAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_reference`
-	});
-
-	sequelize.define('ReferenceComment', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
-		referenceId: TYPE_SHA_ID,
-		raw: DataTypes.TEXT
-	}, {
-		tableName: `${namespace}content_reference_comment`
 	});
 }
 
@@ -73,51 +65,68 @@ function Reference(sequelize, namespace) {
  */
 function Topic(sequelize, namespace) {
 	sequelize.define('Topic', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
+		id: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING,
 		banner: TYPE_SHA_ID,
 		description: DataTypes.STRING,
+		cityAs: DataTypes.CHAR(6),
 		read: DataTypes.INTEGER,
-		cityAs: DataTypes.CHAR(6)
+		like: DataTypes.INTEGER,
+
+		createdBy: TYPE_SHA_ID,
+		validatedBy: TYPE_SHA_ID,
+
+		validatedAt: DataTypes.DATE,
+		createdAt: DataTypes.DATE,
+		updatedAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_topic`
 	});
 
-	sequelize.define('TopicPost', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
-		topicId: TYPE_SHA_ID,
-		raw: DataTypes.STRING
+	sequelize.define('Post', {
+		id: { type: TYPE_SHA_ID, primaryKey: true },
+		topic: TYPE_SHA_ID,
+		raw: DataTypes.STRING,
+		like: DataTypes.INTEGER,
+
+		createdBy: TYPE_SHA_ID,
+		validatedBy: TYPE_SHA_ID,
+
+		validatedAt: DataTypes.DATE,
+		createdAt: DataTypes.DATE,
+		updatedAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_topic_post`
 	});
 
-	sequelize.define('TopicPostImage', {
+	sequelize.define('PostImage', {
 		id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-		topicPostId: TYPE_SHA_ID,
-		imageId: TYPE_SHA_ID
+		post: TYPE_SHA_ID,
+		image: TYPE_SHA_ID
 	}, {
 		tableName: `${namespace}content_topic_post_image`
 	});
+}
 
+/**
+ * @param {import('sequelize').Sequelize} sequelize
+ */
+function Photo(sequelize, namespace) {
 	sequelize.define('Photo', {
-		contentId: { type: TYPE_SHA_ID, primaryKey: true },
+		id: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING(64),
-		imageId: TYPE_SHA_ID,
-		cityAs: DataTypes.CHAR(6)
+		image: TYPE_SHA_ID,
+		cityAs: DataTypes.CHAR(6),
+		createdAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_photo`
-	});
-
-	sequelize.define('CustomerLikeContent', {
-		id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-		customer: TYPE_SHA_ID,
-		content: TYPE_SHA_ID,
 	});
 }
 
 module.exports = {
-	Content, // 抽象类内容
-
 	Reference, // 外部引用的文章
 	Topic, // 话题
 	Share, // 朋友圈
