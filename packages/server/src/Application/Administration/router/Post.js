@@ -3,25 +3,18 @@ const { Op } = require('sequelize');
 
 const VALIDATED_REG = /^true|false$/;
 
-module.exports = Router(function SunacLegacyAdministrationShare(router, {
+module.exports = Router(function SunacLegacyAdministrationPost(router, {
 	Model, AccessControl: $ac, Utils
 }) {
-
-	function Share(data) {
+	function Post(data) {
 		return {
 			id: data.id,
 			raw: data.raw,
 			imageList: data.imageList,
-			createdBy: {
-				id: data.createdBy.id,
-				wechat: {
-					openid: data.createdBy.wechat.openid,
-					nickname: data.createdBy.wechat.nickname,
-					headimgurl: data.createdBy.wechat.headimgurl
-				}
-			},
 			createdAt: data.createdAt,
+			createdBy: data.createdBy,
 			validatedAt: data.validatedAt,
+			validatedBy: data.validatedBy
 		};
 	}
 
@@ -46,7 +39,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 
 			return next();
 		})
-		.get('/', async function getAllShareList(ctx) {
+		.get('/', async function getAllPostList(ctx) {
 			const { pageSize = 10000000, pageCurrent = 1, validated, city } = ctx.query;
 			const where = { deletedAt: null };
 
@@ -62,87 +55,83 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				where.city = city;
 			}
 
-			const { rows, count } = await Model.Share.findAndCountAll({
-				where,
-				include: [
-					{ model: Model.ShareImage, as: 'imageList', required: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
-				],
+			const { topic } = ctx.state;
+			const list = await Model.Post.findAll({
+				where: { deletedAt: null, topic: topic.id },
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
-				order: [['createdAt', 'DESC']]
+				order: [['createdAt', 'DESC']],
+				include: [
+					{ model: Model.PostImage, as: 'imageList', require: true },
+					{ model: Model.Administrator, as: 'validatedBy' },
+					{ model: Model.Customer, as: 'createdBy' },
+				]
 			});
 
-			ctx.body = {
-				list: rows.map(Share),
-				total: count,
-				size: pageSize,
-				current: pageCurrent
-			};
+			ctx.body = list.map(Post);
 		})
-		.post('/', async function createShare(ctx) {
+		.post('/', async function createPost(ctx) {
 			const { cityList, customer, administrator } = ctx.state;
 
 			if (!customer) {
 				return ctx.throw(403, 'You MUST bing a customer');
 			}
 
-			const { raw, city: cityAdcode, imageList } = ctx.request.body;
+			const { raw, city: cityAdcode, imageList, topic } = ctx.request.body;
 			const now = new Date();
 			const isManagedCity = cityList.some(city => city.adcode === cityAdcode);
 
-			const share = await Model.Share.create({
+			const post = await Model.Share.create({
 				id: Utils.encodeSHA256(`${raw}${cityAdcode}${now}`),
-				raw, city: cityAdcode, imageList,
+				topic, raw, imageList, like: 0,
 				createdAt: now,
 				createdBy: customer.id,
 				validatedAt: isManagedCity ? now : null,
 				validatedBy: isManagedCity ? administrator.id : null
 			}, {
 				include: [
-					{ model: Model.ShareImage, as: 'imageList', required: true },
+					{ model: Model.PostImage, as: 'imageList', required: true },
 					{ model: Model.Administrator, as: 'validatedBy' },
 					{ model: Model.Customer, as: 'createdBy' },
 				]
 			});
 
-			ctx.body = Share(share);
+			ctx.body = Post(post);
+
 		})
-		.param('shareId', async function fetchShare(id, ctx, next) {
-			const share = await Model.Share.findOne({
+		.param('postId', async function fetchPost(id, ctx, next) {
+			const post = await Model.Post.findOne({
 				where: { id, deletedAt: null },
-			}, {
 				include: [
-					{ model: Model.ShareImage, as: 'imageList', require: true },
+					{ model: Model.PostImage, as: 'imageList', require: true },
 					{ model: Model.Administrator, as: 'validatedBy' },
 					{ model: Model.Customer, as: 'createdBy' },
-				],
+				]
 			});
 
-			if (!share) {
+			if (!post) {
 				return ctx.throw(404);
 			}
 
-			ctx.state.share = share;
+			ctx.state.post = post;
 
 			return next();
 		})
-		.get('/:shareId', async function getShare(ctx) {
-			ctx.body = Share(ctx.state.share);
+		.get('/:postId', async function getPost(ctx) {
+			ctx.body = Post(ctx.state.post);
 		})
-		.put('/:shareId', async function validateShare(ctx) {
-			const { share } = ctx.state;
+		.put('/:postId', async function validatePost(ctx) {
+			const { post } = ctx.state;
 
-			share.validatedAt = new Date();
-			await share.save();
-			ctx.body = Share(share);
+			post.validatedAt = new Date();
+			await post.save();
+			ctx.body = Post(post);
 		})
-		.delete('/:shareId', async function deleteShare(ctx) {
-			const { share } = ctx.state;
+		.delete('/:postId', async function deletePost(ctx) {
+			const { post } = ctx.state;
 
-			share.deletedAt = new Date();
-			await share.save();
-			ctx.body = Share(share);
+			post.deletedAt = new Date();
+			await post.save();
+			ctx.body = Post(post);
 		});
 });

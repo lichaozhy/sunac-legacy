@@ -3,12 +3,12 @@ module.exports = {
 	Principal: require('./Principal'),
 	Customer: require('./Customer'),
 	City: require('./City'),
-	Reference: require('./Reference'),
-	Image: require('./Image')
 
-	// Photo: require('./City/Photo'),
-	// Topic: require('./City/Topic'),
-	// Share: require('./City/Share'),
-	// Comment: require('./City/Comment'),
-	// Post: require('./City/Post'),
+	Reference: require('./Reference'),
+	Photo: require('./Photo'),
+	Topic: require('./Topic'),
+	Share: require('./Share'),
+	Post: require('./Post'),
+
+	Image: require('./Image')
 };

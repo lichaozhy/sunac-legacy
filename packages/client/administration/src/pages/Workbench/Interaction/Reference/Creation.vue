@@ -158,9 +158,7 @@ export default {
 				abstract: this.form.abstract,
 				href: this.form.href,
 				cityAs: this.form.cityAs,
-				thumb: {
-					id: thumb.id
-				}
+				thumb: thumb.id
 			});
 		},
 		async getManagedCityList() {

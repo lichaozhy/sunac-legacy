@@ -135,9 +135,7 @@ const app = {
 					abstract: options.abstract,
 					href: options.href,
 					cityAs: options.cityAs,
-					thumb: {
-						id: options.thumb.id
-					}
+					thumb: options.thumb
 				}).then(pickData);
 			},
 			query(query) {

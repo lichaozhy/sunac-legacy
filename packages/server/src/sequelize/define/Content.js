@@ -8,14 +8,12 @@ function Share(sequelize, namespace) {
 	sequelize.define('Share', {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
 		raw: DataTypes.TEXT,
-		cityAs: DataTypes.CHAR(6),
-		like: DataTypes.INTEGER,
+		city: DataTypes.CHAR(6),
 
 		createdBy: TYPE_SHA_ID,
 		validatedBy: TYPE_SHA_ID,
 
 		createdAt: DataTypes.DATE,
-		updatedAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 		validatedAt: DataTypes.DATE,
 	}, {
@@ -51,9 +49,8 @@ function Reference(sequelize, namespace) {
 		thumb: TYPE_SHA_ID,
 		href: DataTypes.STRING(512),
 		read: DataTypes.INTEGER,
-		cityAs: DataTypes.CHAR(6),
+		city: DataTypes.CHAR(6),
 		createdAt: DataTypes.DATE,
-		updatedAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_reference`
@@ -69,7 +66,7 @@ function Topic(sequelize, namespace) {
 		title: DataTypes.STRING,
 		banner: TYPE_SHA_ID,
 		description: DataTypes.STRING,
-		cityAs: DataTypes.CHAR(6),
+		city: DataTypes.CHAR(6),
 		read: DataTypes.INTEGER,
 		like: DataTypes.INTEGER,
 
@@ -78,7 +75,6 @@ function Topic(sequelize, namespace) {
 
 		validatedAt: DataTypes.DATE,
 		createdAt: DataTypes.DATE,
-		updatedAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_topic`
@@ -95,7 +91,6 @@ function Topic(sequelize, namespace) {
 
 		validatedAt: DataTypes.DATE,
 		createdAt: DataTypes.DATE,
-		updatedAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 	}, {
 		tableName: `${namespace}content_topic_post`
@@ -118,7 +113,7 @@ function Photo(sequelize, namespace) {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING(64),
 		image: TYPE_SHA_ID,
-		cityAs: DataTypes.CHAR(6),
+		city: DataTypes.CHAR(6),
 		createdAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 	}, {

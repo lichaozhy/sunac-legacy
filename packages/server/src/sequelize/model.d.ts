@@ -18,11 +18,10 @@ export namespace Model {
 		ShareImage: typeof Sequelize.Model,
 
 		Reference: typeof Sequelize.Model,
-		ReferenceComment: typeof Sequelize.Model,
 
 		Topic: typeof Sequelize.Model,
-		TopicPost: typeof Sequelize.Model,
-		TopicPostImage: typeof Sequelize.Model,
+		Post: typeof Sequelize.Model,
+		PostImage: typeof Sequelize.Model,
 
 		Photo: typeof Sequelize.Model,
 

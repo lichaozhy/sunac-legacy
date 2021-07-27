@@ -49,9 +49,6 @@ async function refreshJsSdkTicket() {
 	const queryString = [`access_token=${config.access_token.value}`, 'type=jsapi'].join('&');
 	const res = await fetch(`${OPEN_WECHAT_JS_SDK_TICKET}?${queryString}`);
 	const body = await res.json();
-
-	console.log(body);
-
 	const now = new Date();
 
 	config.jsapi.ticket = body.ticket;
@@ -96,7 +93,10 @@ const wechat = {
 
 			config.access_token.value = access_token;
 			config.access_token.createdAt = new Date(createdAt);
-			wechat.fetchAccessToken();
+
+			if (new Date() - config.access_token.createdAt > HOUR) {
+				await refreshToken();
+			}
 		} catch (err) {
 			await refreshToken();
 		}
@@ -106,7 +106,10 @@ const wechat = {
 
 			config.jsapi.ticket = ticket;
 			config.jsapi.createdAt = new Date(createdAt);
-			wechat.fetchJsSdkTicket();
+
+			if (new Date() - config.jsapi.createdAt > HOUR) {
+				await refreshJsSdkTicket();
+			}
 		} catch (err) {
 			await refreshJsSdkTicket();
 		}

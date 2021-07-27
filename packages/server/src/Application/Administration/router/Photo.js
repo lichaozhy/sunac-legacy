@@ -5,9 +5,7 @@ function Photo(data) {
 	return {
 		id: data.id,
 		title: data.title,
-		image: {
-			id: data.imageId
-		},
+		image: data.image,
 		like: data.like,
 		createdAt: data.createdAt,
 		updatedAt: data.updatedAt
@@ -30,15 +28,18 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 		.get('/', async function getAllPhotoList(ctx) {
 			const { pageSize = 10000000, pageCurrent = 1, title } = ctx.query;
 			const { cityList } = ctx.state;
-			const where = { cityAs: { [Op.in]: cityList.map(city => city.adcode) } };
+
+			const where = {
+				deletedAt: null,
+				city: { [Op.in]: cityList.map(city => city.adcode) }
+			};
 
 			if (title) {
 				where.title = '%title%';
 			}
 
-			const { rows, count } = await Model.Content.findAndCountAll({
-				where: { deletedAt: null },
-				include: [{ model: Model.Photo, as: 'photo', required: true, where }],
+			const { rows, count } = await Model.Photo.findAndCountAll({
+				where,
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
 				order: ['createdAt', 'DESC']
@@ -53,34 +54,32 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 		})
 		.post('/', async function createPhoto(ctx) {
 			const { cityList } = ctx.state;
-			const { title, image, cityAs } = ctx.request.body;
-			const { id } = image;
+			const { title, image, city: cityAdcode } = ctx.request.body;
 
 			if (typeof(title) !== 'string') {
 				return ctx.throw(400, 'Invalid ".title".');
 			}
 
-			if (typeof(cityAs) !== 'string') {
-				return ctx.throw(400, 'Invalid ".cityAs".');
+			if (typeof(cityAdcode) !== 'string') {
+				return ctx.throw(400, 'Invalid ".city".');
 			}
 
-			if (!cityList.some(city => city.code === cityAs)) {
+			if (!cityList.some(city => city.code === cityAdcode)) {
 				return ctx.throw(403, 'The city is NOT yours.');
 			}
 
 			const now = new Date();
 			const photo = await Model.Photo.create({
-				id: Utils.encodeSHA256(`${title}${cityAs}${now}`),
-				createdAt: now, validatedAt: now, updatedAt: now, like: 0,
-				photo: { title, cityAs, imageId: id }
+				id: Utils.encodeSHA256(`${title}${cityAdcode}${now}`),
+				title, city: cityAdcode, image, like: 0,
+				createdAt: now
 			});
 
 			ctx.body = Photo(photo);
 		})
 		.param('photoId', async function fetchPhoto(id, ctx, next) {
-			const photo = await Model.Content.findOne({
-				where: { id, deletedAt: null },
-				include: [{ model: Model.Photo, as: 'photo', required: true }],
+			const photo = await Model.Photo.findOne({
+				where: { id, deletedAt: null }
 			});
 
 			if (!photo) {
@@ -91,45 +90,8 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 
 			return next();
 		})
-		.put('/:get', async function getPhoto(ctx) {
+		.get('/:photoId', async function getPhoto(ctx) {
 			ctx.body = Photo(ctx.state.photo);
-		})
-		.put('/:photoId', async function updatePhoto(ctx) {
-			const { title, image, cityAs } = ctx.request.body;
-			const { cityList, photo } = ctx.state;
-
-			if (title) {
-				if (typeof(title) !== 'string') {
-					return ctx.throw(400, 'Invalid ".title".');
-				}
-
-				photo.title = title;
-			}
-
-			if (image) {
-				if (typeof(image) !== 'string') {
-					return ctx.throw(400, 'Invalid ".title".');
-				}
-
-				photo.image = image;
-			}
-
-			if (cityAs) {
-				if (!cityList.some(city => city.code === cityAs)) {
-					return ctx.throw(403, 'The city is NOT yours.');
-				}
-
-				if (typeof(cityAs) !== 'string') {
-					return ctx.throw(400, 'Invalid ".cityAs".');
-				}
-
-				photo.cityAs = cityAs;
-			}
-
-			photo.updatedAt = new Date();
-			await photo.save();
-
-			ctx.body = Photo(photo);
 		})
 		.delete('/:photoId', async function deletePhoto(ctx) {
 			const { photo } = ctx.state;

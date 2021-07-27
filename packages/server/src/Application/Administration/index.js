@@ -61,26 +61,27 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 					prefix: '/image',
 					Router: Router.Image
 				},
+
 				{
 					prefix: '/reference',
 					Router: Router.Reference
 				},
-				// {
-				// 	prefix: '/photo',
-				// 	Router: Router.Photo
-				// },
-				// {
-				// 	prefix: '/post',
-				// 	Router: Router.Post
-				// },
-				// {
-				// 	prefix: '/topic',
-				// 	Router: Router.Topic
-				// },
-				// {
-				// 	prefix: '/share',
-				// 	Router: Router.Share
-				// },
+				{
+					prefix: '/photo',
+					Router: Router.Photo
+				},
+				{
+					prefix: '/post',
+					Router: Router.Post
+				},
+				{
+					prefix: '/topic',
+					Router: Router.Topic
+				},
+				{
+					prefix: '/share',
+					Router: Router.Share
+				},
 
 				// {
 				// 	prefix: '/comment',

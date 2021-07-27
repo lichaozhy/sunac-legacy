@@ -4,10 +4,10 @@ const { Op } = require('sequelize');
 function Reference(data) {
 	return {
 		id: data.id,
-		title: data.reference.title,
-		abstract: data.reference.abstract,
-		thumb: data.reference.thumb,
-		href: data.reference.href,
+		title: data.title,
+		abstract: data.abstract,
+		thumb: data.thumb,
+		href: data.href,
 		createdAt: data.createdAt,
 		updatedAt: data.updatedAt
 	};
@@ -31,18 +31,23 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			return next();
 		})
 		.get('/', async function getAllReferenceList(ctx) {
-			const { pageSize = 10000000, pageCurrent = 1 } = ctx.query;
+			const { pageSize = 10000000, pageCurrent = 1, title } = ctx.query;
 			const { cityList } = ctx.state;
 
-			const { rows, count } = await Model.Content.findAndCountAll({
-				where: { deletedAt: null },
-				include: [{
-					model: Model.Reference, as: 'reference', required: true,
-					where: { cityAs: { [Op.in]: cityList.map(city => city.adcode) } }
-				}],
+			const where = {
+				deletedAt: null,
+				city: { [Op.in]: cityList.map(city => city.adcode) }
+			};
+
+			if (title) {
+				where.title = '%title%';
+			}
+
+			const { rows, count } = await Model.Reference.findAndCountAll({
+				where,
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
-				order: ['createdAt', 'DESC']
+				order: [['createdAt', 'DESC']]
 			});
 
 			ctx.body = {
@@ -53,8 +58,7 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			};
 		})
 		.post('/', async function createReference(ctx) {
-			const { title, abstract, href, thumb, cityAs } = ctx.request.body;
-			const { id } = thumb;
+			const { title, abstract, href, thumb, city } = ctx.request.body;
 
 			if (!isString(title)) {
 				return ctx.throw(400, 'Invalid ".title".');
@@ -68,36 +72,32 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 				return ctx.throw(400, 'Invalid ".href".');
 			}
 
-			if (!isString(cityAs)) {
-				return ctx.throw(400, 'Invalid ".cityAs".');
+			if (!isString(city)) {
+				return ctx.throw(400, 'Invalid ".city".');
 			}
 
-			if (typeof thumb !== 'object') {
+			if (!isString(thumb)) {
 				return ctx.throw(400, 'Invalid ".thumb".');
 			}
 
-			if (!isString(id)) {
-				return ctx.throw(400, 'Invalid ".thumb.id".');
-			}
-
 			const now = new Date();
-			const reference = await Model.Content.create({
-				id: Utils.encodeSHA256(`${title}${href}${cityAs}${now}`),
-				createdAt: now, validatedAt: now, updatedAt: now, like: 0,
-				reference: { title, abstract, href, cityAs, thumb: id, read: 0}
-			}, { include: [{ model: Model.Reference, as: 'reference' }] });
+			const reference = await Model.Reference.create({
+				id: Utils.encodeSHA256(`${title}${href}${city}${now}`),
+				title, abstract, href, city, thumb, read: 0,
+				createdAt: now, validatedAt: now, updatedAt: now,
+			});
 
 			ctx.body = Reference(reference);
 		})
 		.param('referenceId', async function fetchReference(id, ctx, next) {
 			const { cityList } = ctx.state;
 
-			const reference = await Model.Content.findOne({
-				where: { id, deletedAt: null },
-				include: [{
-					model: Model.Reference, as: 'reference', required: true,
-					where: { cityAs: { [Op.in]: cityList.map(city => city.adcode) } }
-				}],
+			const reference = await Model.Reference.findOne({
+				where: {
+					id,
+					deletedAt: null,
+					city: { [Op.in]: cityList.map(city => city.adcode) }
+				}
 			});
 
 			if (!reference) {
@@ -110,9 +110,6 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 		})
 		.get('/:referenceId', async function getReference(ctx) {
 			ctx.body = Reference(ctx.state.reference);
-		})
-		.put('/:referenceId', async function updateReference(ctx) {
-
 		})
 		.delete('/:referenceId', async function deleteReference(ctx) {
 			const { reference } = ctx.state;

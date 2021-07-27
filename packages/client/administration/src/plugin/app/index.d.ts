@@ -68,7 +68,7 @@ namespace Model {
 	interface Reference extends Content {
 		title: string;
 		abstract: string;
-		thumb: Image;
+		thumb: string;
 		href: string;
 	}
 
