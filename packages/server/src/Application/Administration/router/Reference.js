@@ -35,12 +35,14 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			const { cityList } = ctx.state;
 
 			const { rows, count } = await Model.Content.findAndCountAll({
+				where: { deletedAt: null },
 				include: [{
 					model: Model.Reference, as: 'reference', required: true,
 					where: { cityAs: { [Op.in]: cityList.map(city => city.adcode) } }
 				}],
 				offset: (pageCurrent - 1) * pageSize,
-				limit: pageSize
+				limit: pageSize,
+				order: ['createdAt', 'DESC']
 			});
 
 			ctx.body = {
@@ -80,7 +82,7 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 
 			const now = new Date();
 			const reference = await Model.Content.create({
-				id: Utils.encodeSHA256(`${title}${href}${cityAs}`),
+				id: Utils.encodeSHA256(`${title}${href}${cityAs}${now}`),
 				createdAt: now, validatedAt: now, updatedAt: now, like: 0,
 				reference: { title, abstract, href, cityAs, thumb: id, read: 0}
 			}, { include: [{ model: Model.Reference, as: 'reference' }] });
@@ -91,7 +93,7 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			const { cityList } = ctx.state;
 
 			const reference = await Model.Content.findOne({
-				where: { id },
+				where: { id, deletedAt: null },
 				include: [{
 					model: Model.Reference, as: 'reference', required: true,
 					where: { cityAs: { [Op.in]: cityList.map(city => city.adcode) } }
@@ -115,7 +117,7 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 		.delete('/:referenceId', async function deleteReference(ctx) {
 			const { reference } = ctx.state;
 
-			reference.deleteAt = new Date();
+			reference.deletedAt = new Date();
 			await reference.save();
 			ctx.body = Reference(reference);
 		});

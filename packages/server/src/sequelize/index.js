@@ -114,6 +114,7 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Reference.belongsTo(Model.Content, contentFk);
 
 	Model.Content.hasOne(Model.Reference, FK('contentId', { as: 'reference' }));
+	Model.Content.hasOne(Model.Photo, FK('contentId', { as: 'photo' }));
 
 	Model.Share.hasMany(Model.ShareImage, FK('shareId', { as: 'imageList' }));
 	Model.TopicPost.hasMany(Model.TopicPostImage, FK('topicPostId', { as: 'imageList' }));

@@ -98,12 +98,7 @@ function Topic(sequelize, namespace) {
 	}, {
 		tableName: `${namespace}content_topic_post_image`
 	});
-}
 
-/**
- * @param {import('sequelize').Sequelize} sequelize
- */
-function Photo(sequelize, namespace) {
 	sequelize.define('Photo', {
 		contentId: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING(64),
@@ -111,6 +106,12 @@ function Photo(sequelize, namespace) {
 		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}content_photo`
+	});
+
+	sequelize.define('CustomerLikeContent', {
+		id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+		customer: TYPE_SHA_ID,
+		content: TYPE_SHA_ID,
 	});
 }
 

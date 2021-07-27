@@ -48,13 +48,16 @@ async function refreshToken() {
 async function refreshJsSdkTicket() {
 	const queryString = [`access_token=${config.access_token.value}`, 'type=jsapi'].join('&');
 	const res = await fetch(`${OPEN_WECHAT_JS_SDK_TICKET}?${queryString}`);
-	const { ticket } = await res.json();
+	const body = await res.json();
+
+	console.log(body);
+
 	const now = new Date();
 
-	config.jsapi.ticket = ticket;
+	config.jsapi.ticket = body.ticket;
 	config.jsapi.createdAt = now;
 
-	const jsonOfJsSdkTicket = JSON.stringify({ ticket, createdAt: now }, null, 2);
+	const jsonOfJsSdkTicket = JSON.stringify({ ticket: body.ticket, createdAt: now }, null, 2);
 
 	await fs.writeFile(path.join(config.dirpath, FILE_NAME.JS_SDK_TIEKCT), jsonOfJsSdkTicket);
 }
@@ -62,16 +65,18 @@ async function refreshJsSdkTicket() {
 // 如果没有主动观察，可能会失效
 // 一次失败就续上了
 
+const HOUR = 3600000;
+
 const wechat = {
 	fetchAccessToken() {
-		if (new Date() - config.access_token.createdAt > 3600) {
+		if (new Date() - config.access_token.createdAt > HOUR) {
 			refreshToken();
 		}
 
 		return config.access_token.value;
 	},
 	fetchJsSdkTicket() {
-		if (new Date() - config.jsapi.createdAt > 3600) {
+		if (new Date() - config.jsapi.createdAt > HOUR) {
 			refreshJsSdkTicket();
 		}
 
