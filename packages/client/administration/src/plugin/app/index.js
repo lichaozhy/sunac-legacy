@@ -104,6 +104,10 @@ const app = {
 					params.pageSize = query.pageSize;
 				}
 
+				if ('city' in query) {
+					params.city = query.city;
+				}
+
 				return agent.get('/photo', { params }).then(pickData);
 			},
 			create(options) {
@@ -155,6 +159,10 @@ const app = {
 
 				if ('sortDesc' in query) {
 					params.sortDesc = query.sortDesc;
+				}
+
+				if ('city' in query) {
+					params.city = query.city;
 				}
 
 				return agent.get('/reference', { params }).then(pickData);

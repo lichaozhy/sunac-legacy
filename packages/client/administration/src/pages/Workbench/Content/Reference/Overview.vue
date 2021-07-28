@@ -16,6 +16,18 @@
 			@click="refreshTable"
 		>搜索</b-button>
 
+		<b-input-group
+			prepend="按城市"
+		>
+			<b-form-select
+				:options="cityOptionList"
+				style="width: 8em"
+				class="mr-auto"
+				v-model="city"
+				@input="refreshTable"
+			></b-form-select>
+		</b-input-group>
+
 		<b-pagination
 			v-model="pagination.current"
 			:per-page="pagination.size"
@@ -94,7 +106,9 @@ export default {
 		return {
 			meta: {
 				cityList: [],
+				managedCityList: []
 			},
+			city: null,
 			keyword: '',
 			pagination: {
 				current: 1,
@@ -118,6 +132,15 @@ export default {
 		},
 		isNewReferenceValid() {
 			return this.$refs['creation-form'].isValid;
+		},
+		cityOptionList() {
+			const managedCityOptionList = this.meta.managedCityList.map(adcode => {
+				const city = this.meta.cityList.find(city => city.adcode === adcode);
+
+				return { text: city.name, value: city.adcode };
+			});
+
+			return [{ text: '全部', value: null }].concat(managedCityOptionList);
 		}
 	},
 	methods: {
@@ -125,13 +148,19 @@ export default {
 			this.$refs.creation.open();
 		},
 		async provideReferenceList(ctx) {
-			const { list, total } = await this.$app.Api.Reference.query({
+			const query = {
 				title: this.keyword,
 				pageSize: ctx.perPage,
 				pageCurrent: ctx.currentPage,
 				sortBy: ctx.sortBy,
 				sortDesc: ctx.sortDesc
-			});
+			};
+
+			if (this.city !== null) {
+				query.city = this.city;
+			}
+
+			const { list, total } = await this.$app.Api.Reference.query(query);
 
 			this.pagination.total = total;
 
@@ -158,12 +187,18 @@ export default {
 		setSelectedId(rows) {
 			this.selectedId = rows.length > 0 ? rows[0].id : null;
 		},
+		async getAdministrator() {
+			const { cityList } = await this.$app.Api.Principal.Administrator.get();
+
+			this.meta.managedCityList = cityList;
+		},
 		async getAllCityList() {
 			this.meta.cityList = await this.$app.Api.City.query();
 		},
 	},
-	mounted() {
-		this.getAllCityList();
+	async mounted() {
+		await this.getAllCityList();
+		await this.getAdministrator();
 	}
 };
 </script>

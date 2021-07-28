@@ -16,6 +16,18 @@
 			@click="getPhotoList"
 		>搜索</b-button>
 
+		<b-input-group
+			prepend="按城市"
+		>
+			<b-form-select
+				:options="cityOptionList"
+				style="width: 8em"
+				class="mr-auto"
+				v-model="city"
+				@input="getPhotoList"
+			></b-form-select>
+		</b-input-group>
+
 		<b-pagination
 			v-model="pagination.current"
 			:per-page="pagination.size"
@@ -31,14 +43,14 @@
 	</b-button-toolbar>
 
 	<b-row>
-		<b-col cols="3" class="mt-3">
+		<b-col cols="3" class="mt-3" v-if="photoList.length === 0">
 			<b-card no-body footer-class="p-1 text-center" footer="您可以创建新照片">
 				<b-aspect
 					@click.native="requestCreatingPhoto"
 					aspect="4:3"
 					class="text-center"
-					style="background-color: #f0f0f0; background-size: cover; background-position: center"
-				>没有找到符合要求的照片</b-aspect>
+					style="background-color: #f0f0f0; cursor: pointer"
+				><p>没有找到符合要求的照片</p><p>点击上传</p></b-aspect>
 			</b-card>
 		</b-col>
 
@@ -51,7 +63,7 @@
 			<b-card
 				no-body
 				footer-class="p-1"
-				class="position-relative"
+				class="position-relative app-photo-item"
 			>
 				<div
 					class="position-absolute"
@@ -59,7 +71,8 @@
 				>{{ photo.city }}</div>
 				<b-aspect
 					aspect="4:3"
-					style="background-color: #f0f0f0; background-size: cover; background-position: center"
+					class="app-photo-thumb"
+					style="background-color: #f0f0f0; cursor: pointer"
 					:style="{
 						'background-image': `url(${photo.src})`
 					}"
@@ -120,7 +133,8 @@ export default {
 		return {
 			meta: {
 				cityList: [],
-				photoList: []
+				photoList: [],
+				managedCityList: []
 			},
 			keyword: '',
 			pagination: {
@@ -128,6 +142,7 @@ export default {
 				total: 100,
 				size: 20
 			},
+			city: null,
 			selectedId: null,
 			previewer: {
 				src: ''
@@ -151,6 +166,15 @@ export default {
 					createdAt: photo.createdAt
 				};
 			});
+		},
+		cityOptionList() {
+			const managedCityOptionList = this.meta.managedCityList.map(adcode => {
+				const city = this.meta.cityList.find(city => city.adcode === adcode);
+
+				return { text: city.name, value: city.adcode };
+			});
+
+			return [{ text: '全部', value: null }].concat(managedCityOptionList);
 		}
 	},
 	methods: {
@@ -169,11 +193,17 @@ export default {
 			this.getPhotoList();
 		},
 		async getPhotoList() {
-			const { list, total } = await this.$app.Api.Photo.query({
+			const query = {
 				title: this.keyword,
 				pageSize: this.pagination.size,
 				pageCurrent: this.pagination.current
-			});
+			};
+
+			if (this.city !== null) {
+				query.city = this.city;
+			}
+
+			const { list, total } = await this.$app.Api.Photo.query(query);
 
 			this.meta.photoList = list;
 			this.pagination.total = total;
@@ -181,14 +211,38 @@ export default {
 		async getAllCityList() {
 			this.meta.cityList = await this.$app.Api.City.query();
 		},
+		async getAdministrator() {
+			const { cityList } = await this.$app.Api.Principal.Administrator.get();
+
+			this.meta.managedCityList = cityList;
+		},
 	},
 	async mounted() {
 		await this.getAllCityList();
-		// this.getPhotoList();
+		await this.getAdministrator();
+		this.getPhotoList();
 	}
 };
 </script>
 
 <style>
+@keyframes expanding {
+  from {
+		transform: scale(1);
+	}
 
+  to {
+		transform: scale(1.02);
+	}
+}
+
+.app-photo-item:hover {
+	animation: expanding 0.3s;
+	transform: scale(1.02);
+}
+
+.app-photo-thumb {
+	background-position: center;
+	background-size: cover;
+}
 </style>

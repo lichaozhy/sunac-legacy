@@ -27,13 +27,17 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 			return next();
 		})
 		.get('/', async function getAllPhotoList(ctx) {
-			const { pageSize = 10000000, pageCurrent = 1, title } = ctx.query;
+			const { pageSize = 10000000, pageCurrent = 1, title, city: cityAdcode } = ctx.query;
 			const { cityList } = ctx.state;
 
 			const where = {
 				deletedAt: null,
 				city: { [Op.in]: cityList.map(city => city.adcode) }
 			};
+
+			if (cityAdcode && cityList.some(city => city.adcode === cityAdcode)) {
+				where.city = cityAdcode;
+			}
 
 			if (title) {
 				where.title = { [Op.like]: `%${title}%` };
