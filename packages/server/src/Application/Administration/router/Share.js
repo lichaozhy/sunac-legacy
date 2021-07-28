@@ -12,13 +12,14 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 		return {
 			id: data.id,
 			raw: data.raw,
+			city: data.city,
 			imageList: data.imageList.map(shareImage => shareImage.image),
 			createdBy: {
-				id: data.createdBy.id,
+				id: data.Customer.id,
 				wechat: {
-					openid: data.createdBy.wechat.openid,
-					nickname: data.createdBy.wechat.nickname,
-					headimgurl: data.createdBy.wechat.headimgurl
+					openid: data.Customer.wechat.openid,
+					nickname: data.Customer.wechat.nickname,
+					headimgurl: data.Customer.wechat.headimgurl
 				}
 			},
 			like: shareLiked[data.id] || 0,
@@ -71,7 +72,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			const { rows, count } = await Model.Share.findAndCountAll({
 				where,
 				include: [
-					{ model: Model.ShareImage, as: 'imageList', required: true },
+					{ model: Model.ShareImage, as: 'imageList' },
 					{
 						model: Model.Customer, required: true,
 						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
@@ -81,8 +82,6 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				limit: pageSize,
 				order: [['createdAt', 'DESC']]
 			});
-
-			rows.forEach(share => share.createdBy = share.Customer);
 
 			ctx.body = {
 				list: rows.map(Share),
@@ -120,10 +119,10 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				return { image: imageId, share: id };
 			}));
 
-			share.createdBy = customer;
+			share.Customer = customer;
 
 			if (isManagedCity) {
-				share.validatedBy = administrator;
+				share.Administrator = administrator;
 			}
 
 			ctx.body = Share(share);
@@ -131,9 +130,8 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 		.param('shareId', async function fetchShare(id, ctx, next) {
 			const share = await Model.Share.findOne({
 				where: { id, deletedAt: null },
-			}, {
 				include: [
-					{ model: Model.ShareImage, as: 'imageList', required: true },
+					{ model: Model.ShareImage, as: 'imageList' },
 					{
 						model: Model.Customer, required: true,
 						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
@@ -145,7 +143,6 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				return ctx.throw(404);
 			}
 
-			share.createdBy = share.Customer;
 			ctx.state.share = share;
 
 			return next();
@@ -154,14 +151,23 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			ctx.body = Share(ctx.state.share);
 		})
 		.put('/:shareId', async function validateShare(ctx) {
-			const { share } = ctx.state;
+			const { share, administrator } = ctx.state;
+
+			if (!administrator.cityList.some(city => city.adcode === share.city)) {
+				return ctx.throw(403, 'NOT your city.');
+			}
 
 			share.validatedAt = new Date();
+			share.validatedBy = administrator.id;
 			await share.save();
 			ctx.body = Share(share);
 		})
 		.delete('/:shareId', async function deleteShare(ctx) {
-			const { share } = ctx.state;
+			const { share, administrator } = ctx.state;
+
+			if (!administrator.cityList.some(city => city.adcode === share.city)) {
+				return ctx.throw(403, 'NOT your city.');
+			}
 
 			share.deletedAt = new Date();
 			await share.save();

@@ -173,6 +173,9 @@ const app = {
 				get() {
 					return agent.get(`/share/${shareId}`).then(pickData);
 				},
+				update() {
+					return agent.put(`/share/${shareId}`).then(pickData);
+				},
 				delete() {
 					return agent.delete(`/share/${shareId}`).then(pickData);
 				}

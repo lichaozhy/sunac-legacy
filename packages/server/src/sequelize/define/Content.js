@@ -122,9 +122,25 @@ function Photo(sequelize, namespace) {
 	});
 }
 
+/**
+ * @param {import('sequelize').Sequelize} sequelize
+ */
+function Banner(sequelize, namespace) {
+	sequelize.define('Banner', {
+		id: { type: TYPE_SHA_ID, primaryKey: true },
+		image: TYPE_SHA_ID,
+		city: DataTypes.CHAR(6),
+		createdAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
+	}, {
+		tableName: `${namespace}city_banner`
+	});
+}
+
 module.exports = {
 	Reference, // 外部引用的文章
 	Topic, // 话题
 	Share, // 朋友圈
 	Photo, // 活动照片
+	Banner
 };

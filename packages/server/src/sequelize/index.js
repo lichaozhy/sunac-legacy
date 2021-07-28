@@ -107,6 +107,7 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Post.hasMany(Model.PostImage, FK('post', { as: 'imageList' }));
 
 	Model.ShareImage.belongsTo(Model.Image, FK('image'));
+	Model.ShareImage.belongsTo(Model.Share, FK('share'));
 	Model.Reference.belongsTo(Model.Image, FK('thumb'));
 	Model.Topic.belongsTo(Model.Image, FK('banner'));
 	Model.PostImage.belongsTo(Model.Image, FK('image'));

@@ -80,7 +80,10 @@ table.table.b-table td {
 }
 
 .col-tiny-string {
-	width: 5em;
+	width: 4em;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .col-string {

@@ -13,6 +13,15 @@
 >
 	<b-form>
 		<b-form-group
+			label="选择城市"
+		>
+			<b-form-select
+				:options="cityOptionList"
+				v-model="form.city"
+			></b-form-select>
+		</b-form-group>
+
+		<b-form-group
 			label="文本"
 			class="h-100 position-relative"
 		>
@@ -25,15 +34,6 @@
 				no-resize
 				style="height:9em"
 			/>
-		</b-form-group>
-
-		<b-form-group
-			label="选择城市"
-		>
-			<b-form-select
-				:options="cityOptionList"
-				v-model="form.city"
-			></b-form-select>
 		</b-form-group>
 
 		<b-form-group
