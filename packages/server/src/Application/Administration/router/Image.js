@@ -12,7 +12,7 @@ function Image(data) {
 }
 
 module.exports = Router(function SunacLegacyApi(router, {
-	product, AccessControl: $ac, Utils, Workspace, Model
+	AccessControl: $ac, Utils, Workspace, Model
 }) {
 	router
 		.post('/', $ac('signed'), async function createImage(ctx) {

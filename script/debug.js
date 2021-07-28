@@ -2,6 +2,7 @@ const SunacLegacy = require('../packages/server');
 const product = SunacLegacy({
 	server: {
 		customers: {
+			dev: false,
 			origin: 'http://127.0.0.1'
 		}
 	},

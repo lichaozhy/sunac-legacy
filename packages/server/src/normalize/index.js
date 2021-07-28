@@ -5,16 +5,19 @@ module.exports = function normalize(_options = {}) {
 	const options = {
 		server: {
 			administration: {
+				origin: 'http://127.0.0.1:3000',
 				host: '0.0.0.0',
 				port: 3000,
 				tls: null
 			},
 			maintenance: {
+				origin: 'http://127.0.0.1:9000',
 				host: '0.0.0.0',
 				port: 9000,
 				tls: null
 			},
 			customers: {
+				dev: false,
 				origin: 'http://127.0.0.1',
 				host: '0.0.0.0',
 				port: 80,
@@ -64,7 +67,7 @@ module.exports = function normalize(_options = {}) {
 			customers: _customers = options.server.customers
 		} = _server;
 
-		if (typeof _maintenance !== 'object') {
+		if (!isObject(_maintenance)) {
 			throw new Error('Invalid ".server.maintenance", an object expected.');
 		} else {
 			const {
@@ -90,7 +93,8 @@ module.exports = function normalize(_options = {}) {
 			const {
 				host: _host = options.server.customers.host,
 				port: _port = options.server.customers.port,
-				origin: _origin = options.server.customers.origin
+				origin: _origin = options.server.customers.origin,
+				dev: _dev = options.server.customers.dev
 			} = _customers;
 
 			if (typeof _host !== 'string') {
@@ -105,9 +109,20 @@ module.exports = function normalize(_options = {}) {
 				throw new Error('Invalid ".server.customers.origin", a string expected.');
 			}
 
+			if (!isBoolean(_dev)) {
+				throw new Error('Invalid ".server.customers.origin", a string expected.');
+			}
+
+			options.server.customers.dev = _dev;
 			options.server.customers.host = _host;
 			options.server.customers.port = _port;
 			options.server.customers.origin = _origin;
+		}
+
+		if (!isObject(_administration)) {
+			throw new Error('Invalid ".server.administration", an object expected.');
+		} else {
+
 		}
 	}
 
@@ -152,4 +167,8 @@ function isObject(any) {
 
 function isString(any) {
 	return typeof any === 'string';
+}
+
+function isBoolean(any) {
+	return typeof any === 'boolean';
 }

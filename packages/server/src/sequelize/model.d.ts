@@ -16,6 +16,7 @@ export namespace Model {
 
 		Share: typeof Sequelize.Model,
 		ShareImage: typeof Sequelize.Model,
+		CustomerLikeShare: typeof Sequelize.Model,
 
 		Reference: typeof Sequelize.Model,
 

@@ -11,10 +11,14 @@ namespace Server {
 		cert: string;
 	}
 
+	interface Customers {
+		dev?: boolean;
+	}
+
 	interface Assignment {
 		administration: Server;
 		maintenance: Server;
-		customers: Server;
+		customers: Server & Customers;
 	}
 }
 

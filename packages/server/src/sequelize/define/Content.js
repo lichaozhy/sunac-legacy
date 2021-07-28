@@ -113,6 +113,7 @@ function Photo(sequelize, namespace) {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
 		title: DataTypes.STRING(64),
 		image: TYPE_SHA_ID,
+		like: DataTypes.INTEGER,
 		city: DataTypes.CHAR(6),
 		createdAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
