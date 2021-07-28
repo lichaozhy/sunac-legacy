@@ -29,7 +29,7 @@ namespace Model {
 		openid: string;
 		nickname: string;
 		sex: number;
-		headimg: string;
+		headimgurl: string;
 	}
 
 	interface Customer {
@@ -161,7 +161,7 @@ namespace Api {
 
 	interface Share {
 		(shareId: string): ShareInstance;
-		query(): Promise<Page<Model.Share>>;
+		query(): Promise<Model.Page<Model.Share>>;
 		create(options: Model.Share): Promise<Model.Share>;
 	}
 

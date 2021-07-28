@@ -7,9 +7,10 @@
 		<b-form-input
 			v-model="keyword"
 			class="mr-0"
-			style="width: 12em"
-			placeholder="请输入标题关键字"
+			style="width: 9em"
+			placeholder="标题关键字"
 		/>
+
 		<b-button
 			variant="primary"
 			class="mr-auto"
@@ -17,12 +18,12 @@
 		>搜索</b-button>
 
 		<b-input-group
-			prepend="按城市"
+			prepend="城市"
+			class="mr-auto"
 		>
 			<b-form-select
 				:options="cityOptionList"
-				style="width: 8em"
-				class="mr-auto"
+				style="width: 6em"
 				v-model="city"
 				@input="refreshTable"
 			></b-form-select>

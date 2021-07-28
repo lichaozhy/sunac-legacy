@@ -20,7 +20,13 @@
 					:to="{ name: 'Workbench.Content.Photo' }"
 				>相册</b-list-group-item>
 			</b-list-group>
+
+			<b-list-group class="mt-3">
+				<b-list-group-item
+				>城市BANNER</b-list-group-item>
+			</b-list-group>
 		</b-col>
+
 		<b-col>
 			<router-view></router-view>
 		</b-col>

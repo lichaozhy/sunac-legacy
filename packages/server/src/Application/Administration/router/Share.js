@@ -6,12 +6,13 @@ const VALIDATED_REG = /^true|false$/;
 module.exports = Router(function SunacLegacyAdministrationShare(router, {
 	Model, AccessControl: $ac, Utils
 }) {
+	const shareLiked = {};
 
 	function Share(data) {
 		return {
 			id: data.id,
 			raw: data.raw,
-			imageList: data.imageList,
+			imageList: data.imageList.map(shareImage => shareImage.image),
 			createdBy: {
 				id: data.createdBy.id,
 				wechat: {
@@ -20,10 +21,15 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 					headimgurl: data.createdBy.wechat.headimgurl
 				}
 			},
+			like: shareLiked[data.id] || 0,
 			createdAt: data.createdAt,
 			validatedAt: data.validatedAt,
 		};
 	}
+
+	setInterval(() => {
+
+	}, 60000);
 
 	router
 		.use($ac('signed'), async function getManagedCityList(ctx, next) {
@@ -51,11 +57,11 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			const where = { deletedAt: null };
 
 			if (validated) {
-				if (VALIDATED_REG.test(validated)) {
+				if (!VALIDATED_REG.test(validated)) {
 					return ctx.throw(400, 'Invalid query "?validated="');
 				}
 
-				where.validatedAt = validated === true ? { [Op.not]: null } : null;
+				where.validatedAt = validated === 'true' ? { [Op.not]: null } : null;
 			}
 
 			if (city) {
@@ -66,19 +72,23 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				where,
 				include: [
 					{ model: Model.ShareImage, as: 'imageList', required: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
+					},
 				],
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
 				order: [['createdAt', 'DESC']]
 			});
 
+			rows.forEach(share => share.createdBy = share.Customer);
+
 			ctx.body = {
 				list: rows.map(Share),
 				total: count,
-				size: pageSize,
-				current: pageCurrent
+				size: Number(pageSize),
+				current: Number(pageCurrent)
 			};
 		})
 		.post('/', async function createShare(ctx) {
@@ -89,23 +99,32 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			}
 
 			const { raw, city: cityAdcode, imageList } = ctx.request.body;
+
+			if (Utils.City.getCity(cityAdcode) === null) {
+				return ctx.throw(400, 'bad city adcode.');
+			}
+
 			const now = new Date();
 			const isManagedCity = cityList.some(city => city.adcode === cityAdcode);
+			const id = Utils.encodeSHA256(`${raw}${cityAdcode}${now}`);
 
 			const share = await Model.Share.create({
-				id: Utils.encodeSHA256(`${raw}${cityAdcode}${now}`),
-				raw, city: cityAdcode, imageList,
+				id, raw, city: cityAdcode,
 				createdAt: now,
 				createdBy: customer.id,
 				validatedAt: isManagedCity ? now : null,
 				validatedBy: isManagedCity ? administrator.id : null
-			}, {
-				include: [
-					{ model: Model.ShareImage, as: 'imageList', required: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
-				]
 			});
+
+			share.imageList = await Model.ShareImage.bulkCreate(imageList.map(imageId => {
+				return { image: imageId, share: id };
+			}));
+
+			share.createdBy = customer;
+
+			if (isManagedCity) {
+				share.validatedBy = administrator;
+			}
 
 			ctx.body = Share(share);
 		})
@@ -114,9 +133,11 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				where: { id, deletedAt: null },
 			}, {
 				include: [
-					{ model: Model.ShareImage, as: 'imageList', require: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
+					{ model: Model.ShareImage, as: 'imageList', required: true },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
+					},
 				],
 			});
 
@@ -124,6 +145,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				return ctx.throw(404);
 			}
 
+			share.createdBy = share.Customer;
 			ctx.state.share = share;
 
 			return next();

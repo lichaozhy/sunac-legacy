@@ -22,7 +22,7 @@
 			</b-list-group>
 
 			<b-form-group
-				label="选择代表城市"
+				label="我代表的城市"
 				class="mt-3"
 			>
 				<b-form-select
@@ -44,11 +44,11 @@
 				>请设置城市以正确参与互动</b-form-text>
 				<b-form-text
 					v-if="hasCustomer"
-				>提示：此处“所代表城市”不同于“管辖城市”，其内涵与您以普通用户在公众号H5端的定义一致</b-form-text>
+				>提示：此处“代表城市”不同于“管辖城市”，其内涵与您以普通用户在公众号H5端的定义一致</b-form-text>
 			</b-form-group>
 
 			<b-form-group
-				label="我的管辖城市"
+				label="我的所有管辖城市"
 			>
 				<b-form-tags
 					:value="administratorCityList"
@@ -58,7 +58,7 @@
 					tag-variant="primary"
 				></b-form-tags>
 
-				<b-form-text>当所代表城市为管辖城市时，发表内容会直接通过审核</b-form-text>
+				<b-form-text>当所"代表城市"为"管辖城市"时，发表内容会直接通过审核</b-form-text>
 			</b-form-group>
 		</b-col>
 		<b-col>
@@ -96,6 +96,9 @@ export default {
 			].concat(this.meta.cityList.map(city => {
 				return { text: city.name, value: city.adcode };
 			}));
+		},
+		isManagedCity() {
+			return this.meta.managedCityList.some(adcode => this.currentCity === adcode);
 		}
 	},
 	methods: {
@@ -121,9 +124,9 @@ export default {
 			await this.getAdministrator();
 		}
 	},
-	mounted() {
-		this.getAllCityList();
-		this.getAdministrator();
+	async mounted() {
+		await this.getAllCityList();
+		await this.getAdministrator();
 	}
 };
 </script>

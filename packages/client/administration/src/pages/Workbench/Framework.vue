@@ -25,7 +25,11 @@
 		<b-navbar-nav class="ml-auto">
 			<b-nav-item
 				:to="{ name: 'Workbench.Setting' }"
-			>运营管理员：{{ administrator.name }}</b-nav-item>
+			><b-avatar
+				size="sm"
+				:src="headimgurl"
+				class="mr-2"
+			/>运营管理员：{{ administrator.name }}</b-nav-item>
 
 			<b-nav-item
 				@click="signout"
@@ -46,6 +50,7 @@ export default {
 				id: '',
 				name: '',
 			},
+			headimgurl: ''
 		};
 	},
 	computed: {
@@ -53,7 +58,14 @@ export default {
 	},
 	methods: {
 		async getPrincipalAdministrator() {
-			this.administrator = await this.$app.Api.Principal.Administrator.get();
+			const administrator = await this.$app.Api.Principal.Administrator.get();
+
+			this.administrator.name = administrator.name;
+			this.administrator.id = administrator.id;
+
+			if (administrator.customer !== null) {
+				this.headimgurl = administrator.customer.wechat.headimgurl;
+			}
 		},
 		async signout() {
 			await this.$app.Api.Principal.signout();

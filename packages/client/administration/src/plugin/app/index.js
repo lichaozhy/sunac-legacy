@@ -173,14 +173,6 @@ const app = {
 				get() {
 					return agent.get(`/share/${shareId}`).then(pickData);
 				},
-				update(options) {
-					// 可以修改自己的
-					return agent.put(`/share/${shareId}`, {
-						valid: options.valid,
-						raw: options.raw,
-						imageList: options.imageList
-					}).then(pickData);
-				},
 				delete() {
 					return agent.delete(`/share/${shareId}`).then(pickData);
 				}
@@ -188,12 +180,39 @@ const app = {
 		}, {
 			create(options) {
 				return agent.post('/share', {
+					city: options.city,
 					raw: options.raw,
 					imageList: options.imageList
 				}).then(pickData);
 			},
-			query() {
-				return agent.get('/share').then(pickData);
+			query(query) {
+				const params = {};
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				if ('sortBy' in query) {
+					params.sortBy = query.sortBy || 'createdAt';
+				}
+
+				if ('sortDesc' in query) {
+					params.sortDesc = query.sortDesc;
+				}
+
+				if ('city' in query) {
+					params.city = query.city;
+				}
+
+				if ('validated' in query) {
+					params.validated = query.validated;
+				}
+
+				return agent.get('/share', { params }).then(pickData);
 			}
 		}),
 		Topic: Object.assign(function Topic(topicId) {
