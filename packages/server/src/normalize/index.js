@@ -45,17 +45,19 @@ module.exports = function normalize(_options = {}) {
 			}
 		},
 		cityList: [
-			'310100', '320500', '320600', '320200', '320400',
+			'310000', '320500', '320600', '320200', '320400',
 			'321000', '321100', '321200', '340200', '320100',
 			'341100', '340500', '320300', '320800', '321300',
 			'340400', '320900', '150100', '150200', '650000',
-		]
+		],
+		defaultCity: '310000'
 	};
 
 	const {
 		server: _server = options.server,
 		cityList: _cityList = options.cityList,
-		wx: _wx = options.wx
+		wx: _wx = options.wx,
+		defaultCity: _defaultCity = options.defaultCity
 	} = _options;
 
 	if (typeof _server !== 'object') {
@@ -156,6 +158,10 @@ module.exports = function normalize(_options = {}) {
 
 		options.wx.appid = _appid;
 		options.wx.appsecret = _appsecret;
+	}
+
+	if (!isString(_defaultCity)) {
+		throw new Error('Invalid ".defaultCity", a string expected.');
 	}
 
 	return options;

@@ -2,6 +2,8 @@ const { Router } = require('@produck/duck-web-koa-router');
 const sharp = require('sharp');
 const path = require('path');
 const fs = require('fs-extra');
+const conditional = require('koa-conditional-get');
+const etag = require('koa-etag');
 
 function Image(data) {
 	return {
@@ -43,7 +45,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			ctx.body = Image(imageData);
 		})
-		.get('/:imageId/image.png', async function getImage(ctx) {
+		.get('/:imageId/image.png', conditional(), etag(), async function getImage(ctx) {
 			const { imageId } = ctx.params;
 			const image = await Model.Image.findOne({ where: { id: imageId } });
 

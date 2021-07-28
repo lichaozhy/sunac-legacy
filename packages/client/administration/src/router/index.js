@@ -16,7 +16,7 @@ const router = new VueRouter({
 		{
 			name: 'Workbench',
 			path: '/workbench',
-			redirect: { name: 'Workbench.Validation' },
+			redirect: { name: 'Workbench.Content' },
 			component: Page.Workbench.Framework,
 			meta: { principalRequired: true },
 			children: [
@@ -30,44 +30,39 @@ const router = new VueRouter({
 						{
 							name: 'Workbench.Interaction.Share',
 							path: 'share',
-							component: Page.Workbench.Interaction.Share
-						},
-						{
-							name: 'Workbench.Interaction.Post',
-							path: 'post',
-							component: Page.Workbench.Interaction.Post
+							component: Page.Workbench.Interaction.Share.Overview
 						},
 						{
 							name: 'Workbench.Interaction.Topic',
 							path: 'topic',
-							component: Page.Workbench.Interaction.Topic
+							component: Page.Workbench.Interaction.Topic.Overview
 						}
 					]
 				},
 
-				{
-					name: 'Workbench.Validation',
-					path: 'validation',
-					redirect: { name: 'Workbench.Validation.Share' },
-					component: Page.Workbench.Validation.Framework,
-					children: [
-						{
-							name: 'Workbench.Validation.Post',
-							path: 'post',
-							component: Page.Workbench.Validation.Post
-						},
-						{
-							name: 'Workbench.Validation.Share',
-							path: 'share',
-							component: Page.Workbench.Validation.Share
-						},
-						{
-							name: 'Workbench.Validation.Topic',
-							path: 'topic',
-							component: Page.Workbench.Validation.Topic
-						}
-					]
-				},
+				// {
+				// 	name: 'Workbench.Validation',
+				// 	path: 'validation',
+				// 	redirect: { name: 'Workbench.Validation.Share' },
+				// 	component: Page.Workbench.Validation.Framework,
+				// 	children: [
+				// 		{
+				// 			name: 'Workbench.Validation.Post',
+				// 			path: 'post',
+				// 			component: Page.Workbench.Validation.Post
+				// 		},
+				// 		{
+				// 			name: 'Workbench.Validation.Share',
+				// 			path: 'share',
+				// 			component: Page.Workbench.Validation.Share
+				// 		},
+				// 		{
+				// 			name: 'Workbench.Validation.Topic',
+				// 			path: 'topic',
+				// 			component: Page.Workbench.Validation.Topic
+				// 		}
+				// 	]
+				// },
 
 				{
 					name: 'Workbench.Content',

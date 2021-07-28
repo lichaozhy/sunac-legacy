@@ -107,6 +107,7 @@ const app = {
 				return agent.get('/photo', { params }).then(pickData);
 			},
 			create(options) {
+				console.log(options);
 				return agent.post('/photo', {
 					title: options.title,
 					image: options.image,

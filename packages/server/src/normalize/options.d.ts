@@ -67,4 +67,5 @@ export interface Options {
 	storage: Storage;
 	log: Log;
 	cityList: string[];
+	defaultCity: string;
 }

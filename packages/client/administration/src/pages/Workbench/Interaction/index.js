@@ -1,6 +1,5 @@
 import Framework from './Framework.vue';
-import Post from './Post.vue';
-import Share from './Share.vue';
-import Topic from './Topic.vue';
+import * as Share from './Share';
+import * as Topic from './Topic';
 
-export { Framework, Post, Share, Topic };
+export { Framework, Share, Topic };

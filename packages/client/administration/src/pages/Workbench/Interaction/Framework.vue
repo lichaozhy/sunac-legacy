@@ -14,14 +14,11 @@
 		<b-col xxl="2" xl="3">
 			<b-list-group>
 				<b-list-group-item
-					:to="{ name: 'Workbench.Interaction.Reference' }"
-				>外引用</b-list-group-item>
+					:to="{ name: 'Workbench.Interaction.Share' }"
+				>非遗圈</b-list-group-item>
 				<b-list-group-item
 					:to="{ name: 'Workbench.Interaction.Topic' }"
 				>话题</b-list-group-item>
-				<b-list-group-item
-					:to="{ name: 'Workbench.Interaction.Share' }"
-				>非遗圈分享</b-list-group-item>
 			</b-list-group>
 
 			<b-form-group
@@ -49,6 +46,20 @@
 					v-if="hasCustomer"
 				>提示：此处“所代表城市”不同于“管辖城市”，其内涵与您以普通用户在公众号H5端的定义一致</b-form-text>
 			</b-form-group>
+
+			<b-form-group
+				label="我的管辖城市"
+			>
+				<b-form-tags
+					:value="administratorCityList"
+					disabled
+					placeholder=""
+					tag-pills
+					tag-variant="primary"
+				></b-form-tags>
+
+				<b-form-text>当所代表城市为管辖城市时，发表内容会直接通过审核</b-form-text>
+			</b-form-group>
 		</b-col>
 		<b-col>
 			<router-view>Present Panel</router-view>
@@ -65,11 +76,17 @@ export default {
 			currentCity: null,
 			meta: {
 				cityList: [],
-				customerId: ''
+				customerId: '',
+				managedCityList: []
 			}
 		};
 	},
 	computed: {
+		administratorCityList() {
+			return this.meta.managedCityList.map(adcode => {
+				return this.meta.cityList.find(city => city.adcode === adcode).name;
+			});
+		},
 		hasCustomer() {
 			return Boolean(this.meta.customerId);
 		},
@@ -86,12 +103,14 @@ export default {
 			this.meta.cityList = await this.$app.Api.City.query();
 		},
 		async getAdministrator() {
-			const { customer } = await this.$app.Api.Principal.Administrator.get();
+			const { customer, cityList } = await this.$app.Api.Principal.Administrator.get();
 
 			if (customer) {
 				this.meta.customerId = customer.id;
 				this.currentCity = customer.cityAs;
 			}
+
+			this.meta.managedCityList = cityList;
 		},
 		async updateCustomer() {
 			await this.$app.Api.Principal.Administrator.Customer.update({

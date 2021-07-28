@@ -7,6 +7,7 @@ function Photo(data) {
 		title: data.title,
 		image: data.image,
 		like: data.like,
+		city: data.city,
 		createdAt: data.createdAt,
 		updatedAt: data.updatedAt
 	};

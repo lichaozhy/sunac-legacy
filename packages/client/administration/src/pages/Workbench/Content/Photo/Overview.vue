@@ -31,13 +31,32 @@
 	</b-button-toolbar>
 
 	<b-row>
+		<b-col cols="3" class="mt-3">
+			<b-card no-body footer-class="p-1 text-center" footer="您可以创建新照片">
+				<b-aspect
+					@click.native="requestCreatingPhoto"
+					aspect="4:3"
+					class="text-center"
+					style="background-color: #f0f0f0; background-size: cover; background-position: center"
+				>没有找到符合要求的照片</b-aspect>
+			</b-card>
+		</b-col>
+
 		<b-col
 			v-for="photo in photoList"
 			:key="photo.id"
 			cols="3"
 			class="mt-3"
 		>
-			<b-card no-body footer-class="p-1">
+			<b-card
+				no-body
+				footer-class="p-1"
+				class="position-relative"
+			>
+				<div
+					class="position-absolute"
+					style="top: 10px; left: 10px; text-shadow: 0 0 2px #000; color:#fff"
+				>{{ photo.city }}</div>
 				<b-aspect
 					aspect="4:3"
 					style="background-color: #f0f0f0; background-size: cover; background-position: center"
@@ -127,6 +146,7 @@ export default {
 					id: photo.id,
 					title: photo.title,
 					src: `/api/image/${photo.image}/image.png`,
+					city: this.meta.cityList.find(city => city.adcode === photo.city).name,
 					like: photo.like,
 					createdAt: photo.createdAt
 				};
@@ -157,10 +177,14 @@ export default {
 
 			this.meta.photoList = list;
 			this.pagination.total = total;
-		}
+		},
+		async getAllCityList() {
+			this.meta.cityList = await this.$app.Api.City.query();
+		},
 	},
-	mounted() {
-		this.getPhotoList();
+	async mounted() {
+		await this.getAllCityList();
+		// this.getPhotoList();
 	}
 };
 </script>

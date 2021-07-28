@@ -2,6 +2,8 @@ const { Router } = require('@produck/duck-web-koa-router');
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs-extra');
+const conditional = require('koa-conditional-get');
+const etag = require('koa-etag');
 
 module.exports = Router(function SunacLegacyApi(router, {
 	Model, Workspace, AccessControl: $ac, Utils
@@ -56,7 +58,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			await customer.save();
 			ctx.body = Customer(customer);
 		})
-		.get('/image/:imageId/image.png', async function getImageFile(ctx) {
+		.get('/image/:imageId/image.png', conditional(), etag(), async function getImageFile(ctx) {
 			const { imageId } = ctx.params;
 			const image = await Model.Image.findOne({ where: { id: imageId } });
 

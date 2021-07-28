@@ -11,7 +11,6 @@
 	cancel-title="取消"
 	@shown="getManagedCityList"
 	@ok="create"
-	@hidden="reset"
 >
 	<b-form>
 		<b-form-group
@@ -117,6 +116,7 @@ export default {
 
 				this.$bvToast.toast('创建照片成功', { variant: 'success' });
 				this.$emit('created');
+				this.reset();
 			} catch (Err) {
 				this.$bvToast.toast('创建照片失败', { variant: 'danger' });
 			}
