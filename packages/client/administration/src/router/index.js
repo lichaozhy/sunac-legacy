@@ -23,29 +23,19 @@ const router = new VueRouter({
 				{
 					name: 'Workbench.Interaction',
 					path: 'interaction',
-					redirect: { name: 'Workbench.Interaction.Reference' },
+					redirect: { name: 'Workbench.Interaction.Share' },
 					component: Page.Workbench.Interaction.Framework,
 					meta: { customerRequired: true },
 					children: [
 						{
-							name: 'Workbench.Interaction.Post',
-							path: 'post',
-							component: Page.Workbench.Interaction.Post
-						},
-						{
-							name: 'Workbench.Interaction.Reference',
-							path: 'comment',
-							component: Page.Workbench.Interaction.Reference.Overview
-						},
-						// {
-						// 	name: 'Workbench.Interaction.Comment',
-						// 	path: 'comment',
-						// 	component: Page.Workbench.Interaction.Comment
-						// },
-						{
 							name: 'Workbench.Interaction.Share',
 							path: 'share',
 							component: Page.Workbench.Interaction.Share
+						},
+						{
+							name: 'Workbench.Interaction.Post',
+							path: 'post',
+							component: Page.Workbench.Interaction.Post
 						},
 						{
 							name: 'Workbench.Interaction.Topic',
@@ -66,11 +56,6 @@ const router = new VueRouter({
 							path: 'post',
 							component: Page.Workbench.Validation.Post
 						},
-						// {
-						// 	name: 'Workbench.Validation.Comment',
-						// 	path: 'comment',
-						// 	component: Page.Workbench.Validation.Comment
-						// },
 						{
 							name: 'Workbench.Validation.Share',
 							path: 'share',
@@ -85,20 +70,20 @@ const router = new VueRouter({
 				},
 
 				{
-					name: 'Workbench.Album',
-					path: 'album',
-					redirect: { name: 'Workbench.Album.Overview' },
-					component: Page.Workbench.Album.Framework,
+					name: 'Workbench.Content',
+					path: 'content',
+					redirect: { name: 'Workbench.Content.Reference' },
+					component: Page.Workbench.Content.Framework,
 					children: [
 						{
-							name: 'Workbench.Album.Overview',
+							name: 'Workbench.Content.Reference',
 							path: 'overview',
-							component: Page.Workbench.Album.Overview
+							component: Page.Workbench.Content.Reference.Overview
 						},
 						{
-							name: 'Workbench.Album.Creation',
-							path: 'create',
-							component: Page.Workbench.Album.Creation
+							name: 'Workbench.Content.Photo',
+							path: 'photo',
+							component: Page.Workbench.Content.Photo.Overview
 						}
 					]
 				},

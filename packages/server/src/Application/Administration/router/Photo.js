@@ -35,21 +35,21 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 			};
 
 			if (title) {
-				where.title = '%title%';
+				where.title = { [Op.like]: `%${title}%` };
 			}
 
 			const { rows, count } = await Model.Photo.findAndCountAll({
 				where,
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
-				order: ['createdAt', 'DESC']
+				order: [['createdAt', 'DESC']]
 			});
 
 			ctx.body = {
 				list: rows.map(Photo),
 				total: count,
-				size: pageSize,
-				current: pageCurrent
+				size: Number(pageSize),
+				current: Number(pageCurrent)
 			};
 		})
 		.post('/', async function createPhoto(ctx) {
@@ -64,7 +64,7 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 				return ctx.throw(400, 'Invalid ".city".');
 			}
 
-			if (!cityList.some(city => city.code === cityAdcode)) {
+			if (!cityList.some(city => city.adcode === cityAdcode)) {
 				return ctx.throw(403, 'The city is NOT yours.');
 			}
 

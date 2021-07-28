@@ -62,6 +62,7 @@ namespace Model {
 	interface Photo extends Content {
 		id: string;
 		title: string;
+		city: Adcode;
 		image: Image;
 	}
 
@@ -141,7 +142,6 @@ namespace Api {
 
 	interface PhotoInstance {
 		get(): Promise<Model.Photo>;
-		update(options: Model.Photo): Promise<Model.Photo>;
 		delete(): Promise<Model.Photo>;
 	}
 
@@ -158,22 +158,6 @@ namespace Api {
 		delete(): Promise<Model.Reference>;
 		Comment: ReferenceInstanceComment;
 	}
-
-	// interface ReferenceInstanceComment {
-	// 	create(options: Model.Comment): Promise<Model.Comment>;
-	// 	query(): Promise<Model.Page<Model.Comment>>;
-	// }
-
-	// interface ReferenceComment {
-	// 	(commentId: string): ReferenceCommentInstance;
-	// 	query(): Promise<Model.Page<Model.Comment>>;
-	// 	create(options: Model.Comment): Promise<Model.Comment>;
-	// }
-
-	// interface ReferenceCommentInstance {
-	// 	update(options: Model.Comment): Promise<Model.Comment>;
-	// 	delete(): Promise<Model.Comment>;
-	// }
 
 	interface Share {
 		(shareId: string): ShareInstance;

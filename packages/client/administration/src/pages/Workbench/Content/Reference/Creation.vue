@@ -47,7 +47,7 @@
 		>
 			<b-form-select
 				:options="cityOptionList"
-				v-model="form.cityAs"
+				v-model="form.city"
 			></b-form-select>
 		</b-form-group>
 
@@ -111,7 +111,7 @@ export default {
 				abstract: '',
 				href: '',
 				thumb: '',
-				cityAs: null
+				city: null
 			},
 			/**
 			 * @type {File}
@@ -126,7 +126,7 @@ export default {
 				(this.form.abstract.length > 10 && this.form.abstract.length < 256) &&
 				HREF_REG.test(this.form.href) &&
 				this.thumbImage instanceof File &&
-				this.form.cityAs !== null;
+				this.form.city !== null;
 		},
 		cityOptionList() {
 			return [
@@ -153,13 +153,20 @@ export default {
 
 			const thumb = await this.$app.Api.Image.create(formData);
 
-			await this.$app.Api.Reference.create({
-				title: this.form.title,
-				abstract: this.form.abstract,
-				href: this.form.href,
-				cityAs: this.form.cityAs,
-				thumb: thumb.id
-			});
+			try {
+				await this.$app.Api.Reference.create({
+					title: this.form.title,
+					abstract: this.form.abstract,
+					href: this.form.href,
+					city: this.form.city,
+					thumb: thumb.id
+				});
+
+				this.$bvToast.toast('创建新闻成功', { variant: 'success' });
+				this.$emit('created');
+			} catch (Err) {
+				this.$bvToast.toast('创建新闻失败', { variant: 'danger' });
+			}
 		},
 		async getManagedCityList() {
 			const administrator = await this.$app.Api.Principal.Administrator.get();
@@ -171,8 +178,8 @@ export default {
 		}
 	},
 	async mounted() {
-		await this.getManagedCityList();
 		this.meta.allCityList = await this.$app.Api.City.query();
+		await this.getManagedCityList();
 	}
 };
 </script>

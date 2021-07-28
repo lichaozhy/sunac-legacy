@@ -15,11 +15,11 @@
 				:to="{ name: 'Workbench.Validation' }"
 			>审核中心</b-nav-item>
 			<b-nav-item
-				:to="{ name: 'Workbench.Album' }"
-			>相册</b-nav-item>
+				:to="{ name: 'Workbench.Content' }"
+			>官方内容</b-nav-item>
 			<b-nav-item
 				:to="{ name: 'Workbench.Interaction' }"
-			>互动中心</b-nav-item>
+			>互动</b-nav-item>
 		</b-navbar-nav>
 
 		<b-navbar-nav class="ml-auto">

@@ -8,6 +8,7 @@ function Reference(data) {
 		abstract: data.abstract,
 		thumb: data.thumb,
 		href: data.href,
+		city: data.city,
 		createdAt: data.createdAt,
 		updatedAt: data.updatedAt
 	};
@@ -24,9 +25,20 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 		.use($ac('signed'), async function getManagedCityList(ctx, next) {
 			const { administratorId } = ctx.session;
 
-			ctx.state.cityList = await Model.AdministratorCity.findAll({
-				where: { administratorId }
+			const administrator = await Model.Administrator.findOne({
+				where: { id: administratorId, deletedAt: null },
+				include: [
+					{ model: Model.AdministratorCity, as: 'cityList' },
+					{
+						model: Model.Customer, as: 'customer',
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				]
 			});
+
+			ctx.state.cityList = administrator.cityList;
+			ctx.state.customer = administrator.customer;
+			ctx.state.administrator = administrator;
 
 			return next();
 		})
@@ -40,7 +52,7 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			};
 
 			if (title) {
-				where.title = '%title%';
+				where.title = { [Op.like]: `%${title}%` };
 			}
 
 			const { rows, count } = await Model.Reference.findAndCountAll({
@@ -53,8 +65,8 @@ module.exports = Router(function SunacLegacyAdministrationReference(router, {
 			ctx.body = {
 				list: rows.map(Reference),
 				total: count,
-				size: pageSize,
-				current: pageCurrent
+				size: Number(pageSize),
+				current: Number(pageCurrent)
 			};
 		})
 		.post('/', async function createReference(ctx) {

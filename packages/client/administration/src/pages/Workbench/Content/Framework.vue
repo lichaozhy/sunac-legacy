@@ -7,28 +7,22 @@
 		>首页</b-breadcrumb-item>
     <b-breadcrumb-item
 			active
-		>相册</b-breadcrumb-item>
+		>官方内容</b-breadcrumb-item>
 	</b-breadcrumb>
 
 	<b-row>
 		<b-col xxl="2" xl="3">
-			<b-form-group
-				label="切换城市"
-			>
-				<b-form-select></b-form-select>
-			</b-form-group>
-
-			<b-list-group class="mt-3">
+			<b-list-group>
 				<b-list-group-item
-					:to="{ name: 'Workbench.Album.Overview' }"
-				>总览</b-list-group-item>
+					:to="{ name: 'Workbench.Content.Reference' }"
+				>非遗新闻</b-list-group-item>
 				<b-list-group-item
-					:to="{ name: 'Workbench.Album.Creation' }"
-				>上传新照片</b-list-group-item>
+					:to="{ name: 'Workbench.Content.Photo' }"
+				>相册</b-list-group-item>
 			</b-list-group>
 		</b-col>
 		<b-col>
-			<router-view>Present Panel</router-view>
+			<router-view></router-view>
 		</b-col>
 	</b-row>
 </b-container>

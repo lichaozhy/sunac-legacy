@@ -84,28 +84,33 @@ const app = {
 				get() {
 					return agent.get(`/photo/${photoId}`).then(pickData);
 				},
-				update(options) {
-					return agent.put(`/photo/${photoId}`, {
-						title: options.title,
-						image: {
-							id: options.image.id
-						}
-					}).then(pickData);
-				},
 				delete() {
 					return agent.delete(`/photo/${photoId}`).then(pickData);
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/photo').then(pickData);
+			query(query) {
+				const params = {};
+
+				if (query.title) {
+					params.title = query.title;
+				}
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				return agent.get('/photo', { params }).then(pickData);
 			},
 			create(options) {
 				return agent.post('/photo', {
 					title: options.title,
-					image: {
-						id: options.image.id
-					}
+					image: options.image,
+					city: options.city
 				}).then(pickData);
 			}
 		}),
@@ -113,16 +118,6 @@ const app = {
 			return {
 				get() {
 					return agent.get(`/reference/${referenceId}`).then(pickData);
-				},
-				update(options) {
-					return agent.put(`/reference/${referenceId}`, {
-						title: options.title,
-						abstract: options.abstract,
-						href: options.href,
-						thumb: {
-							id: options.thumb.id
-						}
-					}).then(pickData);
 				},
 				delete() {
 					return agent.delete(`/reference/${referenceId}`).then(pickData);
@@ -134,7 +129,7 @@ const app = {
 					title: options.title,
 					abstract: options.abstract,
 					href: options.href,
-					cityAs: options.cityAs,
+					city: options.city,
 					thumb: options.thumb
 				}).then(pickData);
 			},
