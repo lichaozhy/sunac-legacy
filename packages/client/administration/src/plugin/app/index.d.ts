@@ -172,7 +172,7 @@ namespace Api {
 	}
 
 	interface Topic {
-		(topicId: string): Promise<>;
+		(topicId: string): TopicInstance;
 		query(): Promise<Model.Page<Model.Topic>>;
 		create(options: Model.Topic): Promise<Model.Topic>;
 		Post: TopicPost;

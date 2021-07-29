@@ -6,8 +6,6 @@ const VALIDATED_REG = /^true|false$/;
 module.exports = Router(function SunacLegacyAdministrationShare(router, {
 	Model, AccessControl: $ac, Utils
 }) {
-	const shareLiked = {};
-
 	function Share(data) {
 		return {
 			id: data.id,
@@ -22,15 +20,11 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 					headimgurl: data.Customer.wechat.headimgurl
 				}
 			},
-			like: shareLiked[data.id] || 0,
+			like: 0,
 			createdAt: data.createdAt,
 			validatedAt: data.validatedAt,
 		};
 	}
-
-	setInterval(() => {
-
-	}, 60000);
 
 	router
 		.use($ac('signed'), async function getManagedCityList(ctx, next) {

@@ -45,13 +45,13 @@
 
 		<b-button
 			variant="primary"
-			@click="requestViewReference"
+			@click="requestViewShare"
 			:disabled="selectedId === null"
 			class="mr-1"
 		>查看</b-button>
 		<b-button
 			variant="success"
-			@click="requestCreatingReference"
+			@click="requestCreatingShare"
 		>创建</b-button>
 	</b-button-toolbar>
 
@@ -179,10 +179,10 @@ export default {
 		setSelectedId(rows) {
 			this.selectedId = rows.length > 0 ? rows[0].id : null;
 		},
-		requestCreatingReference() {
+		requestCreatingShare() {
 			this.$refs.creation.open();
 		},
-		requestViewReference() {
+		requestViewShare() {
 			this.$refs.detail.open(this.selectedId);
 		},
 		async deleteShare() {

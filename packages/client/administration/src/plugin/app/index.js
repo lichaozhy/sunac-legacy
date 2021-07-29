@@ -223,13 +223,8 @@ const app = {
 				get() {
 					return agent.get(`/topic/${topicId}`).then(pickData);
 				},
-				update(options) {
-					return agent.put(`/topic/${topicId}`, {
-						title: options.title,
-						banner: options.banner,
-						description: options.description,
-						valid: options.valid
-					}).then(pickData);
+				update() {
+					return agent.put(`/topic/${topicId}`).then(pickData);
 				},
 				delete() {
 					return agent.delete(`/topic/${topicId}`).then(pickData);
@@ -247,13 +242,44 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/topic').then(pickData);
+			query(query) {
+				const params = {};
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				if ('sortBy' in query) {
+					params.sortBy = query.sortBy || 'createdAt';
+				}
+
+				if ('sortDesc' in query) {
+					params.sortDesc = query.sortDesc;
+				}
+
+				if ('city' in query) {
+					params.city = query.city;
+				}
+
+				if ('validated' in query) {
+					params.validated = query.validated;
+				}
+
+				if ('title' in query) {
+					params.title = query.title;
+				}
+
+				return agent.get('/topic', { params }).then(pickData);
 			},
 			create(options) {
 				return agent.post('/topic', {
 					title: options.title,
 					banner: options.banner,
+					city: options.city,
 					description: options.description
 				}).then(pickData);
 			},

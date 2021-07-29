@@ -22,6 +22,7 @@ const ModelFactory = {
 	Topic: Content.Topic,
 	Share: Content.Share,
 	Photo: Content.Photo,
+	Banner: Content.Banner,
 
 	Image: Image.Image
 };
@@ -69,6 +70,7 @@ module.exports = function SunacLegacySequelize(options) {
 		PostImage: sequelize.model('PostImage'),
 
 		Photo: sequelize.model('Photo'),
+		Banner: sequelize.model('Banner'),
 
 		Image: sequelize.model('Image')
 	};
@@ -102,6 +104,7 @@ module.exports = function SunacLegacySequelize(options) {
 	 * About content
 	 */
 	Model.Share.belongsTo(Model.Customer, FK('createdBy'));
+	Model.Topic.belongsTo(Model.Customer, FK('createdBy'));
 
 	Model.Share.hasMany(Model.ShareImage, FK('share', { as: 'imageList' }));
 	Model.Post.hasMany(Model.PostImage, FK('post', { as: 'imageList' }));
@@ -112,6 +115,7 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Topic.belongsTo(Model.Image, FK('banner'));
 	Model.PostImage.belongsTo(Model.Image, FK('image'));
 	Model.Photo.belongsTo(Model.Image, FK('image'));
+	Model.Banner.belongsTo(Model.Image, FK('image'));
 
 	return { sequelize, Model };
 };
