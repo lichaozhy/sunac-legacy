@@ -10,11 +10,18 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 		return {
 			id: data.id,
 			raw: data.raw,
+			like: data.like,
 			imageList: data.imageList,
 			createdAt: data.createdAt,
-			createdBy: data.createdBy,
-			validatedAt: data.validatedAt,
-			validatedBy: data.validatedBy
+			createdBy: {
+				id: data.Customer.id,
+				wechat: {
+					openid: data.Customer.wechat.openid,
+					nickname: data.Customer.wechat.nickname,
+					headimgurl: data.Customer.wechat.headimgurl
+				}
+			},
+			validatedAt: data.validatedAt
 		};
 	}
 
@@ -56,56 +63,63 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 			}
 
 			const { topic } = ctx.state;
-			const list = await Model.Post.findAll({
+			const { rows, count } = await Model.Post.findAndCountAll({
 				where: { deletedAt: null, topic: topic.id },
+				include: [
+					{ model: Model.PostImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
+					},
+				],
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,
 				order: [['createdAt', 'DESC']],
-				include: [
-					{ model: Model.PostImage, as: 'imageList', require: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
-				]
 			});
 
-			ctx.body = list.map(Post);
+			ctx.body = {
+				list: rows.map(Post),
+				total: count,
+				size: Number(pageSize),
+				current: Number(pageCurrent)
+			};
 		})
 		.post('/', async function createPost(ctx) {
-			const { cityList, customer, administrator } = ctx.state;
+			const { cityList, customer, administrator, topic } = ctx.state;
 
 			if (!customer) {
 				return ctx.throw(403, 'You MUST bing a customer');
 			}
 
-			const { raw, city: cityAdcode, imageList, topic } = ctx.request.body;
+			const { raw, imageList } = ctx.request.body;
 			const now = new Date();
-			const isManagedCity = cityList.some(city => city.adcode === cityAdcode);
+			const isManagedCity = cityList.some(city => city.adcode === topic.city);
+			const id = Utils.encodeSHA256(`${raw}${now}`);
 
-			const post = await Model.Share.create({
-				id: Utils.encodeSHA256(`${raw}${cityAdcode}${now}`),
-				topic, raw, imageList, like: 0,
+			const post = await Model.Post.create({
+				id, topic: topic.id, raw, like: 0,
 				createdAt: now,
 				createdBy: customer.id,
 				validatedAt: isManagedCity ? now : null,
 				validatedBy: isManagedCity ? administrator.id : null
-			}, {
-				include: [
-					{ model: Model.PostImage, as: 'imageList', required: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
-				]
 			});
 
-			ctx.body = Post(post);
+			post.imageList = await Model.PostImage.bulkCreate(imageList.map(imageId => {
+				return { image: imageId, post: id };
+			}));
 
+			post.Customer = customer;
+			ctx.body = Post(post);
 		})
 		.param('postId', async function fetchPost(id, ctx, next) {
 			const post = await Model.Post.findOne({
 				where: { id, deletedAt: null },
 				include: [
-					{ model: Model.PostImage, as: 'imageList', require: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
+					{ model: Model.PostImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
+					},
 				]
 			});
 
@@ -121,14 +135,23 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 			ctx.body = Post(ctx.state.post);
 		})
 		.put('/:postId', async function validatePost(ctx) {
-			const { post } = ctx.state;
+			const { topic, administrator, post } = ctx.state;
+
+			if (!administrator.cityList.some(city => city.adcode === topic.city)) {
+				return ctx.throw(403, 'NOT your city.');
+			}
 
 			post.validatedAt = new Date();
+			post.validatedBy = administrator.id;
 			await post.save();
 			ctx.body = Post(post);
 		})
 		.delete('/:postId', async function deletePost(ctx) {
-			const { post } = ctx.state;
+			const { topic, administrator, post } = ctx.state;
+
+			if (!administrator.cityList.some(city => city.adcode === topic.city)) {
+				return ctx.throw(403, 'NOT your city.');
+			}
 
 			post.deletedAt = new Date();
 			await post.save();

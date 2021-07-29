@@ -12,13 +12,13 @@
 		/>
 		<b-button
 			variant="primary"
-			class="mr-auto"
+			class="mr-3"
 			@click="getAllTopicList"
 		>搜索</b-button>
 
 		<b-input-group
 			prepend="城市"
-			class="mx-auto"
+			class="mr-3"
 		>
 			<b-form-select
 				:options="cityOptionList"
@@ -30,7 +30,7 @@
 
 		<b-form-radio-group
 			buttons
-			class="mx-auto"
+			class="mr-auto"
 			button-variant="primary"
 			v-model="validated"
 			@change="getAllTopicList"
@@ -65,6 +65,7 @@
 				no-body
 				footer-class="py-1 px-2"
 				class="position-relative app-topic-item justify-content-between h-100"
+				@click="requestViewTopic(topic.id)"
 			>
 				<div
 					class="position-absolute"
@@ -94,13 +95,13 @@
 						<b-button
 							variant="primary"
 							class="mr-1"
-							:disabled="!managedCityMap[topic.city] || topic.createdAt"
-							@click="validateTopic(topic.id)"
+							:disabled="!managedCityMap[topic.city] || topic.createdAt !== null"
+							@click.stop="validateTopic(topic.id)"
 						><b-icon-check2-circle /></b-button>
 						<b-button
 							variant="danger"
 							:disabled="!managedCityMap[topic.city]"
-							@click="deleteTopic(topic.id)"
+							@click.stop="deleteTopic(topic.id)"
 						><b-icon-trash /></b-button>
 					</b-button-toolbar>
 					<div>
@@ -117,16 +118,19 @@
 	</b-row>
 
 	<app-topic-creation ref="creation" @created="getAllTopicList" />
+	<app-topic-detail ref="detail" />
 </div>
 
 </template>
 
 <script>
 import AppTopicCreation from './Creation.vue';
+import AppTopicDetail from './Detail.vue';
 
 export default {
 	components: {
-		AppTopicCreation
+		AppTopicCreation,
+		AppTopicDetail
 	},
 	data() {
 		return {
@@ -184,7 +188,7 @@ export default {
 		requestCreatingTopic() {
 			this.$refs.creation.open();
 		},
-		requestViewReference(topicId) {
+		requestViewTopic(topicId) {
 			this.$refs.detail.open(topicId);
 		},
 		async deleteTopic(topicId) {

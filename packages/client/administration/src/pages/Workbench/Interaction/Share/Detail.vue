@@ -143,7 +143,6 @@ export default {
 				this.$bvToast.toast('审核通过非遗圈（作品）成功', { variant: 'success' });
 				this.$emit('validated');
 			} catch (err) {
-				console.log(err);
 				this.$bvToast.toast('审核非遗圈（作品）失败', { variant: 'danger' });
 			}
 		},

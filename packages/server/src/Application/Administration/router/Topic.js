@@ -174,20 +174,5 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 			topic.deletedAt = new Date();
 			await topic.save();
 			ctx.body = Topic(topic);
-		})
-		.get('/:topic/post', async function getTopicAllPostList(ctx) {
-			const { topic } = ctx.state;
-
-			const list = await Model.Post.findAll({
-				where: { deletedAt: null, topic: topic.id },
-				order: [['createdAt', 'DESC']],
-				include: [
-					{ model: Model.PostImage, as: 'imageList', require: true },
-					{ model: Model.Administrator, as: 'validatedBy' },
-					{ model: Model.Customer, as: 'createdBy' },
-				]
-			});
-
-			ctx.body = list.map(Post);
 		});
 });

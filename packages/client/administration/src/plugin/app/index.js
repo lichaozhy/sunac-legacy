@@ -229,17 +229,34 @@ const app = {
 				delete() {
 					return agent.delete(`/topic/${topicId}`).then(pickData);
 				},
-				Post: {
+				Post: Object.assign(function Post(postId) {
+					return {
+						get() {
+							return agent.get(`/topic/${topicId}/post/${postId}`).then(pickData);
+						},
+						update(options) {
+							return agent.put(`/topic/${topicId}/post/${postId}`, {
+								raw: options.raw,
+								imageList: options.imageList,
+								valid: options.valid
+							}).then(pickData);
+						},
+						delete() {
+							return agent.delete(`/topic/${topicId}/post/${postId}`).then(pickData);
+						}
+					};
+				}, {
+					query() {
+						return agent.get(`/topic/${topicId}/post`).then(pickData);
+					},
 					create(options) {
-						return agent.get(`/topic/${topicId}/post`, {
+						return agent.post(`/topic/${topicId}/post`, {
+							topic: topicId,
 							raw: options.raw,
 							imageList: options.imageList
 						}).then(pickData);
-					},
-					query() {
-						return agent.get(`/topic/${topicId}/post`).then(pickData);
 					}
-				}
+				})
 			};
 		}, {
 			query(query) {
@@ -282,28 +299,7 @@ const app = {
 					city: options.city,
 					description: options.description
 				}).then(pickData);
-			},
-			Post: Object.assign(function Post(postId) {
-				return {
-					get() {
-						return agent.get(`/topic/post/${postId}`).then(pickData);
-					},
-					update(options) {
-						return agent.put(`/topic/post/${postId}`, {
-							raw: options.raw,
-							imageList: options.imageList,
-							valid: options.valid
-						}).then(pickData);
-					},
-					delete() {
-						return agent.delete(`/topic/post/${postId}`).then(pickData);
-					}
-				};
-			}, {
-				query() {
-					return agent.get('/topic/post').then(pickData);
-				}
-			})
+			}
 		}),
 		Image: {
 			create(options) {
