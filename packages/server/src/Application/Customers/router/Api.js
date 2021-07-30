@@ -22,7 +22,19 @@ module.exports = Router(function SunacLegacyApi(router, {
 		};
 	}
 
+	function Banner(data) {
+		return {
+			id: data.id,
+			image: data.image,
+			city: data.city,
+			createdAt: data.createdAt
+		};
+	}
+
 	router
+		.get('/dev', async function dispatchRedirect(ctx) {
+			ctx.body = { success: 'ok' };
+		})
 		.use($ac('signed'), async function fetchPrincipalCustomer(ctx) {
 			const { customerId } = ctx.session;
 			const customer = await Model.Customer.findOne({ where: { id: customerId } });
@@ -68,6 +80,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const filepath = Workspace.resolve('image', path.join(imageId, 'image.png'));
 
+			ctx.headers['cache-control'] = 'public, max-age: 31536000';
 			ctx.type = 'png';
 			ctx.body = fs.createReadStream(filepath);
 		})
@@ -79,6 +92,15 @@ module.exports = Router(function SunacLegacyApi(router, {
 			}
 
 			return next();
+		})
+		.get('/banner', async function getMyCityBannerList(ctx) {
+			const { customer } = ctx.state;
+
+			const list = await Model.Banner.findAll({
+				where: { city: customer.cityAs, deletedAt: null }
+			});
+
+			ctx.body = list.map(Banner);
 		});
 });
 

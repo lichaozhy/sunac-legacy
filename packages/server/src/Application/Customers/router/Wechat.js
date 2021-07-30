@@ -65,7 +65,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			if (customer) {
 				// finding out customer
 				ctx.session.customerId = customer.id;
-				ctx.redirect('/');
+				ctx.redirect('/#test');
 			} else if (USERINFO_SCOPE_REG.test(authorization.scope)) {
 				// create new customer
 				const { openid, access_token } = authorization;

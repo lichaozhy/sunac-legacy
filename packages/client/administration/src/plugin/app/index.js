@@ -305,7 +305,30 @@ const app = {
 			create(options) {
 				return agent.post('/image', options).then(pickData);
 			}
-		}
+		},
+		Banner: Object.assign(function Banner(bannerId) {
+			return {
+				delete() {
+					return agent.delete(`/banner/${bannerId}`).then(pickData);
+				}
+			};
+		}, {
+			create(options) {
+				return agent.post('/banner', {
+					image: options.image,
+					city: options.city
+				}).then(pickData);
+			},
+			query(query) {
+				const params = {};
+
+				if ('city' in query) {
+					params.city = query.city;
+				}
+
+				return agent.get('/banner', { params }).then(pickData);
+			}
+		})
 	},
 	Filter: {
 		localDate,

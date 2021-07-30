@@ -93,6 +93,13 @@ namespace Model {
 		raw: string;
 		imageList: Image[];
 	}
+
+	interface Banner {
+		id: string;
+		image: string;
+		city: Adcode;
+		createdAt: string;
+	}
 }
 
 namespace Query {
@@ -204,6 +211,16 @@ namespace Api {
 	interface Image {
 		create(options: FormData): Promise<Model.Image>;
 	}
+
+	interface Banner {
+		(bannerId: string): BannerInstance;
+		query(): Model.Banner[];
+		create(options: Model.Banner): Model.Banner;
+	}
+
+	interface BannerInstance {
+		delete(): Model.Banner;
+	}
 }
 
 interface Api {
@@ -215,6 +232,7 @@ interface Api {
 	Share: Api.Share;
 	Topic: Api.Topic;
 	Image: Api.Image;
+	Banner: Api.Banner;
 }
 
 namespace Filter {

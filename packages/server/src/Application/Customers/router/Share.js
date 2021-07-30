@@ -65,14 +65,41 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			ctx.body = Share(share);
 		})
-		.post('/:shareId/like', async function createShareLike(ctx) {
+		.param('shareId', async function fecthShare(id, ctx, next) {
 			const { customer } = ctx.state;
-			const { share } = ctx.request.body;
+
+			const share = await Model.Share.findOne({
+				where: {
+					id, deletedAt: null,
+					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
+				},
+			});
+
+			if (!share) {
+				return ctx.throw(404, 'The share is NOT existed');
+			}
+
+			ctx.state.share = share;
+
+			return next();
+		})
+		.get('/:shareId', async function getShare(ctx) {
+			ctx.body = Share(ctx.state.share);
+		})
+		.delete('/:shareId', async function deleteShare(ctx) {
+			const { share } = ctx.state;
+
+			share.deletedAt = new Date();
+			await share.save();
+			ctx.body = Share(share);
+		})
+		.post('/:shareId/like', async function createShareLike(ctx) {
+			const { customer, share } = ctx.state;
 
 			const liked = await Model.CustomerLikeShare.findOne({
 				where: {
 					customer: customer.id,
-					share,
+					share: share.id,
 					createdAt: { [Op.gt]: getToday0() }
 				}
 			});
@@ -83,7 +110,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const now = new Date();
 			const like = await Model.CustomerLikeShare.create({
-				customer: customer.id, share, createdAt: now
+				customer: customer.id, share: share.id, createdAt: now
 			});
 
 			ctx.body = {
