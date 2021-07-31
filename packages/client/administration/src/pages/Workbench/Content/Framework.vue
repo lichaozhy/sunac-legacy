@@ -23,6 +23,7 @@
 
 			<b-list-group class="mt-3">
 				<b-list-group-item
+					:to="{ name: 'Workbench.Content.Banner' }"
 				>城市BANNER</b-list-group-item>
 			</b-list-group>
 		</b-col>

@@ -1,5 +1,4 @@
 const { Router } = require('@produck/duck-web-koa-router');
-const { Op } = require('sequelize');
 
 function Banner(data) {
 	return {
@@ -10,7 +9,7 @@ function Banner(data) {
 	};
 }
 
-module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
+module.exports = Router(function SunacLegacyAdministrationBanner(router, {
 	Model, AccessControl: $ac, Utils
 }) {
 	router
@@ -23,44 +22,27 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 
 			return next();
 		})
-		.get('/', async function getAllPhotoList(ctx) {
-			const { city } = ctx.query;
+		.get('/', async function getAllBannerList(ctx) {
+			const { city: cityAdcode } = ctx.query;
 			const { cityList } = ctx.state;
 
-			const where = {
-				deletedAt: null,
-				city: { [Op.in]: cityList.map(city => city.adcode) }
-			};
-
-			if (cityAdcode && cityList.some(city => city.adcode === cityAdcode)) {
-				where.city = cityAdcode;
+			if (!cityAdcode) {
+				return ctx.throw(400, '".city" required.');
 			}
 
-			if (title) {
-				where.title = { [Op.like]: `%${title}%` };
+			if (!cityList.some(city => city.adcode === cityAdcode)) {
+				return ctx.throw(403, 'NOT your city');
 			}
 
-			const { rows, count } = await Model.Photo.findAndCountAll({
-				where,
-				offset: (pageCurrent - 1) * pageSize,
-				limit: pageSize,
-				order: [['createdAt', 'DESC']]
+			const list = await Model.Banner.findAll({
+				where: { deletedAt: null, city: cityAdcode }
 			});
 
-			ctx.body = {
-				list: rows.map(Photo),
-				total: count,
-				size: Number(pageSize),
-				current: Number(pageCurrent)
-			};
+			ctx.body = list.map(Banner);
 		})
-		.post('/', async function createPhoto(ctx) {
+		.post('/', async function createBanner(ctx) {
 			const { cityList } = ctx.state;
-			const { title, image, city: cityAdcode } = ctx.request.body;
-
-			if (typeof(title) !== 'string') {
-				return ctx.throw(400, 'Invalid ".title".');
-			}
+			const { image, city: cityAdcode } = ctx.request.body;
 
 			if (typeof(cityAdcode) !== 'string') {
 				return ctx.throw(400, 'Invalid ".city".');
@@ -71,32 +53,38 @@ module.exports = Router(function SunacLegacyAdministrationPhoto(router, {
 			}
 
 			const now = new Date();
-			const photo = await Model.Photo.create({
-				id: Utils.encodeSHA256(`${title}${cityAdcode}${now}`),
-				title, city: cityAdcode, image, like: 0,
+			const banner = await Model.Banner.create({
+				id: Utils.encodeSHA256(`${cityAdcode}${now}`),
+				city: cityAdcode, image,
 				createdAt: now
 			});
 
-			ctx.body = Photo(photo);
+			ctx.body = Banner(banner);
 		})
-		.param('photoId', async function fetchPhoto(id, ctx, next) {
-			const photo = await Model.Photo.findOne({
+		.param('bannerId', async function fetchBanner(id, ctx, next) {
+			const { cityList } = ctx.state;
+
+			const banner = await Model.Banner.findOne({
 				where: { id, deletedAt: null }
 			});
 
-			if (!photo) {
-				return ctx.throw(404, 'photo is NOT found.');
+			if (!banner) {
+				return ctx.throw(404, 'banner is NOT found.');
 			}
 
-			ctx.state.photo = photo;
+			if (!cityList.some(city => city.adcode === banner.city)) {
+				return ctx.throw(403, 'The city is NOT yours.');
+			}
+
+			ctx.state.banner = banner;
 
 			return next();
 		})
-		.delete('/:photoId', async function deletePhoto(ctx) {
-			const { photo } = ctx.state;
+		.delete('/:bannerId', async function deleteBanner(ctx) {
+			const { banner } = ctx.state;
 
-			photo.deletedAt = new Date();
-			await photo.save();
-			ctx.body = Photo(photo);
+			banner.deletedAt = new Date();
+			await banner.save();
+			ctx.body = Banner(banner);
 		});
 });

@@ -6,6 +6,7 @@ const User = require('./define/User');
 const Content = require('./define/Content');
 const Image = require('./define/Image');
 const Wechat = require('./define/Wechat');
+const Activity = require('./define/Activity');
 
 const ModelFactory = {
 	Maintainer: User.Maintainer,
@@ -23,6 +24,8 @@ const ModelFactory = {
 	Share: Content.Share,
 	Photo: Content.Photo,
 	Banner: Content.Banner,
+
+	PrizeTopic: Activity.PrizeTopic,
 
 	Image: Image.Image
 };
@@ -72,7 +75,9 @@ module.exports = function SunacLegacySequelize(options) {
 		Photo: sequelize.model('Photo'),
 		Banner: sequelize.model('Banner'),
 
-		Image: sequelize.model('Image')
+		Image: sequelize.model('Image'),
+
+		PrizeTopic: sequelize.model('PrizeTopic')
 	};
 
 	/**
@@ -117,6 +122,12 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.PostImage.belongsTo(Model.Image, FK('image'));
 	Model.Photo.belongsTo(Model.Image, FK('image'));
 	Model.Banner.belongsTo(Model.Image, FK('image'));
+
+	/**
+	 * Activity
+	 */
+	Model.PrizeTopic.belongsTo(Model.Topic, FK('topic'));
+	Model.Topic.hasOne(Model.PrizeTopic, FK('topic'));
 
 	return { sequelize, Model };
 };

@@ -1,12 +1,4 @@
 {
-	"breakpoints": [
-    "xs",
-    "sm",
-    "md",
-    "lg",
-    "xl",
-		"xxl"
-	],
   "formControls": {
 		"size": "sm"
   },

@@ -20,19 +20,21 @@ const app = {
 	Api: {
 		Banner: {
 			query() {
-
+				return agent.get('/banner').then(pickData);
 			}
 		},
 		Customer: {
 			get() {
-
+				return agent.get('/customer').then(pickData);
 			},
-			update() {
-
+			update(options) {
+				return agent.put('/customer', {
+					city: options.city
+				}).then(pickData);
 			},
 			TodayLiked: {
 				query() {
-
+					return agent.get('/customer/today/like').then(pickData);
 				}
 			},
 		},
@@ -47,15 +49,15 @@ const app = {
 				return agent.get('/city').then(pickData);
 			},
 		}),
-		Photo: Object.assign(function Photo() {
+		Photo: Object.assign(function Photo(photoId) {
 			return {
 				like() {
-
+					return agent.post(`/photo/${photoId}/like`).then(pickData);
 				}
 			};
 		}, {
 			query() {
-
+				return agent.get('/photo').then(pickData);
 			}
 		}),
 		Reference: {
@@ -63,58 +65,68 @@ const app = {
 
 			}
 		},
-		Share: Object.assign(function Share() {
+		Share: Object.assign(function Share(shareId) {
 			return {
 				like() {
-
+					return agent.post(`/share/${shareId}/like`).then(pickData);
 				}
 			};
 		}, {
 			query() {
-
+				return agent.get('/share').then(pickData);
 			},
-			create() {
-
+			create(options) {
+				return agent.post('/share', {
+					raw: options.raw,
+					imageList: options.imageList
+				}).then(pickData);
 			}
 		}),
-		Topic: Object.assign(function Topic() {
+		Topic: Object.assign(function Topic(topicId) {
 			return {
 				get() {
-
+					return agent.get(`/topic/${topicId}`).then(pickData);
 				},
 				delete() {
-
+					return agent.delete(`/topic/${topicId}`).then(pickData);
 				},
 				like() {
-
+					return agent.post(`/topic/${topicId}/like`).then(pickData);
 				},
-				Post: Object.assign(function Post() {
+				Post: Object.assign(function Post(postId) {
 					return {
 						get() {
-
+							return agent.get(`/topic/${topicId}/post/${postId}`).then(pickData);
 						},
 						delete() {
-
+							return agent.delete(`/topic/${topicId}/post/${postId}`).then(pickData);
 						},
 						like() {
-
+							return agent.post(`/topic/${topicId}/post/${postId}`).then(pickData);
 						}
 					};
 				}, {
 					query() {
-
+						return agent.get(`/topic/${topicId}/post`).then(pickData);
 					},
-					create() {
-
+					create(options) {
+						return agent.post(`/topic/${topicId}/post`, {
+							raw: options.raw,
+							imageList: options.imageList
+						}).then(pickData);
 					}
 				})
 			};
 		}, {
 			query() {
-
+				return agent.get('/topic').then(pickData);
 			},
-			create() {
-
+			create(options) {
+				return agent.post('/topic', {
+					title: options.title,
+					banner: options.banner,
+					description: options.description,
+				}).then(pickData);
 			}
 		}),
 		Wechat: {

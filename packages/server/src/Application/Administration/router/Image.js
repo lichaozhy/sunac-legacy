@@ -19,6 +19,11 @@ module.exports = Router(function SunacLegacyApi(router, {
 	router
 		.post('/', $ac('signed'), async function createImage(ctx) {
 			const { image } = ctx.request.files;
+
+			if (!image) {
+				return ctx.throw(400, 'no image file provided.');
+			}
+
 			const imageFileBuffer = await fs.readFile(image.path);
 			const hash = Utils.encodeSHA256(imageFileBuffer);
 

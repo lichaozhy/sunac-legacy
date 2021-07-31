@@ -10,6 +10,7 @@ function Customer(sequelize, namespace) {
 			primaryKey: true
 		},
 		name: DataTypes.STRING(32),
+		phone: DataTypes.STRING(32),
 		cityAs: DataTypes.CHAR(6)
 	}, {
 		tableName: `${namespace}customer`

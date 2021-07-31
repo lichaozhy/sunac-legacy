@@ -1,5 +1,7 @@
-import Framework from '../Content/Framework.vue';
+import Framework from './Framework.vue';
+import Banner from './Banner.vue';
+
 import * as Photo from './Photo';
 import * as Reference from './Reference';
 
-export { Framework, Photo, Reference };
+export { Framework, Photo, Reference, Banner };

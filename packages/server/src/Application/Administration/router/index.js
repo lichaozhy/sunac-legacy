@@ -10,5 +10,7 @@ module.exports = {
 	Share: require('./Share'),
 	Post: require('./Post'),
 
-	Image: require('./Image')
+	Image: require('./Image'),
+	Prize: require('./Prize'),
+	Banner: require('./Banner')
 };

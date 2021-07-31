@@ -40,30 +40,6 @@ const router = new VueRouter({
 					]
 				},
 
-				// {
-				// 	name: 'Workbench.Validation',
-				// 	path: 'validation',
-				// 	redirect: { name: 'Workbench.Validation.Share' },
-				// 	component: Page.Workbench.Validation.Framework,
-				// 	children: [
-				// 		{
-				// 			name: 'Workbench.Validation.Post',
-				// 			path: 'post',
-				// 			component: Page.Workbench.Validation.Post
-				// 		},
-				// 		{
-				// 			name: 'Workbench.Validation.Share',
-				// 			path: 'share',
-				// 			component: Page.Workbench.Validation.Share
-				// 		},
-				// 		{
-				// 			name: 'Workbench.Validation.Topic',
-				// 			path: 'topic',
-				// 			component: Page.Workbench.Validation.Topic
-				// 		}
-				// 	]
-				// },
-
 				{
 					name: 'Workbench.Content',
 					path: 'content',
@@ -79,6 +55,11 @@ const router = new VueRouter({
 							name: 'Workbench.Content.Photo',
 							path: 'photo',
 							component: Page.Workbench.Content.Photo.Overview
+						},
+						{
+							name: 'Workbench.Content.Banner',
+							path: 'banner',
+							component: Page.Workbench.Content.Banner
 						}
 					]
 				},

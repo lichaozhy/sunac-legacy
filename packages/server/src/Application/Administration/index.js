@@ -78,12 +78,20 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 							prefix: '/:topicId/post',
 							Router: Router.Post
 						},
+						{
+							prefix: '/:topicId/prize',
+							Router: Router.Prize
+						}
 					]
 				},
 				{
 					prefix: '/share',
 					Router: Router.Share
 				},
+				{
+					prefix: '/banner',
+					Router: Router.Banner
+				}
 
 				// {
 				// 	prefix: '/comment',
