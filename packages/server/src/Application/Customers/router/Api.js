@@ -35,11 +35,16 @@ module.exports = Router(function SunacLegacyApi(router, {
 		.get('/dev', async function dispatchRedirect(ctx) {
 			ctx.body = { success: 'ok' };
 		})
-		.use($ac('signed'), async function fetchPrincipalCustomer(ctx) {
+		.use($ac('signed'), async function fetchPrincipalCustomer(ctx, next) {
 			const { customerId } = ctx.session;
-			const customer = await Model.Customer.findOne({ where: { id: customerId } });
+			const customer = await Model.Customer.findOne({
+				where: { id: customerId },
+				include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+			});
 
 			ctx.state.customer = customer;
+
+			return next();
 		})
 		.get('/customer', async function getPrincipalCustomer(ctx) {
 			ctx.body = Customer(ctx.state.customer);
@@ -61,10 +66,14 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 		.put('/customer', async function updatePrincipalCustomer(ctx) {
 			const { customer } = ctx.state;
-			const { cityAs } = ctx.request.body;
+			const { cityAs, phone } = ctx.request.body;
 
 			if (Utils.City.getCity(cityAs) !== null) {
 				customer.cityAs = cityAs;
+			}
+
+			if (phone) {
+				customer.phone = phone;
 			}
 
 			await customer.save();

@@ -33,7 +33,11 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 		})
 		.use(KoaBody())
 		.use(AppRouter().routes())
-		.use(serve(path.resolve('www/customers')));
+		.use(function (ctx, next) {
+			ctx.set('Cache-Control', 'max-age=3600');
+
+			return next();
+		}, serve(path.resolve('www/customers')));
 }, {
 	plugins: [
 		DuckWebKoaAcl({

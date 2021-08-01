@@ -29,7 +29,8 @@ const app = {
 			},
 			update(options) {
 				return agent.put('/customer', {
-					city: options.city
+					cityAs: options.cityAs,
+					phone: options.phone
 				}).then(pickData);
 			},
 			TodayLiked: {

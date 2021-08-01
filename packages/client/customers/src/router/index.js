@@ -12,14 +12,13 @@ const router = new VueRouter({
 		{
 			name: 'Home',
 			path: '/home',
-			redirect: { name: 'Home.Overview' },
 			component: Page.Home.Framework,
 			children: [
-				{
-					name: 'Home.Overview',
-					path: 'overview',
-					component: Page.Home.Overview
-				},
+				// {
+				// 	name: 'Home.Overview',
+				// 	path: 'overview',
+				// 	component: Page.Home.Overview
+				// },
 				{
 					name: 'Home.Photo',
 					path: 'photo',
@@ -35,6 +34,11 @@ const router = new VueRouter({
 					name: 'Home.Share.Detail',
 					path: 'share/:shareId/detail'
 				},
+				{
+					name: 'Home.Location',
+					path: 'location',
+					component: Page.Home.Location.Selector
+				}
 			]
 		},
 

@@ -1,7 +1,7 @@
 import Framework from './Framework.vue';
-import Overview from './Overview.vue';
 
 import * as Photo from './Photo';
 import * as Share from './Share';
+import * as Location from './Location';
 
-export { Framework, Overview, Photo, Share };
+export { Framework, Photo, Share, Location };
