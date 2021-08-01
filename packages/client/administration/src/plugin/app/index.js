@@ -229,6 +229,14 @@ const app = {
 				delete() {
 					return agent.delete(`/topic/${topicId}`).then(pickData);
 				},
+				Prize: {
+					create() {
+						return agent.post(`/topic/${topicId}/prize`).then(pickData);
+					},
+					delete() {
+						return agent.delete(`/topic/${topicId}/prize`).then(pickData);
+					}
+				},
 				Post: Object.assign(function Post(postId) {
 					return {
 						get() {
@@ -288,6 +296,10 @@ const app = {
 
 				if ('title' in query) {
 					params.title = query.title;
+				}
+
+				if ('prize' in query) {
+					params.prize = query.prize;
 				}
 
 				return agent.get('/topic', { params }).then(pickData);

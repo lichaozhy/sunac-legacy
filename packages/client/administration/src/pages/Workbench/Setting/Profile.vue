@@ -214,6 +214,7 @@ export default {
 		customerFieldList() {
 			return [
 				{ key: 'openid', label: '开放ID', class: 'col-openid' },
+				{ key: 'phone', label: '电话', class: 'col-short-string' },
 				{ key: 'headimg', label: '头像', class: 'col-tiny-string text-center' },
 				{ key: 'nickname', label: '微信昵称' },
 				{ key: 'sex', label: '性别', class: 'col-tiny-string text-center' },

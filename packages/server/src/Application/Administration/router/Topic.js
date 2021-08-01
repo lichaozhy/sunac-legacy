@@ -1,7 +1,7 @@
 const { Router } = require('@produck/duck-web-koa-router');
 const { Op } = require('sequelize');
 
-const VALIDATED_REG = /^true|false$/;
+const BOOLEAN_REG = /^true|false$/;
 
 module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 	Model, AccessControl: $ac, Utils
@@ -18,6 +18,7 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 			like: data.like,
 			createdAt: data.createdAt,
 			validatedAt: data.validatedAt,
+			prize: data.PrizeTopic !== null,
 			createdBy: {
 				id: data.Customer.id,
 				wechat: {
@@ -26,18 +27,6 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 					headimgurl: data.Customer.wechat.headimgurl
 				}
 			}
-		};
-	}
-
-	function Post(data) {
-		return {
-			id: data.id,
-			raw: data.raw,
-			imageList: data.imageList,
-			createdAt: data.createdAt,
-			createdBy: data.createdBy,
-			validatedAt: data.validatedAt,
-			validatedBy: data.validatedBy
 		};
 	}
 
@@ -63,15 +52,25 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 			return next();
 		})
 		.get('/', async function getAllTopicList(ctx) {
-			const { pageSize = 10000000, pageCurrent = 1, validated, city, title } = ctx.query;
+			const {
+				pageSize = 10000000, pageCurrent = 1,
+				validated, city, title, prize
+			} = ctx.query;
+
 			const where = { deletedAt: null };
 
 			if (validated) {
-				if (!VALIDATED_REG.test(validated)) {
+				if (!BOOLEAN_REG.test(validated)) {
 					return ctx.throw(400, 'Invalid query "?validated="');
 				}
 
 				where.validatedAt = validated === 'true' ? { [Op.not]: null } : null;
+			}
+
+			if (prize) {
+				if (!BOOLEAN_REG.test(prize)) {
+					return ctx.throw(400, 'Invalid query "?prize="');
+				}
 			}
 
 			if (city) {
@@ -88,7 +87,8 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 					{
 						model: Model.Customer, required: true,
 						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }],
-					}
+					},
+					{ model: Model.PrizeTopic, required: prize === 'true', where: { deletedAt: null } }
 				],
 				offset: (pageCurrent - 1) * pageSize,
 				limit: pageSize,

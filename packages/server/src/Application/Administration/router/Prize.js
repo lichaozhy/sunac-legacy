@@ -1,9 +1,4 @@
 const { Router } = require('@produck/duck-web-koa-router');
-const { Op } = require('sequelize');
-
-function Prize() {
-
-}
 
 module.exports = Router(function SunacLegacyAdministrationTopicPrize(router, {
 	Model, Utils
@@ -26,7 +21,7 @@ module.exports = Router(function SunacLegacyAdministrationTopicPrize(router, {
 
 			return next();
 		})
-		.post('/prize', async function createPrize(ctx) {
+		.post('/', async function createPrize(ctx) {
 			const { prize, topic } = ctx.state;
 
 			if (prize) {
@@ -52,10 +47,10 @@ module.exports = Router(function SunacLegacyAdministrationTopicPrize(router, {
 
 			return next();
 		})
-		.get('/prize', async function getPrize(ctx) {
+		.get('/', async function getPrize(ctx) {
 			ctx.body = Prize(ctx.state.prize);
 		})
-		.delete('/prize', async function deletePrize(ctx) {
+		.delete('/', async function deletePrize(ctx) {
 			const { prize } = ctx.state;
 
 			prize.deletedAt = new Date();

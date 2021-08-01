@@ -60,6 +60,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const filepath = Workspace.resolve('image', path.join(imageId, 'image.png'));
 
+			ctx.set('Cache-Control', 'max-age=31536000');
 			ctx.type = 'png';
 			ctx.body = fs.createReadStream(filepath);
 		});

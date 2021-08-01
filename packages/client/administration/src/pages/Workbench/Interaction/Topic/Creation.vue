@@ -130,10 +130,9 @@ export default {
 					banner: banner.id
 				});
 
-				this.$bvToast.toast('创建话题成功', { variant: 'success' });
 				this.$emit('created');
-				this.reset();
-			} catch (Err) {
+				this.$bvToast.toast('创建话题成功', { variant: 'success' });
+			} catch (err) {
 				this.$bvToast.toast('创建话题失败', { variant: 'danger' });
 			}
 		},

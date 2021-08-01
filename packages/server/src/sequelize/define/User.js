@@ -11,7 +11,8 @@ function Customer(sequelize, namespace) {
 		},
 		name: DataTypes.STRING(32),
 		phone: DataTypes.STRING(32),
-		cityAs: DataTypes.CHAR(6)
+		cityAs: DataTypes.CHAR(6),
+		createdAt: DataTypes.DATE
 	}, {
 		tableName: `${namespace}customer`
 	});

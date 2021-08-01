@@ -187,9 +187,15 @@ namespace Api {
 
 	interface TopicInstance {
 		Post: TopicInstancePost;
+		Prize: TopicInstancePrize;
 		get(): Promise<Model.Post>;
 		update(options: Model.Post): Promise<Model.Post>;
 		delete(): Promise<Model.Post>;
+	}
+
+	interface TopicInstancePrize {
+		create(): Promise;
+		delete(): Promise;
 	}
 
 	interface TopicInstancePost {
