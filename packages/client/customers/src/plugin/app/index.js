@@ -62,8 +62,18 @@ const app = {
 			}
 		}),
 		Reference: {
-			query() {
+			query(query) {
+				const params = {};
 
+				if (query.from) {
+					params.from = query.from;
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				return agent.get('/reference', { params }).then(pickData);
 			}
 		},
 		Share: Object.assign(function Share(shareId) {

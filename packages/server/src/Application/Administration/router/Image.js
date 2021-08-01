@@ -30,6 +30,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const existedImage = await Model.Image.findOne({ where: { id: hash } });
 
 			if (existedImage) {
+				fs.remove(image.path);
+
 				return ctx.body = Image(existedImage);
 			}
 

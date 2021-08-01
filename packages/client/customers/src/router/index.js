@@ -19,11 +19,6 @@ const router = new VueRouter({
 				// 	path: 'overview',
 				// 	component: Page.Home.Overview
 				// },
-				{
-					name: 'Home.Photo',
-					path: 'photo',
-					component: Page.Home.Photo.Overview
-				},
 
 				{
 					name: 'Home.Share',
@@ -34,12 +29,19 @@ const router = new VueRouter({
 					name: 'Home.Share.Detail',
 					path: 'share/:shareId/detail'
 				},
-				{
-					name: 'Home.Location',
-					path: 'location',
-					component: Page.Home.Location.Selector
-				}
 			]
+		},
+
+		{
+			name: 'Photo',
+			path: '/photo',
+			component: Page.Photo.Overview
+		},
+
+		{
+			name: 'Location',
+			path: '/location',
+			component: Page.Location.Selector
 		},
 
 		{

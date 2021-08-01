@@ -18,7 +18,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/', async function getReferenceList(ctx) {
-			const { from = 0, size } = ctx.query;
+			const { from = 0, size = 20 } = ctx.query;
 			const { customer } = ctx.state;
 
 			const { rows, count } = await Model.Reference.findAndCountAll({
@@ -28,7 +28,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				order: [['createdAt', 'DESC']]
 			});
 
-			return {
+			ctx.body = {
 				list: rows.map(Reference),
 				total: count
 			};
