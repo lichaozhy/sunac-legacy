@@ -41,7 +41,7 @@
 	/>{{ cityMap[cityAs] && cityMap[cityAs].name }}</b-button>
 
 	<b-aspect
-		class="mt-4"
+		class="mt-4 position-relative"
 		aspect="16:9"
 	>
 		<b-row
@@ -75,7 +75,22 @@
 				</div>
 			</b-col>
 		</b-row>
+
+		<b-img
+			src="./image/heading.png"
+			class="position-absolute"
+			style="height:1.5em;top:0;left:0"
+		/>
 	</b-aspect>
+
+	<b-nav class="mt-1 font-weight-bold app-home-share-nav">
+		<b-nav-item
+			:to="{ name: 'Home.Share.Overview' }"
+		>非遗圈</b-nav-item>
+		<b-nav-item
+			:to="{ name: 'Home.Share.Ranking' }"
+		>排行榜</b-nav-item>
+	</b-nav>
 </div>
 
 </template>
@@ -141,9 +156,6 @@ export default {
 	mounted() {
 		this.getCityList();
 		this.refresh();
-	},
-	beforeRouteUpdate() {
-		this.refresh();
 	}
 };
 </script>
@@ -180,6 +192,31 @@ export default {
 				width: 12px;
 				border-radius: 50%/100%;
 				background-color: #4E4B78;
+			}
+		}
+	}
+
+	.app-home-share-nav {
+		a {
+			color: #000;
+			position: relative;
+
+			&.active {
+				transform: scale(1.2);
+
+				&::before {
+					content: ' ';
+					display: block;
+					position: absolute;
+					height: 6px;
+					background: #ccc;
+					width: 60px;
+					left: 50%;
+					bottom: 8px;
+					z-index: -1;
+					margin-left: -30px;
+					background-image: linear-gradient(to right, #FFFFFF, #74B1BE, #FFFFFF);
+				}
 			}
 		}
 	}

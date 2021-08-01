@@ -21,13 +21,14 @@ const router = new VueRouter({
 				// },
 
 				{
-					name: 'Home.Share',
-					path: 'share',
+					name: 'Home.Share.Overview',
+					path: 'share/overview',
 					component: Page.Home.Share.Overview
 				},
 				{
-					name: 'Home.Share.Detail',
-					path: 'share/:shareId/detail'
+					name: 'Home.Share.Ranking',
+					path: 'share/ranking',
+					component: Page.Home.Share.Ranking
 				},
 			]
 		},

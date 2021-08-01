@@ -1,4 +1,4 @@
 import Overview from './Overview.vue';
-import Detail from './Detail.vue';
+import Ranking from './Ranking.vue';
 
-export { Overview, Detail };
+export { Overview, Ranking };
