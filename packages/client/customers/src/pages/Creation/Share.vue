@@ -77,16 +77,18 @@ export default {
 				phone: '',
 				imageList: []
 			},
-			busy: false
 		};
 	},
 	methods: {
 		async browseFile() {
 			const res = await this.$wx.promises.chooseImage({ count: 9 - this.form.imageList.length });
-			const uploadingRes = await this.$wx.promises.uploadImage({ localId: res.localIds[0] });
-			const image = await this.$app.Api.Image.create({ mediaId: uploadingRes.serverId });
 
-			this.form.imageList.push(image.id);
+			for (const localId in res.localIds) {
+				const uploadingRes = await this.$wx.promises.uploadImage({ localId });
+				const image = await this.$app.Api.Image.create({ mediaId: uploadingRes.serverId });
+
+				this.form.imageList.push(image.id);
+			}
 		},
 		async getCustomer() {
 			const customer = await this.$app.Api.Customer.get();

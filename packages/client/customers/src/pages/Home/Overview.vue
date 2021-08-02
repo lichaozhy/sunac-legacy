@@ -2,7 +2,7 @@
 
 <div
 	id="app-home-overview"
-	class="p-2 position-relative"
+	class="px-2 position-relative"
 >
 	<b-carousel
 		indicators
@@ -43,8 +43,9 @@
 	/>{{ cityMap[cityAs] && cityMap[cityAs].name }}</b-button>
 
 	<b-aspect
-		class="mt-4 position-relative"
+		class="position-relative"
 		aspect="16:9"
+		style="margin-top: 30px"
 	>
 		<b-row
 			no-gutters
@@ -85,7 +86,7 @@
 		/>
 	</b-aspect>
 
-	<b-nav class="mt-1 font-weight-bold app-home-share-nav">
+	<b-nav class="mt-3 font-weight-bold app-home-share-nav">
 		<b-nav-item
 			:to="{ name: 'Home.Share.Overview' }"
 		>非遗圈</b-nav-item>

@@ -15,10 +15,28 @@
 				footer-bg-variant="white"
 				:img-src="`/api/image/${item.imageList[0]}/image.png`"
 				v-if="item"
+				style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
 			>
+				<b-img
+					v-if="item.index < 3"
+					src="./image/hot.png"
+					class="position-absolute"
+					style="height: 36px;top:0;right:0"
+				/>
+
+				<b-img
+					v-if="item.index < 3"
+					:src="`/no/${item.index + 1}.png`"
+					class="position-absolute"
+					style="height: 24px;top:0;left:0"
+				/>
+
 				<template #footer>
-					<div>{{ item.raw | substring }}</div>
-					<b-form-text>{{ item.createdAt | localDatetime }}</b-form-text>
+					<div
+						style="font-size:14px"
+						class="mb-1 font-weight-bold"
+					>{{ item.raw | substring }}</div>
+
 					<div class="d-flex">
 						<b-avatar size="sm" :src="item.createdBy.headimgurl" />
 						<b-form-text class="ml-1 mr-auto">{{ item.createdBy.nickname }}</b-form-text>
@@ -84,14 +102,19 @@ export default {
 			}
 		},
 		async getShareList() {
+			const from = this.shareList.length;
+
 			const { total, list } = await this.$app.Api.Share.query({
-				from: this.shareList.length,
+				from: from,
 				size: 10,
 				createdAt: this.lastUpdatedAt
 			});
 
 			this.total = total;
-			list.forEach(share => this.shareList.push(share));
+			list.forEach((share, index) => {
+				share.index = from + index;
+				this.shareList.push(share);
+			});
 		},
 		refresh() {
 			this.lastUpdatedAt = new Date();
