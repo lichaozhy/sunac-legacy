@@ -7,3 +7,11 @@ html, body {
 	height: 100%;
 	overflow: hidden;
 }
+
+.form-group.required {
+	legend::before {
+		content: '*';
+		margin-right: 0.25em;
+		color: red;
+	}
+}

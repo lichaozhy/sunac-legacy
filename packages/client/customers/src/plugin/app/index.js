@@ -83,8 +83,22 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/share').then(pickData);
+			query(query) {
+				const params = {};
+
+				if ('from' in query) {
+					params.from = query.from;
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				if (query.createdAt) {
+					params.createdAt = query.createdAt;
+				}
+
+				return agent.get('/share', { params }).then(pickData);
 			},
 			create(options) {
 				return agent.post('/share', {
@@ -143,6 +157,13 @@ const app = {
 		Wechat: {
 			getConfig() {
 				return agent.get('/wechat/jssdk/config').then(pickData);
+			}
+		},
+		Image: {
+			create(options) {
+				return agent.post('/image', {
+					mediaId: options.mediaId
+				}).then(pickData);
 			}
 		}
 	},

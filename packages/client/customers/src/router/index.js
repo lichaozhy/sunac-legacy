@@ -12,14 +12,9 @@ const router = new VueRouter({
 		{
 			name: 'Home',
 			path: '/home',
+			redirect: { name: 'Home.Share.Overview' },
 			component: Page.Home.Framework,
 			children: [
-				// {
-				// 	name: 'Home.Overview',
-				// 	path: 'overview',
-				// 	component: Page.Home.Overview
-				// },
-
 				{
 					name: 'Home.Share.Overview',
 					path: 'share/overview',

@@ -24,7 +24,9 @@ module.exports = function normalize(_options = {}) {
 				tls: {}
 			},
 		},
-		wx: {},
+		wx: {
+			debug: false
+		},
 		database: {
 			type: 'sqlite',
 			options: {
@@ -145,7 +147,8 @@ module.exports = function normalize(_options = {}) {
 	} else {
 		const {
 			appid: _appid,
-			appsecret: _appsecret
+			appsecret: _appsecret,
+			debug: _debug = options.wx.debug
 		} = _wx;
 
 		if (!isString(_appid)) {
@@ -156,8 +159,13 @@ module.exports = function normalize(_options = {}) {
 			throw new Error('Invalid ".wx.appsecret, a string expected, required.');
 		}
 
+		if (!isBoolean(_debug)) {
+			throw new Error('Invalid ".wx.debug, a boolean expected.');
+		}
+
 		options.wx.appid = _appid;
 		options.wx.appsecret = _appsecret;
+		options.wx.debug = _debug;
 	}
 
 	if (!isString(_defaultCity)) {

@@ -1,6 +1,12 @@
 import 'vue';
 
 declare namespace Model {
+	interface Image {
+		id: string;
+		size: string;
+		createdAt: string;
+	}
+
 	interface Page<T> {
 		size: number;
 		total: number;
@@ -77,6 +83,7 @@ declare namespace Model {
 	}
 
 	interface WechatConfig {
+		debug: boolean;
 		appId: string;
 		timestamp: string;
 		nonceStr: string;
@@ -161,6 +168,10 @@ declare namespace Api {
 	interface Wechat {
 		getConfig(): Promise<Model.WechatConfig>;
 	}
+
+	interface Image {
+		create(options: { mediaId: string }): Model.Image;
+	}
 }
 
 interface Api {
@@ -172,6 +183,7 @@ interface Api {
 	Share: Api.Share;
 	Topic: Api.Topic;
 	Wechat: Api.Wechat;
+	Image: Api.Image;
 }
 
 interface App {
@@ -192,7 +204,7 @@ namespace Wechat {
 	}
 
 	interface UploadImageRes {
-		localId: string;
+		serverId: string;
 	}
 
 	interface UploadImageOptions {

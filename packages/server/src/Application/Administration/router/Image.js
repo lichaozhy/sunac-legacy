@@ -26,7 +26,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const imageFileBuffer = await fs.readFile(image.path);
 			const hash = Utils.encodeSHA256(imageFileBuffer);
-
 			const existedImage = await Model.Image.findOne({ where: { id: hash } });
 
 			if (existedImage) {

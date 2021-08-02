@@ -4,15 +4,26 @@ const path = require('path');
 const fs = require('fs-extra');
 const conditional = require('koa-conditional-get');
 const etag = require('koa-etag');
+const fetch = require('node-fetch');
+const sharp = require('sharp');
+
+function Image(data) {
+	return {
+		id: data.id,
+		size: data.size,
+		createdAt: data.createdAt
+	};
+}
 
 module.exports = Router(function SunacLegacyApi(router, {
-	Model, Workspace, AccessControl: $ac, Utils
+	Model, Workspace, AccessControl: $ac, Utils, Wechat
 }) {
 	function Customer(data) {
 		return {
 			id: data.id,
 			createdAt: data.createdAt,
 			cityAs: data.cityAs,
+			phone: data.phone,
 			wechat: {
 				openid: data.wechat.openid,
 				nickname: data.wechat.nickname,
@@ -29,6 +40,17 @@ module.exports = Router(function SunacLegacyApi(router, {
 			city: data.city,
 			createdAt: data.createdAt
 		};
+	}
+
+	async function getWechatMedia(mediaId) {
+		const queryString = [
+			`access_token=${Wechat.accessToken}`,
+			`media_id=${mediaId}`
+		].join('&');
+
+		const res = await fetch(`https://api.weixin.qq.com/cgi-bin/media/get?${queryString}`);
+
+		return res.buffer();
 	}
 
 	router
@@ -78,6 +100,38 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			await customer.save();
 			ctx.body = Customer(customer);
+		})
+		.post('/image', async function createImage(ctx) {
+			const { mediaId } = ctx.request.body;
+
+			if (!mediaId) {
+				return ctx.throw(400, '".mediaId" required.');
+			}
+
+			const imageFileBuffer = await getWechatMedia(mediaId);
+			const hash = Utils.encodeSHA256(imageFileBuffer);
+			const existedImage = await Model.Image.findOne({ where: { id: hash } });
+
+			if (existedImage) {
+				return ctx.body = Image(existedImage);
+			}
+
+			const pngBuffer = await sharp(imageFileBuffer).png().toBuffer();
+			const storeDir = Workspace.resolve('image', hash);
+
+			if (!await fs.pathExists(storeDir)) {
+				await fs.mkdir(storeDir);
+				await fs.writeFile(path.join(storeDir, 'raw.png'), imageFileBuffer);
+				await fs.writeFile(path.join(storeDir, 'image.png'), pngBuffer);
+			}
+
+			const imageData = await Model.Image.create({
+				id: hash,
+				size: imageFileBuffer.size,
+				createdAt: new Date()
+			});
+
+			ctx.body = Image(imageData);
 		})
 		.get('/image/:imageId/image.png', conditional(), etag(), async function getImageFile(ctx) {
 			const { imageId } = ctx.params;

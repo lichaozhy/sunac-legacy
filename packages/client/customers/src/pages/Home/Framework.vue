@@ -15,7 +15,7 @@
 	>
 		<b-button
 			class="mx-auto"
-			variant="primary"
+			variant="info"
 			style="border-radius:100%;line-height:20px"
 			size="md"
 		><b-icon-arrow-repeat /></b-button>

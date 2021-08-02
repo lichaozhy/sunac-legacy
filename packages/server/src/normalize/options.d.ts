@@ -32,6 +32,7 @@ interface Server {
 interface WX {
 	appid: string;
 	appsecret: string;
+	debug: boolean;
 }
 
 interface Storage {

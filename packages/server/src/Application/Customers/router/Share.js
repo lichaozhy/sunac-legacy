@@ -18,8 +18,9 @@ module.exports = Router(function SunacLegacyApi(router, {
 			id: data.id,
 			raw: data.raw,
 			city: data.city,
+			imageList: data.imageList.map(shareImage => shareImage.image),
 			createdAt: data.createdAt,
-			createdBy: Customer(data.customer),
+			createdBy: Customer(data.Customer),
 			validatedAt: data.validatedAt,
 			like: data.like
 		};
@@ -35,8 +36,15 @@ module.exports = Router(function SunacLegacyApi(router, {
 					city: customer.cityAs, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
-				offset: from,
-				limit: size,
+				include: [
+					{ model: Model.ShareImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
+				offset: Number(from),
+				limit: Number(size),
 				order: [['createdAt', 'DESC']]
 			});
 
@@ -57,9 +65,11 @@ module.exports = Router(function SunacLegacyApi(router, {
 				createdAt: now, createdBy: customer.id
 			});
 
-			share.imageList = await Model.PostImage.bulkCreate(imageList.map(imageId => {
+			share.imageList = await Model.ShareImage.bulkCreate(imageList.map(imageId => {
 				return { share: id, image: imageId };
 			}));
+
+			share.Customer = customer;
 
 			share.like = 0;
 

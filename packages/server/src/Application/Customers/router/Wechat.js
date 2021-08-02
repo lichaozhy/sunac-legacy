@@ -114,6 +114,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			].map(key => `${key}=${config[key]}`).join('&');
 
 			ctx.body = {
+				debug: options.wx.debug,
 				appId: options.wx.appid,
 				timestamp: config.timestamp,
 				nonceStr: config.noncestr,

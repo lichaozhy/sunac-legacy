@@ -15,18 +15,20 @@
 	>
 		<b-carousel-slide
 			style="border-radius:10px;overflow:hidden"
-			v-for="banner in bannerList"
-			:key="banner.id"
+			v-for="reference in referenceList"
+			:key="reference.id"
 		>
 			<template #img>
-				<b-aspect
-					class="w-100"
-					aspect="16:9"
-					style="background-size: cover;background-color: #ccc"
-					:style="{
-						'background-image': `url(/api/image/${banner.image}/image.png)`
-					}"
-				></b-aspect>
+				<b-link :href="reference.href">
+					<b-aspect
+						class="w-100"
+						aspect="16:9"
+						style="background-size: cover;background-color: #ccc;background-position:center"
+						:style="{
+							'background-image': `url(${reference.thumbUrl})`
+						}"
+					></b-aspect>
+				</b-link>
 			</template>
 		</b-carousel-slide>
 	</b-carousel>
@@ -100,11 +102,9 @@ export default {
 	data() {
 		return {
 			cityList: [],
-			referenceList: [
-				{ id: null, title: '数量不足', thumbUrl: '' },
-				{ id: null, title: '数量不足', thumbUrl: '' },
-				{ id: null, title: '数量不足', thumbUrl: '' },
-			],
+			referenceList: new Array(5).fill(null).map(() => {
+				return { id: null, title: '数量不足', thumbUrl: '', href: '' };
+			}),
 			bannerList: [],
 			cityAs: null
 		};
@@ -123,16 +123,17 @@ export default {
 			this.bannerList = await this.$app.Api.Banner.query();
 		},
 		async getReferenceList() {
-			const { list } = await this.$app.Api.Reference.query({ from: 0, size: 3});
+			const { list } = await this.$app.Api.Reference.query({ from: 0, size: this.referenceList.length});
 
-			this.referenceList = new Array(3).fill(null).map((_, index) => {
+			this.referenceList = new Array(this.referenceList.length).fill(null).map((_, index) => {
 				const reference = list[index];
 
 				if (reference) {
 					return {
 						id: reference.id,
 						title: reference.title,
-						thumbUrl: `/api/image/${reference.thumb}/image.png`
+						thumbUrl: `/api/image/${reference.thumb}/image.png`,
+						href: reference.href
 					};
 				} else {
 					return { id: null, title: '数量不足', thumbUrl: '' };

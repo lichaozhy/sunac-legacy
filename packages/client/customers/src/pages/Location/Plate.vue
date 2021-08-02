@@ -22,7 +22,7 @@
 	>
 		<div
 			class="position-absolute"
-			style="top:40%;width:40%"
+			style="top:40%;width:45%"
 			:style="contentStyle"
 		>
 			<h4
@@ -36,12 +36,12 @@
 
 			<div
 				class="position-absolute"
-				style="top: -140%;width: 36%"
+				style="top: -140%;width: 32%"
 				:style="flagStyle"
 			>
 				<p
 					class="w-100 position-absolute mx-auto text-center"
-					style="font-size: 14px;top:5%; line-height:20px;color:#4E4B78"
+					style="font-size: 100%;top:5%; line-height:120%;color:#4E4B78"
 					:class="{ 'text-white': active }"
 				>{{ name }}</p>
 				<b-img

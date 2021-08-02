@@ -45,7 +45,7 @@ window.addEventListener('load', async function bootstrap() {
 		const config = await Vue.$app.Api.Wechat.getConfig();
 
 		wx.config({
-			debug: true,
+			debug: config.debug,
 			appId: config.appId,
 			timestamp: config.timestamp,
 			nonceStr: config.nonceStr,
@@ -54,7 +54,8 @@ window.addEventListener('load', async function bootstrap() {
 				'chooseImage',
 				'uploadImage',
 				'updateAppMessageShareData',
-				'updateTimelineShareData'
+				'updateTimelineShareData',
+				'getLocalImgData'
 			]
 		});
 
