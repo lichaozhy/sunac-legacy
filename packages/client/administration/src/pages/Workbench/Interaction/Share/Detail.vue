@@ -12,6 +12,15 @@
 	@ok="validate"
 	:ok-disabled="!canValidate"
 >
+	<b-form-group
+		label="标题"
+	>
+		<b-form-input
+			:value="share.title"
+			readonly
+		/>
+	</b-form-group>
+
 	<b-form-row>
 		<b-col cols="4">
 			<b-form-group
@@ -85,6 +94,7 @@
 function Share() {
 	return {
 		id: '',
+		title: '',
 		raw: '',
 		like: 0,
 		city: '',
@@ -126,6 +136,7 @@ export default {
 			const share = await this.$app.Api.Share(shareId).get();
 
 			this.share.id = share.id;
+			this.share.title = share.title;
 			this.share.raw = share.raw;
 			this.share.city = share.city;
 			this.share.like = share.like;

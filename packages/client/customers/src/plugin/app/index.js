@@ -102,6 +102,7 @@ const app = {
 			},
 			create(options) {
 				return agent.post('/share', {
+					title: options.title,
 					raw: options.raw,
 					imageList: options.imageList
 				}).then(pickData);

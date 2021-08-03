@@ -13,6 +13,15 @@
 >
 	<b-form>
 		<b-form-group
+			label="标题"
+			description="不少于4个字"
+		>
+			<b-form-input
+				v-model="form.title"
+			/>
+		</b-form-group>
+
+		<b-form-group
 			label="选择城市"
 		>
 			<b-form-select
@@ -99,6 +108,7 @@ export default {
 				managedCityList: []
 			},
 			form: {
+				title: '',
 				raw: '',
 				city: null,
 			},
@@ -108,6 +118,10 @@ export default {
 	},
 	computed: {
 		isValid() {
+			if (this.form.title.length < 4) {
+				return false;
+			}
+
 			if (this.form.raw.length === 0 && this.imageList.length === 0) {
 				return false;
 			}
@@ -128,6 +142,10 @@ export default {
 			this.imageUrlList.splice(index, 1);
 		},
 		setImageUrl(file) {
+			if(!file) {
+				return;
+			}
+
 			const reader = new FileReader();
 
 			this.imageList.push(file);
@@ -149,6 +167,7 @@ export default {
 
 			try {
 				await this.$app.Api.Share.create({
+					title: this.form.title,
 					raw: this.form.raw,
 					city: this.form.city,
 					imageList: imageList.map(image => image.id)

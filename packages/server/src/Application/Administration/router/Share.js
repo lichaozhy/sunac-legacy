@@ -9,6 +9,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 	function Share(data) {
 		return {
 			id: data.id,
+			title: data.title,
 			raw: data.raw,
 			city: data.city,
 			imageList: data.imageList.map(shareImage => shareImage.image),
@@ -91,7 +92,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				return ctx.throw(403, 'You MUST bing a customer');
 			}
 
-			const { raw, city: cityAdcode, imageList } = ctx.request.body;
+			const { raw, city: cityAdcode, imageList, title } = ctx.request.body;
 
 			if (Utils.City.getCity(cityAdcode) === null) {
 				return ctx.throw(400, 'bad city adcode.');
@@ -102,7 +103,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			const id = Utils.encodeSHA256(`${raw}${cityAdcode}${now}`);
 
 			const share = await Model.Share.create({
-				id, raw, city: cityAdcode,
+				id, raw, title, city: cityAdcode,
 				createdAt: now,
 				createdBy: customer.id,
 				validatedAt: isManagedCity ? now : null,

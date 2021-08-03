@@ -1,6 +1,6 @@
 {
   "formControls": {
-		"size": "sm"
+		"size": "md"
   },
   "BButton": {
 		"variant": "secondary",

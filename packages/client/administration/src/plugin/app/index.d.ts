@@ -78,6 +78,7 @@ namespace Model {
 	}
 
 	interface Share extends Content {
+		title: string;
 		raw: string;
 		imageList: Image[];
 	}

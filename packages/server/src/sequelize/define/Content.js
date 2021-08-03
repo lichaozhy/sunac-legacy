@@ -7,6 +7,7 @@ const TYPE_SHA_ID = DataTypes.CHAR(64);
 function Share(sequelize, namespace) {
 	sequelize.define('Share', {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
+		title: DataTypes.STRING,
 		raw: DataTypes.TEXT,
 		city: DataTypes.CHAR(6),
 

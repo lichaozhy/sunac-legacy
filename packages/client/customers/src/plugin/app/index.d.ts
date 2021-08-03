@@ -60,6 +60,7 @@ declare namespace Model {
 
 	interface Share {
 		id: string;
+		title: string;
 		raw: string;
 		imageList: string[];
 		createdAt: string;

@@ -3,7 +3,6 @@
 <div class="p-2">
 	<b-form @submit.prevent="createShare">
 		<b-form-group
-			label="图片"
 			class="required"
 		>
 			<b-form-row>
@@ -23,9 +22,10 @@
 				<b-col v-if="form.imageList.length < 9" cols="4" >
 					<b-aspect aspect="1:1" ><b-button
 						block
-						class="h-100"
+						class="h-100 round-sm"
+						style="font-size:48px"
 						@click="browseFile"
-					><b-icon-plus-circle /></b-button></b-aspect>
+					><b-icon-plus /></b-button></b-aspect>
 				</b-col>
 			</b-form-row>
 		</b-form-group>
@@ -33,8 +33,16 @@
 		<b-form-group
 			class="required"
 		>
+			<b-form-group>
+				<b-form-input
+					v-model="form.title"
+					placeholder="写标题吸引更多人关注"
+					class="border-0 bg-secondary round-sm"
+				/>
+			</b-form-group>
+
 			<b-form-textarea
-				class="border-0 bg-secondary"
+				class="border-0 bg-secondary round-sm"
 				v-model="form.raw"
 				style="height: 10em"
 				placeholder="请输入非遗分享的文字内容"
@@ -43,20 +51,22 @@
 		</b-form-group>
 
 		<b-form-group
-			description="为了回报您的积极参与，留下您的手机号，以方便参与活动中奖后，官方能够联系到您。"
+			description="感谢您的积极参与，为了在参与活动并中奖后，官方能够联系到您，请留下您的手机号。"
 		>
 			<b-form-input
 				v-model="form.phone"
-				placeholder="您的手机号码"
-				class="border-0 bg-secondary"
+				placeholder="您的手机号码（可选）"
+				class="border-0 bg-secondary round-sm"
 			/>
 		</b-form-group>
 
 		<b-button
-			variant="success"
+			variant="primary"
 			size="md"
 			block
+			style="border-radius: 60px"
 			type="submit"
+			class="my-5"
 		>发布</b-button>
 	</b-form>
 </div>
@@ -71,6 +81,7 @@ export default {
 				phone: null
 			},
 			form: {
+				title: '',
 				raw: '',
 				phone: '',
 				imageList: []
@@ -105,6 +116,7 @@ export default {
 
 			try {
 				await this.$app.Api.Share.create({
+					title: this.form.title,
 					raw: this.form.raw,
 					imageList: this.form.imageList
 				});

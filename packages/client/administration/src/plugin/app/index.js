@@ -183,6 +183,7 @@ const app = {
 		}, {
 			create(options) {
 				return agent.post('/share', {
+					title: options.title,
 					city: options.city,
 					raw: options.raw,
 					imageList: options.imageList

@@ -106,6 +106,10 @@
 			{{ row.item.validatedAt ? '√' : '' }}
 		</template>
 
+		<template #cell(title)="row">
+			<div :title="row.item.title">{{ row.item.title | subtitle }}</div>
+		</template>
+
 		<template #empty>
 			没有符合要求的条目
 		</template>
@@ -143,6 +147,11 @@ export default {
 			isBusy: true
 		};
 	},
+	filters: {
+		subtitle(string) {
+			return string.length < 8 ? string : `${string.substr(0, 8)}...`;
+		}
+	},
 	computed: {
 		cityOptionList() {
 			const managedCityOptionList = this.meta.cityList.map(city => {
@@ -155,6 +164,7 @@ export default {
 			return [
 				{ key: 'validated', label: '审核', class: 'col-tiny-string' },
 				{ key: 'city', label: '城市', class: 'col-tiny-string' },
+				{ key: 'title', label: '标题', class: 'col-short-string' },
 				{ key: 'headimg', label: '头像', class: 'col-tiny-string text-center' },
 				{ key: 'nickname', label: '作者昵称', class: 'col-short-string' },
 				{ key: 'abstract', label: '节选(100字以内)' },

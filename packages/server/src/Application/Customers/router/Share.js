@@ -16,6 +16,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 	function Share(data) {
 		return {
 			id: data.id,
+			title: data.title,
 			raw: data.raw,
 			city: data.city,
 			imageList: data.imageList.map(shareImage => shareImage.image),
@@ -55,12 +56,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 		.post('/', async function createShare(ctx) {
 			const { customer } = ctx.state;
-			const { raw, imageList } = ctx.request.body;
+			const { raw, imageList, title } = ctx.request.body;
 			const now = new Date();
 			const id = Utils.encodeSHA256(`${raw}${now}`);
 
 			const share = await Model.Share.create({
-				id, raw,
+				id, raw, title,
 				city: customer.cityAs,
 				createdAt: now, createdBy: customer.id
 			});
@@ -70,7 +71,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 			}));
 
 			share.Customer = customer;
-
 			share.like = 0;
 
 			ctx.body = Share(share);
