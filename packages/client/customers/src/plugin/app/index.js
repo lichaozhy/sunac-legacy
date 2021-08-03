@@ -150,7 +150,21 @@ const app = {
 						}
 					};
 				}, {
-					query() {
+					query(query) {
+						const params = {};
+
+						if ('from' in query) {
+							params.from = query.from;
+						}
+
+						if (query.size) {
+							params.size = query.size;
+						}
+
+						if (query.createdAt) {
+							params.createdAt = query.createdAt;
+						}
+
 						return agent.get(`/topic/${topicId}/post`).then(pickData);
 					},
 					create(options) {
@@ -162,8 +176,34 @@ const app = {
 				})
 			};
 		}, {
-			query() {
-				return agent.get('/topic').then(pickData);
+			query(query) {
+				const params = {};
+
+				if ('from' in query) {
+					params.from = query.from;
+				}
+
+				if ('hot' in query) {
+					params.hot = Boolean(query.hot);
+				}
+
+				if ('prize' in query) {
+					params.prize = Boolean(query.prize);
+				}
+
+				if ('last' in query) {
+					params.last = Boolean(query.last);
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				if (query.createdAt) {
+					params.createdAt = query.createdAt;
+				}
+
+				return agent.get('/topic', { params }).then(pickData);
 			},
 			create(options) {
 				return agent.post('/topic', {

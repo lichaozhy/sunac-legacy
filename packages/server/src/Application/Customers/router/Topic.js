@@ -17,11 +17,11 @@ module.exports = Router(function SunacLegacyApi(router, {
 			id: data.id,
 			title: data.title,
 			banner: data.banner,
-			desription: data.desription,
+			description: data.description,
 			read: data.read,
 			like: data.like,
 			createdAt: data.createdAt,
-			createdBy: Customer(data.customer),
+			createdBy: Customer(data.Customer),
 			validatedAt: data.validatedAt,
 		};
 	}
@@ -33,7 +33,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			raw: data.raw,
 			imageList: data.imageList,
 			createdAt: data.createdAt,
-			createdBy: Customer(data.customer),
+			createdBy: Customer(data.Customer),
 			validatedAt: data.validatedAt,
 		};
 	}
@@ -48,12 +48,18 @@ module.exports = Router(function SunacLegacyApi(router, {
 					city: customer.cityAs, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
+				include: [
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
 				offset: from,
 				limit: size,
 				order: [['createdAt', 'DESC']]
 			});
 
-			return {
+			ctx.body = {
 				list: rows.map(Topic),
 				total: count
 			};
@@ -64,13 +70,25 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const now = new Date();
 			const id = Utils.encodeSHA256(`${title}${now}${description}`);
 
+			if (!title || title.length < 4) {
+				return ctx.throw(400, 'Invalid ".title"');
+			}
+
+			if (!banner || banner.length !== 64) {
+				return ctx.throw(400, 'Invalid ".banner"');
+			}
+
+			if (!description || description.length < 16) {
+				return ctx.throw(400, 'Invalid ".description"');
+			}
+
 			const topic = await Model.Topic.create({
 				id, title, banner, description,
 				city: customer.cityAs, read: 0, like: 0,
 				createdAt: now, createdBy: customer.id,
 			});
 
-			topic.createdBy = customer;
+			topic.Customer = customer;
 			ctx.body = Topic(topic);
 		})
 		.param('topicId', async function fetchTopic(id, ctx, next) {

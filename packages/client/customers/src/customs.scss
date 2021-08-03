@@ -21,6 +21,15 @@ html, body {
 	overflow: hidden;
 }
 
+.app-shadow {
+	box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.app-background-center {
+	background-size: cover;
+	background-position: center;
+}
+
 .app-nav {
 	a {
 		color: #000;
