@@ -8,6 +8,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 	function Customer(data) {
 		return {
 			id: data.id,
+			cityAs: data.cityAs,
 			nickname: data.wechat.nickname,
 			headimgurl: data.wechat.headimgurl,
 		};
@@ -83,6 +84,13 @@ module.exports = Router(function SunacLegacyApi(router, {
 					id, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
+				include: [
+					{ model: Model.ShareImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				]
 			});
 
 			if (!share) {

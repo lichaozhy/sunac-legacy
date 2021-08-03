@@ -29,6 +29,12 @@ const router = new VueRouter({
 		},
 
 		{
+			name: 'Share.Detail',
+			path: '/share/:shareId/detail',
+			component: Page.Home.Share.Detail
+		},
+
+		{
 			name: 'Photo',
 			path: '/photo',
 			component: Page.Photo.Overview

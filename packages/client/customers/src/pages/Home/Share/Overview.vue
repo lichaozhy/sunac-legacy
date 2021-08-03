@@ -9,7 +9,7 @@
 		:options="{width: 200, padding: 5}"
 		@append="append"
 	>
-		<template v-slot:default="{item}">
+		<template v-slot:default="{item, index}">
 			<b-card
 				no-body
 				footer-class="px-2 py-1"
@@ -17,17 +17,18 @@
 				:img-src="`/api/image/${item.imageList[0]}/image.png`"
 				v-if="item"
 				style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
+				@click="goShare(item.id)"
 			>
 				<b-img
-					v-if="item.index < 3"
+					v-if="index < 3"
 					src="./image/hot.png"
 					class="position-absolute"
 					style="height: 36px;top:0;right:0"
 				/>
 
 				<b-img
-					v-if="item.index < 3"
-					:src="`/no/${item.index + 1}.png`"
+					v-if="index < 3"
+					:src="`/no/${index + 1}.png`"
 					class="position-absolute"
 					style="height: 24px;top:0;left:0"
 				/>
@@ -116,6 +117,10 @@ export default {
 				share.index = from + index;
 				this.shareList.push(share);
 			});
+		},
+		goShare(shareId) {
+			console.log(shareId);
+			this.$router.push({ name: 'Share.Detail', params: { shareId } });
 		},
 		refresh() {
 			this.lastUpdatedAt = new Date();

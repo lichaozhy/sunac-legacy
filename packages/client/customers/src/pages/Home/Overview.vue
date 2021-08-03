@@ -5,11 +5,8 @@
 	class="px-2 position-relative"
 >
 	<b-carousel
+		class="app-carousel"
 		indicators
-		style="
-			border-radius:10px;
-			box-shadow: 2px 2px 4px 0 rgba(0,0,0,0.5)
-		"
 		img-width="1920"
 		img-height="900"
 	>
@@ -185,24 +182,4 @@ export default {
 		text-overflow: ellipsis;
 	}
 }
-
-#app-home-overview {
-	.carousel-indicators {
-		bottom: -40px;
-
-		li {
-			width: 6px;
-			height: 6px;
-			border-radius: 100%;
-			background-color: #999;
-
-			&.active {
-				width: 12px;
-				border-radius: 50%/100%;
-				background-color: #4E4B78;
-			}
-		}
-	}
-}
-
 </style>

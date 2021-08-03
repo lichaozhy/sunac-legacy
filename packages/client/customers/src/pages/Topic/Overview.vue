@@ -33,6 +33,7 @@
 				class="mb-3 round-sm app-shadow"
 				style=""
 				:header="item.title"
+				@click="goDetail(item.id)"
 			>
 				<b-row no-gutters>
 					<b-col class="pr-2 d-flex flex-column justify-content-between" cols="7">
@@ -53,6 +54,13 @@
 			</b-card>
 		</template>
 	</vue-masonry-wall>
+
+	<div
+		v-if="total <= topicList.length"
+		class="text-center mt-5"
+	>
+		<b-form-text>已经到底啦</b-form-text>
+	</div>
 </div>
 
 </template>
@@ -89,6 +97,12 @@ export default {
 			if (this.topicList.length < this.total) {
 				this.getTopicList();
 			}
+		},
+		goDetail(topicId) {
+			this.$router.push({
+				name: 'Topic.Detail',
+				params: { topicId }
+			});
 		},
 		selectMode(value) {
 			this.currentMode = value;

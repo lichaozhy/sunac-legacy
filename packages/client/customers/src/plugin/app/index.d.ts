@@ -138,6 +138,7 @@ declare namespace Api {
 	}
 
 	interface ShareInstance {
+		get(): Promise<Model.Share>;
 		like(): Promise<Model.Like>;
 	}
 

@@ -96,6 +96,9 @@ const app = {
 		},
 		Share: Object.assign(function Share(shareId) {
 			return {
+				get() {
+					return agent.get(`/share/${shareId}`).then(pickData);
+				},
 				like() {
 					return agent.post(`/share/${shareId}/like`).then(pickData);
 				}
