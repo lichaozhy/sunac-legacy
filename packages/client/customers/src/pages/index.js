@@ -4,6 +4,7 @@ import * as Topic from './Topic';
 import * as Creation from './Creation';
 import * as Location from './Location';
 import * as Photo from './Photo';
+import * as Figure from './Figure';
 
 export {
 	Home,
@@ -11,5 +12,6 @@ export {
 	Reference,
 	Topic,
 	Creation,
-	Photo
+	Photo,
+	Figure
 };

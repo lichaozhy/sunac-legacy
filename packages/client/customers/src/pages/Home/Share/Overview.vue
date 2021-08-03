@@ -2,6 +2,7 @@
 
 <div
 	class="p-2 w-100 pb-5"
+	id="app-home-share-overview"
 >
 	<vue-masonry-wall
 		:items="shareList"
@@ -129,5 +130,4 @@ export default {
 </script>
 
 <style>
-
 </style>

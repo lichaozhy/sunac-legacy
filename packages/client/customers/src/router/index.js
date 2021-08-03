@@ -35,6 +35,12 @@ const router = new VueRouter({
 		},
 
 		{
+			name: 'Figure',
+			path: '/figure',
+			component: Page.Figure.Overview
+		},
+
+		{
 			name: 'Location',
 			path: '/location',
 			component: Page.Location.Selector
@@ -69,7 +75,7 @@ const router = new VueRouter({
 		},
 		{
 			name: 'Creation.Share',
-			path: '/creation/share',
+			path: '/share/creation',
 			component: Page.Creation.Share
 		},
 		{

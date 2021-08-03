@@ -3,7 +3,7 @@ const DuckWeb = require('@produck/duck-web');
 const DuckLog = require('@produck/duck-log');
 const DuckWorkspace = require('@produck/duck-workspace');
 const http = require('http');
-const https = require('https');
+const http2 = require('http2');
 
 const utils = require('./src/utils');
 const meta = require('./package.json');

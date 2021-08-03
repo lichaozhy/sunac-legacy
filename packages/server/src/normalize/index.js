@@ -42,8 +42,8 @@ module.exports = function normalize(_options = {}) {
 			database: 'database.log',
 			access: {
 				maintenance: 'maintenance/access.log',
-				administration: 'maintenance/access.log',
-				customers: 'maintenance/access.log'
+				administration: 'administration/access.log',
+				customers: 'customers/access.log'
 			}
 		},
 		cityList: [
@@ -126,7 +126,21 @@ module.exports = function normalize(_options = {}) {
 		if (!isObject(_administration)) {
 			throw new Error('Invalid ".server.administration", an object expected.');
 		} else {
+			const {
+				host: _host = options.server.administration.host,
+				port: _port = options.server.administration.port
+			} = _administration;
 
+			if (typeof _host !== 'string') {
+				throw new Error('Invalid ".server.administration.host", a string expected.');
+			}
+
+			if (typeof _port !== 'number') {
+				throw new Error('Invalid ".server.administration.port", a port number expected.');
+			}
+
+			options.server.administration.host = _host;
+			options.server.administration.port = _port;
 		}
 	}
 

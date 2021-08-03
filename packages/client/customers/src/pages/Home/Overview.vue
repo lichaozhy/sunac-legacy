@@ -36,7 +36,7 @@
 	<b-button
 		variant="link"
 		class="position-absolute text-white"
-		style="right: 1em;top: 1em;background:rgba(0,0,0,0.3);border-radius: 20px"
+		style="right: 0.75em;top: 0.25em;background:rgba(0,0,0,0.3);border-radius: 20px"
 		:to="{ name: 'Location' }"
 	><b-icon-geo-alt-fill
 		class="mr-1"
@@ -52,29 +52,39 @@
 			class="h-100"
 		>
 			<b-col cols="5" class="pr-1">
-				<div
-					class="w-100 h-100 position-relative app-reference"
-					:style="{'background-image': `url(${referenceList[0].thumbUrl})`}"
-				>
-					<div class="w-100 app-reference-title">{{ referenceList[0].title }}</div>
-				</div>
+				<b-link :to="{ name: 'Topic' }">
+					<div
+						class="w-100 h-100 position-relative app-reference"
+						:style="{'background-image': `url(${referenceList[0].thumbUrl})`}"
+					>
+						<div class="w-100 app-reference-title">{{ referenceList[0].title }}</div>
+					</div>
+				</b-link>
 			</b-col>
 			<b-col cols="7" class="pl-1">
 				<div class="h-50 pb-1">
-					<div
-						class="w-100 h-100 position-relative app-reference"
-						:style="{'background-image': `url(${referenceList[1].thumbUrl})`}"
+					<b-link
+						:to="{ name: 'Photo' }"
 					>
-						<div class="w-100 app-reference-title">{{ referenceList[1].title }}</div>
-					</div>
+						<div
+							class="w-100 h-100 position-relative app-reference"
+							:style="{'background-image': `url(${referenceList[1].thumbUrl})`}"
+						>
+							<div class="w-100 app-reference-title">{{ referenceList[1].title }}</div>
+						</div>
+					</b-link>
 				</div>
 				<div class="h-50 pt-1">
-					<div
-						class="w-100 h-100 position-relative app-reference"
-						:style="{'background-image': `url(${referenceList[2].thumbUrl})`}"
+					<b-link
+						:to="{ name: 'Photo' }"
 					>
-						<div class="w-100 app-reference-title">{{ referenceList[2].title }}</div>
-					</div>
+						<div
+							class="w-100 h-100 position-relative app-reference"
+							:style="{'background-image': `url(${referenceList[2].thumbUrl})`}"
+						>
+							<div class="w-100 app-reference-title">{{ referenceList[2].title }}</div>
+						</div>
+					</b-link>
 				</div>
 			</b-col>
 		</b-row>

@@ -14,7 +14,7 @@
 
 		<div
 			class="position-absolute"
-			style="width:67%;height:80%;top:0;left:17%;"
+			style="width:67%;height:80%;top:0;left:16.5%;"
 		>
 			<b-row
 				id="app-home-share-ranking-platform"
@@ -105,7 +105,7 @@
 		<div
 			v-for="(share, index) in shareList"
 			:key="share.id"
-			class="p-3 mb-3 position-relative"
+			class="p-2 mb-3 position-relative"
 			style="box-shadow: 0 0 6px 0 rgba(0,0,0,0.1)"
 		>
 			<b-row no-gutters>
@@ -136,10 +136,10 @@
 			</b-row>
 
 			<div class="position-absolute" style="top:0;left:0">
-				<b-img style="width:30px" src="./image/flag.png" />
+				<b-img style="width:24px" src="./image/flag.png" />
 				<div
 					class="position-absolute w-100 h-100 text-white font-weight-bolder text-center"
-					style="top:4px"
+					style="top:2px"
 				>{{ index + 1 }}</div>
 			</div>
 		</div>

@@ -31,11 +31,10 @@
 		</b-form-group>
 
 		<b-form-group
-			label="文本内容"
 			class="required"
 		>
 			<b-form-textarea
-				class="border-top-0 border-left-0 border-right-0"
+				class="border-0 bg-secondary"
 				v-model="form.raw"
 				style="height: 10em"
 				placeholder="请输入非遗分享的文字内容"
@@ -44,13 +43,12 @@
 		</b-form-group>
 
 		<b-form-group
-			label="联系方式"
 			description="为了回报您的积极参与，留下您的手机号，以方便参与活动中奖后，官方能够联系到您。"
 		>
 			<b-form-input
 				v-model="form.phone"
 				placeholder="您的手机号码"
-				class="border-top-0 border-left-0 border-right-0"
+				class="border-0 bg-secondary"
 			/>
 		</b-form-group>
 
