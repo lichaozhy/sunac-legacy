@@ -32,7 +32,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			topic: data.topic,
 			raw: data.raw,
 			like: data.like,
-			imageList: data.imageList,
+			imageList: data.imageList.map(shareImage => shareImage.image),
 			createdAt: data.createdAt,
 			createdBy: Customer(data.Customer),
 			validatedAt: data.validatedAt,
@@ -146,12 +146,15 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const { from = 0, size } = ctx.query;
 			const { customer, topic } = ctx.state;
 
-			const { rows, count } = await Model.Post.findAndCountAll({
-				where: {
-					topic: topic.id,
-					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
-				},
+			const where = {
+				topic: topic.id,
+				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
+			};
+
+			const list = await Model.Post.findAll({
+				where,
 				include: [
+					{ model: Model.PostImage, as: 'imageList' },
 					{
 						model: Model.Customer, required: true,
 						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
@@ -163,8 +166,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 			});
 
 			ctx.body = {
-				list: rows.map(Post),
-				total: count
+				list: list.map(Post),
+				total: await Model.Post.count({ where })
 			};
 		})
 		.post('/:topicId/post', async function createTopicPost(ctx) {
@@ -180,7 +183,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const id = Utils.encodeSHA256(`${raw}${now}`);
 
 			const post = await Model.Post.create({
-				id, raw, topic: topic.id,
+				id, raw, topic: topic.id, like: 0,
 				createdAt: now, createdBy: customer.id
 			});
 
@@ -215,6 +218,11 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			return next();
 		})
+		.get('/:topicId/post/:postId', async function deletePost(ctx) {
+			const { post } = ctx.state;
+
+			ctx.body = Post(post);
+		})
 		.delete('/:topicId/post/:postId', async function deletePost(ctx) {
 			const { post } = ctx.state;
 
@@ -224,6 +232,10 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 		.post('/:topicId/post/:postId/like', async function likeTopicPost(ctx) {
 			const { post } = ctx.state;
+
+			if (post.validatedAt === null) {
+				return ctx.throw(403, 'The post is NOT validated.');
+			}
 
 			post.like += 1;
 			await post.save();

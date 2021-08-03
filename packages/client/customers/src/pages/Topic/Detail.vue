@@ -4,7 +4,7 @@
 	<b-aspect
 		v-if="topic.banner"
 		aspect="21:10"
-		class="app-background-center w-100"
+		class="app-background-center w-100 position-relative"
 		:style="{'background-image':`url(/api/image/${topic.banner}/image.png)`}"
 	>
 		<div
@@ -92,8 +92,41 @@
 								disabled
 							>正在审核</b-button>
 						</b-button-toolbar>
-						<p class="mb-0" style="font-size:14px">{{ item.raw | sub64 }}</p>
+
+						<p
+							class="mb-0"
+							style="font-size:14px"
+							v-if="item.raw.length >= 64 && !item.expanded"
+						>{{ item.raw | sub64 }}</p>
+
+						<p
+							class="mb-0"
+							style="font-size:14px"
+							v-if="item.raw.length < 64 || item.expanded"
+						>{{ item.raw }}</p>
+
+						<span v-if="item.raw.length >= 64" style="font-size:14px">
+							<b-link v-if="!item.expanded" @click="expand(index)">展开</b-link>
+							<b-link v-if="item.expanded" @click="collapse(index)">收起</b-link>
+						</span>
+
+						<b-form-row v-if="item.imageList.length > 0" class="mt-2">
+							<b-col
+								cols="4"
+								class="mb-2"
+								v-for="imageId in item.imageList"
+								:key="imageId"
+							>
+								<b-aspect
+									class="w-100 border"
+									aspect="1:1"
+									style="background-size:cover;background-position:center"
+									:style="{'background-image': `url(/api/image/${imageId}/image.png)`}"
+								></b-aspect>
+							</b-col>
+						</b-form-row>
 					</div>
+
 				</template>
 
 			</vue-masonry-wall>
@@ -165,6 +198,12 @@ export default {
 		}
 	},
 	methods: {
+		expand(index) {
+			this.post.list[index].expanded = true;
+		},
+		collapse(index) {
+			this.post.list[index].expanded = false;
+		},
 		async getTopic() {
 			const topic = await this.ThisPostApi.get();
 
@@ -188,6 +227,8 @@ export default {
 				this.post.list.push(post);
 			});
 			this.post.total = total;
+
+			console.log(this.post.total, this.post.list.length);
 		},
 		async likePostByIndex(index) {
 			const post = this.post.list[index];

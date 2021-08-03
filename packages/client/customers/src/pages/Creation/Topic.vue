@@ -1,6 +1,6 @@
 <template>
 
-<div class="p-2">
+<div class="p-2 overflow-auto">
 	<b-form @submit.prevent="createTopic">
 		<b-form-group
 			label="话题题目"

@@ -69,8 +69,8 @@ const router = new VueRouter({
 			component: Page.Topic.Detail
 		},
 		{
-			name: 'Topic.Post',
-			path: '/topic/:topicId/post/:postId',
+			name: 'Topic.Post.Detail',
+			path: '/topic/:topicId/post/:postId/detail',
 			component: Page.Topic.Post
 		},
 

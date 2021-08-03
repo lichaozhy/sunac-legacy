@@ -81,7 +81,7 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 				where.title = { [Op.like]: `%${title}%` };
 			}
 
-			const { rows, count } = await Model.Topic.findAndCountAll({
+			const list = await Model.Topic.findAll({
 				where,
 				include: [
 					{
@@ -96,8 +96,8 @@ module.exports = Router(function SunacLegacyAdministrationTopic(router, {
 			});
 
 			ctx.body = {
-				list: rows.map(Topic),
-				total: count,
+				list: list.map(Topic),
+				total: await Model.Topic.count({ where }),
 				size: Number(pageSize),
 				current: Number(pageCurrent)
 			};

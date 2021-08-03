@@ -64,7 +64,7 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 				where.city = city;
 			}
 
-			const { rows, count } = await Model.Share.findAndCountAll({
+			const list = await Model.Share.findAll({
 				where,
 				include: [
 					{ model: Model.ShareImage, as: 'imageList' },
@@ -79,8 +79,8 @@ module.exports = Router(function SunacLegacyAdministrationShare(router, {
 			});
 
 			ctx.body = {
-				list: rows.map(Share),
-				total: count,
+				list: list.map(Share),
+				total: await Model.Share.count({ where }),
 				size: Number(pageSize),
 				current: Number(pageCurrent)
 			};

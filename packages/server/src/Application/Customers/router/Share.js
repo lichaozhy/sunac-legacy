@@ -33,11 +33,13 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const { customer } = ctx.state;
 			const { from = 0, size } = ctx.query;
 
-			const { rows, count } = await Model.Share.findAndCountAll({
-				where: {
-					city: customer.cityAs, deletedAt: null,
-					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
-				},
+			const where = {
+				city: customer.cityAs, deletedAt: null,
+				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
+			};
+
+			const list = await Model.Share.findAll({
+				where,
 				include: [
 					{ model: Model.ShareImage, as: 'imageList' },
 					{
@@ -51,8 +53,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 			});
 
 			ctx.body = {
-				list: rows.map(Share),
-				total: count
+				list: list.map(Share),
+				total: await Model.Share.count({ where })
 			};
 		})
 		.post('/', async function createShare(ctx) {

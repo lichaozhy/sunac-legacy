@@ -1,6 +1,6 @@
 <template>
 
-<div class="p-2">
+<div class="p-2 overflow-auto">
 	<b-form @submit.prevent="createPost">
 		<b-form-group
 			label="图片"
@@ -8,6 +8,7 @@
 			<b-form-row>
 				<b-col
 					cols="4"
+					class="mb-2"
 					v-for="imageId in form.imageList"
 					:key="imageId"
 				>
@@ -83,7 +84,7 @@ export default {
 		async browseFile() {
 			const res = await this.$wx.promises.chooseImage({ count: 9 - this.form.imageList.length });
 
-			for (const localId in res.localIds) {
+			for (const localId of res.localIds) {
 				const uploadingRes = await this.$wx.promises.uploadImage({ localId });
 				const image = await this.$app.Api.Image.create({ mediaId: uploadingRes.serverId });
 
@@ -111,10 +112,11 @@ export default {
 					imageList: this.form.imageList
 				});
 
-				await this.$router.push({
-					name: 'Topic.Detail',
-					params: { topicId: this.$route.params.topicId }
-				});
+				// await this.$router.replace({
+				// 	name: 'Topic.Detail',
+				// 	params: { topicId: this.$route.params.topicId }
+				// });
+				this.$router.back();
 			} catch (err) {
 				this.$bvToast.toast('回复失败', { variant: 'danger' });
 			}

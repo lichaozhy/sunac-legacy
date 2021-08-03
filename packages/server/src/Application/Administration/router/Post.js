@@ -47,8 +47,9 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 			return next();
 		})
 		.get('/', async function getAllPostList(ctx) {
+			const { topic } = ctx.state;
 			const { pageSize = 10000000, pageCurrent = 1, validated, city } = ctx.query;
-			const where = { deletedAt: null };
+			const where = { deletedAt: null, topic: topic.id };
 
 			if (validated) {
 				if (VALIDATED_REG.test(validated)) {
@@ -62,8 +63,7 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 				where.city = city;
 			}
 
-			const { topic } = ctx.state;
-			const { rows, count } = await Model.Post.findAndCountAll({
+			const list = await Model.Post.findAll({
 				where: { deletedAt: null, topic: topic.id },
 				include: [
 					{ model: Model.PostImage, as: 'imageList' },
@@ -78,8 +78,8 @@ module.exports = Router(function SunacLegacyAdministrationPost(router, {
 			});
 
 			ctx.body = {
-				list: rows.map(Post),
-				total: count,
+				list: list.map(Post),
+				total: await Model.Post.count({ where }),
 				size: Number(pageSize),
 				current: Number(pageCurrent)
 			};
