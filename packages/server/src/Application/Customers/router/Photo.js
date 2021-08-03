@@ -1,7 +1,7 @@
 const { Router } = require('@produck/duck-web-koa-router');
 
 module.exports = Router(function SunacLegacyApi(router, {
-	Model
+	Model, options
 }) {
 	function Photo(data) {
 		return {
@@ -16,17 +16,16 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/', async function getPhotoList(ctx) {
-			const { from = 0, size } = ctx.query;
-			const { customer } = ctx.state;
+			const { from = 0, size, city = options.defaultCity } = ctx.query;
 
 			const { rows, count } = await Model.Photo.findAndCountAll({
-				where: { city: customer.cityAs, deletedAt: null },
+				where: { city, deletedAt: null },
 				offset: from,
 				limit: size,
 				order: [['createdAt', 'DESC']]
 			});
 
-			return {
+			ctx.body = {
 				list: rows.map(Photo),
 				total: count
 			};

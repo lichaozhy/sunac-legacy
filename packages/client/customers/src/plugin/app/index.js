@@ -57,8 +57,26 @@ const app = {
 				}
 			};
 		}, {
-			query() {
-				return agent.get('/photo').then(pickData);
+			query(query) {
+				const params = {};
+
+				if ('from' in query) {
+					params.from = query.from;
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				if (query.city) {
+					params.city = query.city;
+				}
+
+				if (query.createdAt) {
+					params.createdAt = query.createdAt;
+				}
+
+				return agent.get('/photo', {params}).then(pickData);
 			}
 		}),
 		Reference: {

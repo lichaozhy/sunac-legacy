@@ -63,9 +63,7 @@
 			</b-col>
 			<b-col cols="7" class="pl-1">
 				<div class="h-50 pb-1">
-					<b-link
-						:to="{ name: 'Photo' }"
-					>
+					<b-link :to="{ name: 'Figure' }">
 						<div
 							class="w-100 h-100 position-relative app-reference"
 							:style="{'background-image': `url(${referenceList[1].thumbUrl})`}"
@@ -75,9 +73,7 @@
 					</b-link>
 				</div>
 				<div class="h-50 pt-1">
-					<b-link
-						:to="{ name: 'Photo' }"
-					>
+					<b-link :to="{ name: 'Photo' }">
 						<div
 							class="w-100 h-100 position-relative app-reference"
 							:style="{'background-image': `url(${referenceList[2].thumbUrl})`}"
@@ -96,7 +92,7 @@
 		/>
 	</b-aspect>
 
-	<b-nav class="mt-3 font-weight-bold app-home-share-nav">
+	<b-nav class="mt-3 font-weight-bold app-nav">
 		<b-nav-item
 			:to="{ name: 'Home.Share.Overview' }"
 		>非遗圈</b-nav-item>
@@ -204,31 +200,6 @@ export default {
 				width: 12px;
 				border-radius: 50%/100%;
 				background-color: #4E4B78;
-			}
-		}
-	}
-
-	.app-home-share-nav {
-		a {
-			color: #000;
-			position: relative;
-
-			&.active {
-				transform: scale(1.2);
-
-				&::before {
-					content: ' ';
-					display: block;
-					position: absolute;
-					height: 6px;
-					background: #ccc;
-					width: 60px;
-					left: 50%;
-					bottom: 8px;
-					z-index: -1;
-					margin-left: -30px;
-					background-image: linear-gradient(to right, #FFFFFF, #74B1BE, #FFFFFF);
-				}
 			}
 		}
 	}

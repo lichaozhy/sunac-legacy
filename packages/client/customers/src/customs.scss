@@ -20,3 +20,30 @@ html, body {
 	border-radius: 4px;
 	overflow: hidden;
 }
+
+.app-nav {
+	a {
+		color: #000;
+		position: relative;
+
+		&.active {
+			transform: scale(1.2);
+
+			&::before {
+				content: ' ';
+				display: block;
+				position: absolute;
+				height: 6px;
+				background: #ccc;
+				width: 40px;
+				left: 50%;
+				bottom: 8px;
+				z-index: -1;
+				margin-left: -20px;
+				background-image: linear-gradient(to right, #FFFFFF, #74B1BE, #FFFFFF);
+				border-radius: 10px;
+				overflow: hidden;
+			}
+		}
+	}
+}

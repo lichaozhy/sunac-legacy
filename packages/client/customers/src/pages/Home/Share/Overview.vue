@@ -36,7 +36,7 @@
 					<div
 						style="font-size:14px"
 						class="mb-1 font-weight-bold"
-					>{{ item.raw | substring }}</div>
+					>{{ item.title | substring }}</div>
 
 					<div class="d-flex">
 						<b-avatar size="sm" :src="item.createdBy.headimgurl" />
@@ -50,7 +50,7 @@
 	</vue-masonry-wall>
 
 	<div
-		v-if="total === this.shareList.length"
+		v-if="total === shareList.length"
 		class="text-center mt-5"
 	>
 		<b-form-text>已经到底啦</b-form-text>
