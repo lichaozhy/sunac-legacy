@@ -27,31 +27,48 @@
 		@append="append"
 	>
 		<template v-slot:default="{item}">
-			<b-card
-				body-class="p-2"
-				header-class="font-weight-bold bg-white px-2 pt-3 pb-0 border-0 text-truncate"
-				class="mb-3 round-sm app-shadow"
-				style=""
-				:header="item.title"
-				@click="goDetail(item.id)"
-			>
-				<b-row no-gutters>
-					<b-col class="pr-2 d-flex flex-column justify-content-between" cols="7">
-						<p style="font-size:14px" class="mb-0">{{ item.description | sub32 }}</p>
-						<b-button-toolbar style="font-size: 12px">
-							<div class="mr-auto"><b-icon-eye class="mr-1" />{{ item.read }}</div>
-							<div><b-icon-person class="mr-1" />{{ item.createdBy.nickname }}</div>
-						</b-button-toolbar>
-					</b-col>
-					<b-col cols="5">
-						<b-aspect
-							class="round-sm app-background-center"
-							aspect="16:10"
-							:style="{'background-image': `url(/api/image/${item.banner}/image.png)`}"
-						></b-aspect>
-					</b-col>
-				</b-row>
-			</b-card>
+			<div class="position-relative">
+				<b-card
+					body-class="p-2"
+					header-class="font-weight-bold bg-white px-2 pt-3 pb-0 border-0 text-truncate"
+					class="mb-3 round-sm app-shadow"
+					style=""
+					:header="item.title"
+					@click="goDetail(item.id)"
+				>
+					<b-row no-gutters>
+						<b-col class="pr-2 d-flex flex-column justify-content-between" cols="7">
+							<p style="font-size:14px" class="mb-0">{{ item.description | sub32 }}</p>
+							<b-button-toolbar style="font-size: 12px">
+								<div
+									class="mr-auto"
+									v-if="item.validatedAt !== null"
+								><b-icon-eye class="mr-1" />{{ item.read }}</div>
+
+								<div
+									class="mr-auto"
+									v-if="item.validatedAt === null"
+								>正在审核</div>
+
+								<div><b-icon-person class="mr-1" />{{ item.createdBy.nickname }}</div>
+							</b-button-toolbar>
+						</b-col>
+						<b-col cols="5">
+							<b-aspect
+								class="round-sm app-background-center"
+								aspect="16:10"
+								:style="{'background-image': `url(/api/image/${item.banner}/image.png)`}"
+							></b-aspect>
+						</b-col>
+					</b-row>
+				</b-card>
+
+				<div
+					v-if="item.validatedAt === null"
+					class="position-absolute w-100 h-100"
+					style="background: rgba(255,255,255,0.3);top:0;left:0"
+				></div>
+			</div>
 		</template>
 	</vue-masonry-wall>
 

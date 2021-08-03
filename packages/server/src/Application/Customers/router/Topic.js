@@ -31,6 +31,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			id: data.id,
 			topic: data.topic,
 			raw: data.raw,
+			like: data.like,
 			imageList: data.imageList,
 			createdAt: data.createdAt,
 			createdBy: Customer(data.Customer),
@@ -99,6 +100,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 					id, city: customer.cityAs, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
+				include: [
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
 			});
 
 			if (!topic) {
@@ -144,6 +151,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 					topic: topic.id,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
+				include: [
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
 				offset: from,
 				limit: size,
 				order: [['createdAt', 'DESC']]
@@ -171,7 +184,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				createdAt: now, createdBy: customer.id
 			});
 
-			post.createdBy = customer;
+			post.Customer = customer;
 			post.imageList = await Model.PostImage.bulkCreate(imageList.map(imageId => {
 				return { post: id, image: imageId };
 			}));
@@ -181,18 +194,24 @@ module.exports = Router(function SunacLegacyApi(router, {
 		.param('postId', async function fetchPost(id, ctx, next) {
 			const { customer } = ctx.state;
 
-			const topic = await Model.Post.findOne({
+			const post = await Model.Post.findOne({
 				where: {
-					id, city: customer.cityAs, deletedAt: null,
+					id, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
+				include: [
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
 			});
 
-			if (!topic) {
+			if (!post) {
 				return ctx.throw(404, 'The topic is NOT existed');
 			}
 
-			ctx.state.topic = topic;
+			ctx.state.post = post;
 
 			return next();
 		})

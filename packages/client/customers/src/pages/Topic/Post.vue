@@ -6,7 +6,15 @@
 
 <script>
 export default {
+	data() {
+		return {
+			createdBy: {
+				nickname: '',
+				headimgurl: '',
+			},
 
+		};
+	}
 };
 </script>
 

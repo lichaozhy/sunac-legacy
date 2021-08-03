@@ -242,12 +242,8 @@ const app = {
 						get() {
 							return agent.get(`/topic/${topicId}/post/${postId}`).then(pickData);
 						},
-						update(options) {
-							return agent.put(`/topic/${topicId}/post/${postId}`, {
-								raw: options.raw,
-								imageList: options.imageList,
-								valid: options.valid
-							}).then(pickData);
+						update() {
+							return agent.put(`/topic/${topicId}/post/${postId}`).then(pickData);
 						},
 						delete() {
 							return agent.delete(`/topic/${topicId}/post/${postId}`).then(pickData);

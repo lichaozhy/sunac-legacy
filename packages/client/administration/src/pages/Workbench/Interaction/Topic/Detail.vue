@@ -266,8 +266,18 @@ export default {
 			return map;
 		},
 		canValidate() {
-			return this.meta.managedCityList.some(adcode => adcode === this.topic.city) &&
-				this.topic.validatedAt === null;
+			if (!this.managedCityMap[this.topic.city]) {
+				return false;
+			}
+
+			const selectedPost = this.selectedPost;
+
+
+			if (selectedPost === null) {
+				return false;
+			}
+
+			return selectedPost.validatedAt === null;
 		},
 		cityMap() {
 			const map = {};

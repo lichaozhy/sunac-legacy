@@ -76,7 +76,7 @@ const router = new VueRouter({
 
 		{
 			name: 'Creation.Post',
-			path: '/creation/post',
+			path: '/topic/:topicId/post/creation',
 			component: Page.Creation.Post
 		},
 		{
@@ -86,7 +86,7 @@ const router = new VueRouter({
 		},
 		{
 			name: 'Creation.Topic',
-			path: '/creation/topic',
+			path: '/topic/creation',
 			component: Page.Creation.Topic
 		}
 	]

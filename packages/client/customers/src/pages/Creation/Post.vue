@@ -4,7 +4,6 @@
 	<b-form @submit.prevent="createPost">
 		<b-form-group
 			label="图片"
-			class="required"
 		>
 			<b-form-row>
 				<b-col
@@ -35,7 +34,7 @@
 			class="required"
 		>
 			<b-form-textarea
-				class="border-top-0 border-left-0 border-right-0"
+				class="border-0 bg-secondary round-sm"
 				v-model="form.raw"
 				style="height: 10em"
 				placeholder="请输入回复内容"
@@ -50,7 +49,7 @@
 			<b-form-input
 				v-model="form.phone"
 				placeholder="您的手机号码"
-				class="border-top-0 border-left-0 border-right-0"
+				class="border-0 bg-secondary round-sm"
 			/>
 		</b-form-group>
 
@@ -58,7 +57,9 @@
 			variant="success"
 			size="md"
 			block
+			pill
 			type="submit"
+			class="my-5"
 		>回复</b-button>
 	</b-form></div>
 
@@ -100,8 +101,27 @@ export default {
 			this.customer.phone = this.form.phone = customer.phone;
 		},
 		async createPost() {
+			if (this.form.phone !== this.customer.phone) {
+				this.updateCustomer();
+			}
 
+			try {
+				await this.$app.Api.Topic(this.$route.params.topicId).Post.create({
+					raw: this.form.raw,
+					imageList: this.form.imageList
+				});
+
+				await this.$router.push({
+					name: 'Topic.Detail',
+					params: { topicId: this.$route.params.topicId }
+				});
+			} catch (err) {
+				this.$bvToast.toast('回复失败', { variant: 'danger' });
+			}
 		}
+	},
+	mounted() {
+		this.getCustomer();
 	}
 };
 </script>

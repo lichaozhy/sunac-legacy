@@ -149,7 +149,7 @@ const app = {
 							return agent.delete(`/topic/${topicId}/post/${postId}`).then(pickData);
 						},
 						like() {
-							return agent.post(`/topic/${topicId}/post/${postId}`).then(pickData);
+							return agent.post(`/topic/${topicId}/post/${postId}/like`).then(pickData);
 						}
 					};
 				}, {
@@ -160,6 +160,14 @@ const app = {
 							params.from = query.from;
 						}
 
+						if ('hot' in query) {
+							params.hot = Boolean(query.hot);
+						}
+
+						if ('last' in query) {
+							params.last = Boolean(query.last);
+						}
+
 						if (query.size) {
 							params.size = query.size;
 						}
@@ -168,10 +176,11 @@ const app = {
 							params.createdAt = query.createdAt;
 						}
 
-						return agent.get(`/topic/${topicId}/post`).then(pickData);
+						return agent.get(`/topic/${topicId}/post`, { params }).then(pickData);
 					},
 					create(options) {
 						return agent.post(`/topic/${topicId}/post`, {
+							topicId,
 							raw: options.raw,
 							imageList: options.imageList
 						}).then(pickData);

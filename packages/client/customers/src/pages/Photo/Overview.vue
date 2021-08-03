@@ -64,7 +64,7 @@
 		centered
 		body-class="p-0"
 	>
-		<b-img class="w-100" :src="selected.image" />
+		<b-img class="w-100" :src="selected.image" @click="$refs.previewer.hide()" />
 		<b-button-toolbar>
 			<b-button
 				variant="dark"
