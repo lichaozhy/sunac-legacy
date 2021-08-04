@@ -137,8 +137,6 @@ export default {
 
 			this.total = total;
 			list.forEach((topic) => this.topicList.push(topic));
-
-			console.log(list, this.topicList);
 		},
 		refresh() {
 			this.lastUpdatedAt = new Date();

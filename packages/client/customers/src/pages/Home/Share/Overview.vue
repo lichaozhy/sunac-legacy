@@ -119,7 +119,6 @@ export default {
 			});
 		},
 		goShare(shareId) {
-			console.log(shareId);
 			this.$router.push({ name: 'Share.Detail', params: { shareId } });
 		},
 		refresh() {

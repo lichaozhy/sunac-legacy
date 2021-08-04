@@ -227,8 +227,6 @@ export default {
 				this.post.list.push(post);
 			});
 			this.post.total = total;
-
-			console.log(this.post.total, this.post.list.length);
 		},
 		async likePostByIndex(index) {
 			const post = this.post.list[index];

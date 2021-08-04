@@ -157,7 +157,13 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 
 		.get('/:topicId/post', async function getTopicPostList(ctx) {
-			const { from = 0, size, createdAt = new Date() } = ctx.query;
+			const {
+				from = 0,
+				size,
+				createdAt = new Date(),
+				hot
+			} = ctx.query;
+
 			const { customer, topic } = ctx.state;
 
 			const where = {
@@ -165,6 +171,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 				createdAt: { [Op.lt]: createdAt },
 				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 			};
+
+			const order = [['createdAt', 'DESC']];
+
+			if (hot === 'true') {
+				order.unshift(['like', 'DESC']);
+			}
 
 			const list = await Model.Post.findAll({
 				where,
@@ -177,7 +189,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				],
 				offset: from,
 				limit: size,
-				order: [['createdAt', 'DESC']]
+				order: order
 			});
 
 			ctx.body = {
