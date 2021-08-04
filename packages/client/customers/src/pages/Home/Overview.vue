@@ -117,9 +117,6 @@ export default {
 		}
 	},
 	methods: {
-		async getBannerList() {
-			this.bannerList = await this.$app.Api.Banner.query();
-		},
 		async getReferenceList() {
 			const { list } = await this.$app.Api.Reference.query({ from: 0, size: this.referenceList.length});
 
@@ -147,7 +144,6 @@ export default {
 			this.cityAs = customer.cityAs;
 		},
 		refresh() {
-			this.getBannerList();
 			this.getReferenceList();
 			this.getCustomer();
 		}

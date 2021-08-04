@@ -245,6 +245,11 @@ const app = {
 					mediaId: options.mediaId
 				}).then(pickData);
 			}
+		},
+		Figure: {
+			query() {
+				return agent.get('/figure').then(pickData);
+			}
 		}
 	},
 	Filter: {

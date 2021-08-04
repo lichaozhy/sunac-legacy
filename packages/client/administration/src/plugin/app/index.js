@@ -336,6 +336,28 @@ const app = {
 
 				return agent.get('/banner', { params }).then(pickData);
 			}
+		}),
+		Figure: Object.assign(function Figure(figureId) {
+			return {
+				get() {
+					return agent.get(`/figure/${figureId}`).then(pickData);
+				},
+				delete() {
+					return agent.delete(`/figure/${figureId}`).then(pickData);
+				}
+			};
+		}, {
+			create(options) {
+				return agent.post('/figure', {
+					image: options.image,
+					name: options.name,
+					profile: options.profile,
+					href: options.href
+				}).then(pickData);
+			},
+			query() {
+				return agent.get('/figure').then(pickData);
+			}
 		})
 	},
 	Filter: {

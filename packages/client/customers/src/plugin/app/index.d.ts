@@ -90,6 +90,15 @@ declare namespace Model {
 		nonceStr: string;
 		signature: string;
 	}
+
+	interface Figure {
+		id: string;
+		name: string;
+		profile: string;
+		image: string;
+		href: string;
+		createdAt: string;
+	}
 }
 
 declare namespace Api {
@@ -175,6 +184,10 @@ declare namespace Api {
 	interface Image {
 		create(options: { mediaId: string }): Model.Image;
 	}
+
+	interface Figure {
+		query(): Promise<Model.Figure[]>;
+	}
 }
 
 interface Api {
@@ -187,6 +200,7 @@ interface Api {
 	Topic: Api.Topic;
 	Wechat: Api.Wechat;
 	Image: Api.Image;
+	Figure: Api.Figure;
 }
 
 interface App {

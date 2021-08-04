@@ -12,5 +12,6 @@ module.exports = {
 
 	Image: require('./Image'),
 	Prize: require('./Prize'),
-	Banner: require('./Banner')
+	Banner: require('./Banner'),
+	Figure: require('./Figure')
 };

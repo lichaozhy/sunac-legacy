@@ -126,15 +126,18 @@ function Photo(sequelize, namespace) {
 /**
  * @param {import('sequelize').Sequelize} sequelize
  */
-function Banner(sequelize, namespace) {
-	sequelize.define('Banner', {
+function Figure(sequelize, namespace) {
+	sequelize.define('Figure', {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
 		image: TYPE_SHA_ID,
+		name: DataTypes.CHAR(6),
+		profile: DataTypes.STRING,
+		href: DataTypes.STRING,
 		city: DataTypes.CHAR(6),
 		createdAt: DataTypes.DATE,
 		deletedAt: DataTypes.DATE,
 	}, {
-		tableName: `${namespace}city_banner`
+		tableName: `${namespace}content_figure`
 	});
 }
 
@@ -143,5 +146,5 @@ module.exports = {
 	Topic, // 话题
 	Share, // 朋友圈
 	Photo, // 活动照片
-	Banner
+	Figure
 };

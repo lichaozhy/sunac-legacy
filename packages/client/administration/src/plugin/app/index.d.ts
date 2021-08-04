@@ -101,6 +101,15 @@ namespace Model {
 		city: Adcode;
 		createdAt: string;
 	}
+
+	interface Figure {
+		id: string;
+		name: string;
+		profile: string;
+		image: string;
+		href: string;
+		createdAt: string;
+	}
 }
 
 namespace Query {
@@ -228,6 +237,17 @@ namespace Api {
 	interface BannerInstance {
 		delete(): Model.Banner;
 	}
+
+	interface Figure {
+		(figureId: string): FigureInstance;
+		query(): Model.Figure[];
+		create(options: Model.Figure): Model.Figure;
+	}
+
+	interface FigureInstance {
+		get(): Model.Figure;
+		delete(): Model.Figure;
+	}
 }
 
 interface Api {
@@ -240,6 +260,7 @@ interface Api {
 	Topic: Api.Topic;
 	Image: Api.Image;
 	Banner: Api.Banner;
+	Figure: Api.Figure;
 }
 
 namespace Filter {

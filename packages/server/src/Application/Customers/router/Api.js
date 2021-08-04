@@ -155,15 +155,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 			}
 
 			return next();
-		})
-		.get('/banner', async function getMyCityBannerList(ctx) {
-			const { customer } = ctx.state;
-
-			const list = await Model.Banner.findAll({
-				where: { city: customer.cityAs, deletedAt: null }
-			});
-
-			ctx.body = list.map(Banner);
 		});
 });
 

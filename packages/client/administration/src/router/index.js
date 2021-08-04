@@ -56,10 +56,15 @@ const router = new VueRouter({
 							path: 'photo',
 							component: Page.Workbench.Content.Photo.Overview
 						},
+						// {
+						// 	name: 'Workbench.Content.Banner',
+						// 	path: 'banner',
+						// 	component: Page.Workbench.Content.Banner
+						// },
 						{
-							name: 'Workbench.Content.Banner',
-							path: 'banner',
-							component: Page.Workbench.Content.Banner
+							name: 'Workbench.Content.Figure',
+							path: 'figure',
+							component: Page.Workbench.Content.Figure.Overview
 						}
 					]
 				},
