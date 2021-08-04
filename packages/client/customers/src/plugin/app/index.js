@@ -104,6 +104,15 @@ const app = {
 				}
 			};
 		}, {
+			top(query) {
+				const params = {};
+
+				if (query.number <= 20) {
+					params.number = query.number;
+				}
+
+				return agent.get('/share/top', { params }).then(pickData);
+			},
 			query(query) {
 				const params = {};
 

@@ -5,7 +5,7 @@
 	id="app-home-share-overview"
 >
 	<vue-masonry-wall
-		:items="shareList"
+		:items="allShareList"
 		:options="{width: 200, padding: 5}"
 		@append="append"
 	>
@@ -14,10 +14,8 @@
 				no-body
 				footer-class="px-2 py-1"
 				footer-bg-variant="white"
-				:img-src="`/api/image/${item.imageList[0]}/image.png`"
 				v-if="item"
 				style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
-				@click="goShare(item.id)"
 			>
 				<b-img
 					v-if="index < 3"
@@ -33,6 +31,12 @@
 					style="height: 24px;top:0;left:0"
 				/>
 
+				<b-img
+					:src="`/api/image/${item.imageList[0]}/image.png`"
+					class="w-100"
+					@click="goShare(item.id)"
+				/>
+
 				<template #footer>
 					<div
 						style="font-size:14px"
@@ -42,7 +46,15 @@
 					<div class="d-flex">
 						<b-avatar size="sm" :src="item.createdBy.headimgurl" />
 						<b-form-text class="ml-1 mr-auto">{{ item.createdBy.nickname }}</b-form-text>
-						<b-link v-if="item.validatedAt !== null"><b-icon-heart /></b-link>
+						<b-link
+							:disabled="likedMap[item.id]"
+							v-if="item.validatedAt !== null"
+							@click="likeShareByIndex(index)"
+						><span class="mr-1">{{ item.like }}</span><b-icon-heart
+							v-if="!likedMap[item.id]"
+						/><b-icon-heart-fill
+							v-if="likedMap[item.id]"
+						/></b-link>
 						<b-form-text v-if="item.validatedAt === null">未审核</b-form-text>
 					</div>
 				</template>
@@ -87,7 +99,9 @@ export default {
 	components: { VueMasonryWall },
 	data() {
 		return {
+			likedMap: {},
 			lastUpdatedAt: new Date(),
+			sharetop3: [],
 			shareList: [],
 			total: 0
 		};
@@ -97,11 +111,24 @@ export default {
 			return string.length < 10 ? string : (string.substr(0, 10) + '...');
 		}
 	},
+	computed: {
+		allShareList() {
+			return this.sharetop3.concat(this.shareList);
+		}
+	},
 	methods: {
 		append() {
 			if (this.shareList.length < this.total) {
 				this.getShareList();
 			}
+		},
+		async getLiked() {
+			const list = await this.$app.Api.Customer.TodayLiked.query();
+
+			list.forEach(like => this.$set(this.likedMap, like.share, true));
+		},
+		async getShareTop3List() {
+			this.sharetop3 = await this.$app.Api.Share.top({ number: 3 });
 		},
 		async getShareList() {
 			const from = this.shareList.length;
@@ -113,22 +140,28 @@ export default {
 			});
 
 			this.total = total;
-			list.forEach((share, index) => {
-				share.index = from + index;
-				this.shareList.push(share);
-			});
+			list.forEach((share) => this.shareList.push(share));
+		},
+		async likeShareByIndex(index) {
+			const share = this.shareList[index];
+
+			await this.$app.Api.Share(share.id).like();
+			share.like++;
+			this.$set(this.likedMap, share.id, true);
 		},
 		goShare(shareId) {
 			this.$router.push({ name: 'Share.Detail', params: { shareId } });
 		},
-		refresh() {
+		async refresh() {
 			this.lastUpdatedAt = new Date();
 			this.shareList = [];
-			this.getShareList();
+			await this.getShareTop3List();
+			await this.getShareList();
 		}
 	},
 	mounted() {
 		this.refresh();
+		this.getLiked();
 	}
 };
 </script>

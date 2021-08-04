@@ -11,7 +11,14 @@ declare module '@produck/duck' {
 		Utils: typeof Utils;
 		Model: typeof Model;
 		Wechat: Wechat;
+		ShareLike: ShareLike;
 	}
+}
+
+interface ShareLike {
+	commit(shareId: string): number;
+	get(shareId: string): number;
+	compute(): Promise<void>;
 }
 
 interface Wechat {

@@ -107,6 +107,7 @@
 			:key="share.id"
 			class="p-2 mb-3 position-relative"
 			style="box-shadow: 0 0 6px 0 rgba(0,0,0,0.1)"
+			@click="goShare(share.id)"
 		>
 			<b-row no-gutters>
 				<b-col cols="4">
@@ -131,7 +132,7 @@
 				</b-col>
 				<b-col cols="3" class="text-center align-middle">
 					<b-img style="width:30px" class="mt-3" src="./image/liked.png" />
-					<p class="mb-0" style="font-size:14px;color:#FFAE86">500000</p>
+					<p class="mb-0" style="font-size:14px;color:#FFAE86">{{ share.like }}</p>
 				</b-col>
 			</b-row>
 
@@ -156,18 +157,15 @@ export default {
 		};
 	},
 	methods: {
-		async getShareList() {
-			const { list } = await this.$app.Api.Share.query({
-				from: 0,
-				size: 20,
-				createdAt: this.lastUpdatedAt
-			});
-
-			this.shareList = list;
+		async getShareTop20List() {
+			this.shareList = await this.$app.Api.Share.top({ number: 20 });
+		},
+		goShare(shareId) {
+			this.$router.push({ name: 'Share.Detail', params: { shareId } });
 		},
 	},
 	mounted() {
-		this.getShareList();
+		this.getShareTop20List();
 	}
 };
 </script>

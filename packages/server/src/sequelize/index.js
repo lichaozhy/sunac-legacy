@@ -123,6 +123,8 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Photo.belongsTo(Model.Image, FK('image'));
 	Model.Banner.belongsTo(Model.Image, FK('image'));
 
+	Model.CustomerLikeShare.belongsTo(Model.Share, FK('share'));
+
 	/**
 	 * Activity
 	 */

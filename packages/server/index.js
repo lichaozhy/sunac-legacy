@@ -10,6 +10,7 @@ const meta = require('./package.json');
 const SunacLegacyDatabase = require('./src/sequelize');
 const normalize = require('./src/normalize');
 const wechat = require('./src/wechat');
+const ShareLikeCache = require('./src/shareLike');
 
 module.exports = Duck({
 	id: 'com.sunac.legacy',
@@ -62,6 +63,7 @@ module.exports = Duck({
 		storage: Workspace.resolve('root', finalOptions.database.options.path),
 	});
 
+	injection.ShareLike = ShareLikeCache(sequelize, finalOptions.cityList);
 	injection.Sequelize = sequelize;
 	injection.Model = Model;
 	injection.Wechat = {
@@ -95,6 +97,11 @@ module.exports = Duck({
 
 	return Object.freeze({
 		async start() {
+			(async function computeShareLike() {
+				await injection.ShareLike.compute();
+				setTimeout(computeShareLike, 60000);
+			}());
+
 			await wechat.setDir(Workspace.getPath('wechat'));
 
 			if (finalOptions.server.maintenance.tls === null) {

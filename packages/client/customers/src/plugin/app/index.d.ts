@@ -133,6 +133,7 @@ declare namespace Api {
 
 	interface Share {
 		(shareId: string): ShareInstance;
+		top(): Promise<Model.Share[]>;
 		query(): Promise<Model.Page<Model.Share>>;
 		create(options: Model.Share): Promise<Model.Share>;
 	}

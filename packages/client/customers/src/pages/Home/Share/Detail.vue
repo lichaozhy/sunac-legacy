@@ -57,7 +57,15 @@
 
 		<b-button
 			variant="link"
-		><b-icon-heart class="mr-1" />{{ share.like }}</b-button>
+			:disabled="likedMap[share.id]"
+			@click="like"
+		><b-icon-heart
+			class="mr-1"
+			v-if="!likedMap[share.id]"
+		/><b-icon-heart-fill
+			class="mr-1"
+			v-if="likedMap[share.id]"
+		/>{{ share.like }}</b-button>
 	</b-button-toolbar>
 </div>
 
@@ -67,12 +75,14 @@
 export default {
 	data() {
 		return {
+			likedMap: {},
 			customer: {
 				nickname: '',
 				cityAs: '',
 				headimgurl: ''
 			},
 			share: {
+				id: '',
 				imageList: [],
 				title: '',
 				raw: '',
@@ -88,18 +98,25 @@ export default {
 			this.customer.nickname = share.createdBy.nickname;
 			this.customer.headimgurl = share.createdBy.headimgurl;
 
+			this.share.id = share.id;
 			this.share.title = share.title;
 			this.share.raw = share.raw;
 			this.share.imageList = share.imageList;
 			this.share.like = share.like;
-		}
+		},
+		async like() {
+			await this.$app.Api.Share(this.share.id).like();
+			this.share.like++;
+		},
+		async getLiked() {
+			const list = await this.$app.Api.Customer.TodayLiked.query();
+
+			list.forEach(like => this.$set(this.likedMap, like.share, true));
+		},
 	},
 	mounted() {
 		this.getShare();
+		this.getLiked();
 	}
 };
 </script>
-
-<style>
-
-</style>

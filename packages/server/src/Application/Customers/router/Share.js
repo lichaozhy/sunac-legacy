@@ -2,7 +2,7 @@ const { Router } = require('@produck/duck-web-koa-router');
 const { Op } = require('sequelize');
 
 module.exports = Router(function SunacLegacyApi(router, {
-	Model, Utils
+	Model, Utils, ShareLike
 }) {
 
 	function Customer(data) {
@@ -20,15 +20,39 @@ module.exports = Router(function SunacLegacyApi(router, {
 			title: data.title,
 			raw: data.raw,
 			city: data.city,
+			like: ShareLike.get(data.id),
 			imageList: data.imageList.map(shareImage => shareImage.image),
 			createdAt: data.createdAt,
 			createdBy: Customer(data.Customer),
-			validatedAt: data.validatedAt,
-			like: data.like
+			validatedAt: data.validatedAt
 		};
 	}
 
 	router
+		.get('/top', async function getShareTop20OfCityList(ctx) {
+			const { customer } = ctx.state;
+			const { number = 20 } = ctx.query;
+			const idList = ShareLike.top(customer.cityAs, number);
+
+			const where = {
+				id: { [Op.in]: idList },
+				city: customer.cityAs, deletedAt: null,
+			};
+
+			const list = await Model.Share.findAll({
+				where,
+				include: [
+					{ model: Model.ShareImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
+				order: [['createdAt', 'DESC']]
+			});
+
+			ctx.body = idList.map(id => list.find(share => share.id === id)).map(Share);
+		})
 		.get('/', async function getShareList(ctx) {
 			const { customer } = ctx.state;
 			const { from = 0, size, createdAt = new Date() } = ctx.query;
@@ -75,8 +99,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 			}));
 
 			share.Customer = customer;
-			share.like = 0;
-
 			ctx.body = Share(share);
 		})
 		.param('shareId', async function fecthShare(id, ctx, next) {
@@ -133,6 +155,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const like = await Model.CustomerLikeShare.create({
 				customer: customer.id, share: share.id, createdAt: now
 			});
+
+			ShareLike.commit(share.id);
 
 			ctx.body = {
 				share: like.share,
