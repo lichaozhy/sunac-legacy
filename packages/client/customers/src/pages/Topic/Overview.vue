@@ -27,7 +27,7 @@
 		@append="append"
 	>
 		<template v-slot:default="{item}">
-			<div class="position-relative">
+			<div class="position-relative" v-if="item">
 				<b-card
 					body-class="p-2"
 					header-class="font-weight-bold bg-white px-2 pt-3 pb-0 border-0 text-truncate"
@@ -137,6 +137,8 @@ export default {
 
 			this.total = total;
 			list.forEach((topic) => this.topicList.push(topic));
+
+			console.log(list, this.topicList);
 		},
 		refresh() {
 			this.lastUpdatedAt = new Date();

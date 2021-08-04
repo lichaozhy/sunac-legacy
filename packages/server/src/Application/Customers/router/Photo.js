@@ -1,4 +1,5 @@
 const { Router } = require('@produck/duck-web-koa-router');
+const { Op } = require('sequelize');
 
 module.exports = Router(function SunacLegacyApi(router, {
 	Model, options
@@ -16,10 +17,19 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/', async function getPhotoList(ctx) {
-			const { from = 0, size, city = options.defaultCity } = ctx.query;
+			const {
+				from = 0,
+				size,
+				city = options.defaultCity,
+				createdAt = new Date()
+			} = ctx.query;
 
 			const { rows, count } = await Model.Photo.findAndCountAll({
-				where: { city, deletedAt: null },
+				where: {
+					city,
+					deletedAt: null,
+					createdAt: { [Op.lt]: createdAt },
+				},
 				offset: from,
 				limit: size,
 				order: [['createdAt', 'DESC']]

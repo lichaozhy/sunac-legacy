@@ -20,6 +20,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			description: data.description,
 			read: data.read,
 			like: data.like,
+			prize: data.PrizeTopic !== null,
 			createdAt: data.createdAt,
 			createdBy: Customer(data.Customer),
 			validatedAt: data.validatedAt,
@@ -41,15 +42,28 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/', async function getTopicList(ctx) {
-			const { from = 0, size } = ctx.query;
+			const {
+				from = 0,
+				size,
+				createdAt = new Date(),
+				prize, hot
+			} = ctx.query;
+
+			const order = [['createdAt', 'DESC']];
 			const { customer } = ctx.state;
+
+			if (hot === 'true') {
+				order.unshift(['read', 'DESC']);
+			}
 
 			const { rows, count } = await Model.Topic.findAndCountAll({
 				where: {
 					city: customer.cityAs, deletedAt: null,
+					createdAt: { [Op.lt]: createdAt },
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
 				include: [
+					{ model: Model.PrizeTopic, required: prize === 'true', where: { deletedAt: null } },
 					{
 						model: Model.Customer, required: true,
 						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
@@ -57,7 +71,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				],
 				offset: from,
 				limit: size,
-				order: [['createdAt', 'DESC']]
+				order: order
 			});
 
 			ctx.body = {
@@ -143,11 +157,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 
 		.get('/:topicId/post', async function getTopicPostList(ctx) {
-			const { from = 0, size } = ctx.query;
+			const { from = 0, size, createdAt = new Date() } = ctx.query;
 			const { customer, topic } = ctx.state;
 
 			const where = {
 				topic: topic.id,
+				createdAt: { [Op.lt]: createdAt },
 				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 			};
 

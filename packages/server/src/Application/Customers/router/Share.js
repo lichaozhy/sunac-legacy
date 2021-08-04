@@ -31,11 +31,12 @@ module.exports = Router(function SunacLegacyApi(router, {
 	router
 		.get('/', async function getShareList(ctx) {
 			const { customer } = ctx.state;
-			const { from = 0, size } = ctx.query;
+			const { from = 0, size, createdAt = new Date() } = ctx.query;
 
 			const where = {
 				city: customer.cityAs, deletedAt: null,
-				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
+				createdAt: { [Op.lt]: createdAt },
+				[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }],
 			};
 
 			const list = await Model.Share.findAll({
