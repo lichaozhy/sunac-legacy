@@ -51,32 +51,26 @@
 			<b-col cols="5" class="pr-1">
 				<b-link :to="{ name: 'Topic' }">
 					<div
-						class="w-100 h-100 position-relative app-reference"
-						:style="{'background-image': `url(${referenceList[0].thumbUrl})`}"
-					>
-						<div class="w-100 app-reference-title">{{ referenceList[0].title }}</div>
-					</div>
+						class="w-100 h-100 position-relative app-reference app-background-center"
+						style="background-image:url(/static/image/topic.png);background-size: 113%"
+					></div>
 				</b-link>
 			</b-col>
 			<b-col cols="7" class="pl-1">
 				<div class="h-50 pb-1">
 					<b-link :to="{ name: 'Figure' }">
 						<div
-							class="w-100 h-100 position-relative app-reference"
-							:style="{'background-image': `url(${referenceList[1].thumbUrl})`}"
-						>
-							<div class="w-100 app-reference-title">{{ referenceList[1].title }}</div>
-						</div>
+							class="w-100 h-100 position-relative app-reference app-background-center"
+							style="background-image:url(/static/image/figure.png);background-size: 105%"
+						></div>
 					</b-link>
 				</div>
 				<div class="h-50 pt-1">
 					<b-link :to="{ name: 'Photo' }">
 						<div
-							class="w-100 h-100 position-relative app-reference"
-							:style="{'background-image': `url(${referenceList[2].thumbUrl})`}"
-						>
-							<div class="w-100 app-reference-title">{{ referenceList[2].title }}</div>
-						</div>
+							class="w-100 h-100 position-relative app-reference app-background-center"
+							style="background-image:url(/static/image/photo.png);background-size: 105%"
+						></div>
 					</b-link>
 				</div>
 			</b-col>

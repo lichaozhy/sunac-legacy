@@ -26,9 +26,9 @@
 
 				<b-img
 					v-if="index < 3"
-					:src="`/no/${index + 1}.png`"
+					:src="`/static/no/${index + 1}.png`"
 					class="position-absolute"
-					style="height: 24px;top:0;left:0"
+					style="height: 20px;top:0;left:0"
 				/>
 
 				<b-img
