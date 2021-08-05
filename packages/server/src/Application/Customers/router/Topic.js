@@ -58,7 +58,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const { rows, count } = await Model.Topic.findAndCountAll({
 				where: {
-					city: customer.cityAs, deletedAt: null,
+					deletedAt: null,
 					createdAt: { [Op.lt]: createdAt },
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
@@ -111,7 +111,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			const topic = await Model.Topic.findOne({
 				where: {
-					id, city: customer.cityAs, deletedAt: null,
+					id, deletedAt: null,
 					[Op.or]: [{ validatedAt: { [Op.not]: null } }, { createdBy: customer.id }]
 				},
 				include: [
