@@ -25,14 +25,19 @@
 						block
 						class="h-100"
 						@click="browseFile"
-					><b-icon-plus-circle /></b-button></b-aspect>
+						style="font-size:48px"
+					><b-icon-plus
+					/><p
+						style="font-size:14px"
+					>（{{ form.imageList.length }}/9）</p></b-button></b-aspect>
 				</b-col>
 			</b-form-row>
+			<b-form-text>最多上传9张图片</b-form-text>
 		</b-form-group>
 
 		<b-form-group
 			label="回复内容"
-			class="required"
+			class="required position-relative"
 		>
 			<b-form-textarea
 				class="border-0 bg-secondary round-sm"
@@ -41,6 +46,11 @@
 				placeholder="请输入回复内容"
 				no-resize
 			/>
+			<b-form-text>至少16个字</b-form-text>
+			<b-form-text
+				class="position-absolute"
+				style="bottom:30px;right:10px"
+			>当前{{ form.raw.length }}字</b-form-text>
 		</b-form-group>
 
 		<b-form-group
@@ -61,6 +71,7 @@
 			pill
 			type="submit"
 			class="my-5"
+			:disabled="!isValid"
 		>回复</b-button>
 	</b-form></div>
 
@@ -79,6 +90,15 @@ export default {
 				imageList: []
 			},
 		};
+	},
+	computed: {
+		isValid() {
+			if (this.form.raw.length < 16) {
+				return false;
+			}
+
+			return true;
+		}
 	},
 	methods: {
 		async browseFile() {
