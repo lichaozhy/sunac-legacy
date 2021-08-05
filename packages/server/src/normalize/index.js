@@ -59,8 +59,23 @@ module.exports = function normalize(_options = {}) {
 		server: _server = options.server,
 		cityList: _cityList = options.cityList,
 		wx: _wx = options.wx,
+		storage: _storage = options.storage,
 		defaultCity: _defaultCity = options.defaultCity
 	} = _options;
+
+	if (!isObject(_storage)) {
+		throw new Error('Invalid ".storage", an object expected.');
+	} else {
+		const {
+			path: _path = options.storage.path
+		} = _storage;
+
+		if (!path.isAbsolute(_path)) {
+			throw new Error('Invalid ".storage.path", an absolute path string expected.');
+		}
+
+		options.storage.path = _path;
+	}
 
 	if (typeof _server !== 'object') {
 		throw new Error('Invalid ".server", an object expected.');

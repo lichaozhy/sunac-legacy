@@ -128,7 +128,11 @@ module.exports = Duck({
 				const { host, port, origin, tls } = finalOptions.server.customers;
 
 				const server = tls
-					? http2.createSecureServer({ key: tls.key, cert: tls.cert }, LogWrapedApp.Customers)
+					? http2.createSecureServer({
+						key: tls.key,
+						cert: tls.cert,
+						allowHTTP1: true
+					}, LogWrapedApp.Customers)
 					: http.createServer(LogWrapedApp.Customers);
 
 				server.listen(port, host);

@@ -9,10 +9,10 @@ module.exports = SunacLegacy({
 		customers: {
 			dev: false,
 			origin: 'https://127.0.0.1',
-			port: 80,
+			port: 443,
 			tls: {
-				key: fs.readSync(path.resolve('config/legacy.4009971918.com.key')),
-				cert: fs.readSync(path.resolve('config/legacy.4009971918.com.pem'))
+				key: fs.readFileSync(path.resolve('config/legacy.4009971918.com.key')),
+				cert: fs.readFileSync(path.resolve('config/legacy.4009971918.com.pem'))
 			}
 		},
 	},
