@@ -65,7 +65,7 @@
 		</b-form-group>
 
 		<b-button
-			variant="success"
+			variant="primary"
 			size="md"
 			block
 			pill

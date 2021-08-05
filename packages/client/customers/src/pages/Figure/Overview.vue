@@ -4,7 +4,9 @@
 	id="app-figure"
 	class="overflow-auto h-100 pb-5"
 >
-	<b-img src="./image/banner.png" class="w-100" />
+	<b-link
+		href="https://fkwcd.cn/v/24ojmZ65/?slv=2&sid=vpp5&v=oosnVwmwxNmcLCUM6D7s6s0_WHyA"
+	><b-img src="./image/banner.png" class="w-100" /></b-link>
 
 	<div
 		class="px-2"

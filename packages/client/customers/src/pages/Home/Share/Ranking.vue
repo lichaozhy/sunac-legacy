@@ -110,7 +110,7 @@
 			@click="goShare(share.id)"
 		>
 			<b-row no-gutters>
-				<b-col cols="4">
+				<!-- <b-col cols="4">
 					<b-aspect
 						aspect="16:10"
 						class="w-100"
@@ -125,10 +125,10 @@
 							'background-image': `url(/api/image/${share.imageList[0]}/image.png)`
 						}"
 					></b-aspect>
-				</b-col>
-				<b-col cols="5" class="d-flex align-items-center">
-					<b-avatar size="md" class="border mx-2" :src="share.createdBy.headimgurl" />
-					<p class="mb-0" style="font-size:12px">{{ share.createdBy.nickname }}</p>
+				</b-col> -->
+				<b-col cols="9" class="d-flex align-items-center">
+					<b-avatar size="md" class="border mx-4" :src="share.createdBy.headimgurl" />
+					<p class="mb-0" style="font-size:14px">{{ share.createdBy.nickname }}</p>
 				</b-col>
 				<b-col cols="3" class="text-center align-middle">
 					<b-img style="width:30px" class="mt-3" src="./image/liked.png" />

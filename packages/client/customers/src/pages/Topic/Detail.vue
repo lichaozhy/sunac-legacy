@@ -82,9 +82,9 @@
 								variant="link"
 								v-if="item.validatedAt !== null"
 								@click="likePostByIndex(index)"
-							><b-icon-heart
-								class="mr-1"
-							/>{{ item.like }}</b-button>
+							>{{ item.like }}<b-icon-heart
+								class="ml-1"
+							/></b-button>
 
 							<b-button
 								variant="link"
@@ -94,13 +94,13 @@
 						</b-button-toolbar>
 
 						<p
-							class="mb-0"
+							class="mb-0 mt-2"
 							style="font-size:14px"
 							v-if="item.raw.length >= 64 && !item.expanded"
 						>{{ item.raw | sub64 }}</p>
 
 						<p
-							class="mb-0"
+							class="mb-0 mt-2"
 							style="font-size:14px"
 							v-if="item.raw.length < 64 || item.expanded"
 						>{{ item.raw }}</p>
@@ -133,7 +133,7 @@
 
 			<div
 				v-if="post.total <= post.list.length"
-				class="text-center my-3"
+				class="text-center my-2"
 			>
 				<b-form-text>已经到底啦</b-form-text>
 			</div>

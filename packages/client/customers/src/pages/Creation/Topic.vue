@@ -53,7 +53,7 @@
 		</b-form-group>
 
 		<b-button
-			variant="danger"
+			variant="primary"
 			size="md"
 			class="rounded-pill my-5"
 			block
