@@ -21,7 +21,7 @@ module.exports = function normalize(_options = {}) {
 				origin: 'http://127.0.0.1',
 				host: '0.0.0.0',
 				port: 80,
-				tls: {}
+				tls: null
 			},
 		},
 		wx: {
@@ -98,7 +98,8 @@ module.exports = function normalize(_options = {}) {
 				host: _host = options.server.customers.host,
 				port: _port = options.server.customers.port,
 				origin: _origin = options.server.customers.origin,
-				dev: _dev = options.server.customers.dev
+				dev: _dev = options.server.customers.dev,
+				tls: _tls
 			} = _customers;
 
 			if (typeof _host !== 'string') {
@@ -117,10 +118,15 @@ module.exports = function normalize(_options = {}) {
 				throw new Error('Invalid ".server.customers.origin", a string expected.');
 			}
 
+			if (!isObject(_tls) || !_tls.key || !_tls.cert) {
+				throw new Error('Invalid ".server.customers.tls", a string expected.');
+			}
+
 			options.server.customers.dev = _dev;
 			options.server.customers.host = _host;
 			options.server.customers.port = _port;
 			options.server.customers.origin = _origin;
+			options.server.customers.tls = _tls;
 		}
 
 		if (!isObject(_administration)) {

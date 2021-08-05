@@ -125,12 +125,13 @@ module.exports = Duck({
 			}
 
 			{
-				const { host, port, origin } = finalOptions.server.customers;
+				const { host, port, origin, tls } = finalOptions.server.customers;
 
-				http
-					.createServer(LogWrapedApp.Customers)
-					.listen(port, host);
+				const server = tls
+					? http2.createSecureServer({ key: tls.key, cert: tls.cert }, LogWrapedApp.Customers)
+					: http.createServer(LogWrapedApp.Customers);
 
+				server.listen(port, host);
 				Log.system(`Starting: <Customers> on host="${host}", port=${port}, origin=${origin}`);
 			}
 		},

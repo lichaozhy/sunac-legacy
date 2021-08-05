@@ -5,7 +5,7 @@
 	class="overflow-auto h-100 pb-5"
 >
 	<b-link
-		href="https://fkwcd.cn/v/24ojmZ65/?slv=2&sid=vpp5&v=oosnVwmwxNmcLCUM6D7s6s0_WHyA"
+		href="https://fkwcd.cn/v/24ojmZ65"
 	><b-img src="./image/banner.png" class="w-100" /></b-link>
 
 	<div
@@ -14,6 +14,16 @@
 		<b-card
 			class="mt-3 app-shadow round-sm"
 		>
+			<b-row class="text-center text-nowrap">
+				<b-col cols="6">
+					<b-img src="./image/radio.svg" style="height: 60px"  />
+					<h5 class="mt-3 font-weight-bold">非遗电台</h5>
+				</b-col>
+				<b-col cols="6">
+					<b-img src="./image/figure.svg" style="height: 60px"  />
+					<h5 class="mt-3 font-weight-bold">我是非遗传承人</h5>
+				</b-col>
+			</b-row>
 		</b-card>
 
 		<div id="app-figure-list" class="mt-3 pb-5" style="background-color:#FAFAFA">
