@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-		"prod:start": "node ./script/prod-start.js",
-		"prod:install": "node ./script/prod-install.js",
+    "prod:start": "node ./script/prod-start.js",
+    "prod:install": "node ./script/prod-install.js",
     "dev:start": "node ./script/debug.js",
     "dev:install": "node ./script/install.js",
     "deps:install": "npm install && lerna bootstrap",

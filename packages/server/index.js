@@ -4,6 +4,7 @@ const DuckLog = require('@produck/duck-log');
 const DuckWorkspace = require('@produck/duck-workspace');
 const http = require('http');
 const http2 = require('http2');
+const https = require('https');
 
 const utils = require('./src/utils');
 const meta = require('./package.json');
@@ -128,10 +129,9 @@ module.exports = Duck({
 				const { host, port, origin, tls } = finalOptions.server.customers;
 
 				const server = tls
-					? http2.createSecureServer({
+					? https.createServer({
 						key: tls.key,
-						cert: tls.cert,
-						allowHTTP1: true
+						cert: tls.cert
 					}, LogWrapedApp.Customers)
 					: http.createServer(LogWrapedApp.Customers);
 

@@ -8,7 +8,7 @@ module.exports = SunacLegacy({
 	server: {
 		customers: {
 			dev: false,
-			origin: 'https://127.0.0.1',
+			origin: 'https://legacy.4009971918.com',
 			port: 443,
 			tls: {
 				key: fs.readFileSync(path.resolve('config/legacy.4009971918.com.key')),

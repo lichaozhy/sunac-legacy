@@ -8,5 +8,5 @@ module.exports = {
 	Photo: require('./Photo'),
 	Topic: require('./Topic'),
 	Share: require('./Share'),
-	Figure: require('./figure')
+	Figure: require('./Figure')
 };
