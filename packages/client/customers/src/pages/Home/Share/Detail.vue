@@ -12,6 +12,7 @@
 		<b-button
 			variant="link"
 			class="text-dark"
+			@click="requestShareing(share)"
 		><b-icon-share class="mr-1" />分享</b-button>
 	</b-button-toolbar>
 
@@ -67,6 +68,7 @@
 			v-if="likedMap[share.id]"
 		/>{{ share.like }}</b-button>
 	</b-button-toolbar>
+	<app-sharing-mask />
 </div>
 
 </template>
@@ -91,6 +93,20 @@ export default {
 		};
 	},
 	methods: {
+		requestShareing(share) {
+			const baseOptions = {
+				title: share.title,
+				imgUrl: `${location.origin}/api/image/${share.imageList[0]}/image.png`,
+				link: `${location.origin}/api/wechat/share?type=photo&id=${share.id}`
+			};
+
+			this.$wx.updateTimelineShareData(baseOptions);
+			this.$wx.updateAppMessageShareData(Object.assign({
+				desc: '欢迎访问“我的非遗圈作品”了解更多中国非遗文化...'
+			}, baseOptions));
+
+			this.$store.commit('openShareing');
+		},
 		async getShare() {
 			const share = await this.$app.Api.Share(this.$route.params.shareId).get();
 

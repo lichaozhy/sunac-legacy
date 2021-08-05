@@ -42,6 +42,7 @@
 								size="sm"
 								variant="link"
 								class="ml-auto mr-1"
+								@click="requestSharing(item)"
 							><b-icon-share /></b-button>
 							<b-button
 								size="sm"
@@ -53,6 +54,7 @@
 				</b-card>
 			</template>
 		</vue-masonry-wall>
+		<app-sharing-mask />
 	</div>
 
 	<b-modal
@@ -70,6 +72,7 @@
 				variant="dark"
 				class="w-50"
 				size="lg"
+				@click="requestSharing(selected)"
 			><b-icon-share /></b-button>
 
 			<b-button
@@ -109,7 +112,8 @@ export default {
 				id: '',
 				image: '',
 				like: '',
-				index: ''
+				index: '',
+				title: ''
 			}
 		};
 	},
@@ -119,6 +123,20 @@ export default {
 		}
 	},
 	methods: {
+		requestSharing(photo) {
+			const baseOptions = {
+				title: photo.title,
+				imgUrl: `${location.origin}/api/image/${photo.image}/image.png`,
+				link: `${location.origin}/api/wechat/share?type=photo&id=${photo.id}`
+			};
+
+			this.$wx.updateTimelineShareData(baseOptions);
+			this.$wx.updateAppMessageShareData(Object.assign({
+				desc: '欢迎访问“我的非遗我的城”了解更多中国非遗文化...'
+			}, baseOptions));
+
+			this.$store.commit('openShareing');
+		},
 		async append() {
 			if (this.photoList.length < this.total) {
 				await this.getPhotoList();
@@ -157,6 +175,7 @@ export default {
 			this.selected.index = index;
 			this.selected.image = `/api/image/${photo.image}/image.png`;
 			this.selected.like = photo.like;
+			this.selected.title = photo.title;
 			this.$refs.previewer.show();
 		},
 		resetPreviewer() {
@@ -164,6 +183,7 @@ export default {
 			this.selected.index = '';
 			this.selected.image = '';
 			this.selected.like = '';
+			this.selected.title = '';
 		},
 		refresh() {
 			this.lastUpdatedAt = new Date();

@@ -22,11 +22,23 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 				ctx.session.customerId = customer.id;
 			}
 
+			if (ctx.path.indexOf('/api/image/') === 0) {
+				return next();
+			}
+
 			if (!ctx.session.customerId && ctx.path !== '/api/wechat/oauth') {
-				return ctx.redirect(Utils.WechatOauthRedirectURL({
+				const { shareType, shareItemId } = ctx.query;
+
+				const redirectOptions = {
 					appid: options.wx.appid,
 					origin: options.server.customers.origin,
-				}));
+				};
+
+				if (shareType) {
+					redirectOptions.state = `${shareType}-${shareItemId}`;
+				}
+
+				return ctx.redirect(Utils.WechatOauthRedirectURL(redirectOptions));
 			}
 
 			return next();

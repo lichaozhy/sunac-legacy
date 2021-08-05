@@ -87,7 +87,6 @@
 		<div style="font-size:24px;margin-top:0"><b-icon-plus /></div>
 		<div style="font-size:14px;margin-top: -6px">发布</div>
 	</b-button>
-
 </div>
 
 </template>

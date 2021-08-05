@@ -54,6 +54,20 @@ module.exports = Router(function SunacLegacyApi(router, {
 	}
 
 	router
+		.get('/image/:imageId/image.png', conditional(), etag(), async function getImageFile(ctx) {
+			const { imageId } = ctx.params;
+			const image = await Model.Image.findOne({ where: { id: imageId } });
+
+			if (!image) {
+				return ctx.throw(404, 'image is not found.');
+			}
+
+			const filepath = Workspace.resolve('image', path.join(imageId, 'image.png'));
+
+			ctx.set('Cache-Control', 'max-age=31536000');
+			ctx.type = 'png';
+			ctx.body = fs.createReadStream(filepath);
+		})
 		.get('/dev', async function dispatchRedirect(ctx) {
 			ctx.body = { success: 'ok' };
 		})
@@ -132,20 +146,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 			});
 
 			ctx.body = Image(imageData);
-		})
-		.get('/image/:imageId/image.png', conditional(), etag(), async function getImageFile(ctx) {
-			const { imageId } = ctx.params;
-			const image = await Model.Image.findOne({ where: { id: imageId } });
-
-			if (!image) {
-				return ctx.throw(404, 'image is not found.');
-			}
-
-			const filepath = Workspace.resolve('image', path.join(imageId, 'image.png'));
-
-			ctx.set('Cache-Control', 'max-age=31536000');
-			ctx.type = 'png';
-			ctx.body = fs.createReadStream(filepath);
 		})
 		.use(async function validateCustomerCityAs(ctx, next) {
 			const { customer } = ctx.state;

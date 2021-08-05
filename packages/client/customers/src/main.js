@@ -8,10 +8,13 @@ import AppPlugin from './plugin/app';
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import bvOptions from './bvOptions.json';
+import AppSharingMask from './components/SharingMask.vue';
 
 Vue.use(BootstrapVue, bvOptions);
 Vue.use(BootstrapVueIcons);
 Vue.use(AppPlugin);
+
+Vue.component('app-sharing-mask', AppSharingMask);
 
 Vue.config.productionTip = false;
 

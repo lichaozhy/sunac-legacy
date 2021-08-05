@@ -8,6 +8,7 @@
 </template>
 
 <script>
+
 export default {
 	async mounted() {
 		await this.$wx.updateTimelineShareData({

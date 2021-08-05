@@ -37,7 +37,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/oauth', async function getCodeForToken(ctx) {
-			const { code } = ctx.query;
+			const { code, state } = ctx.query;
 
 			if (!code) {
 				return ctx.throw(400, 'Invalid oauth callback.');
