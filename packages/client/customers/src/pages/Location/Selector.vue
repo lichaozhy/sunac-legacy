@@ -14,9 +14,9 @@
 			variant="link"
 			block
 			class="position-absolute text-white"
-			style="bottom: 2em;font-size:1rem"
+			style="bottom: 1.75em;font-size:1rem"
 			:to="{ name: 'Home' }"
-		>暂不选择，跳过>></b-button>
+		>&nbsp;</b-button>
 	</div>
 
 	<b-aspect
@@ -24,120 +24,34 @@
 		class="position-absolute"
 		style="width:100%;top:0;left:0"
 	>
-		<b-img
+		<div
 			class="position-absolute"
-			style="top:5%;left:1em;width:22%"
-			src="./image/logo.png"
-		/>
-
-		<div
-			id="app-location-title"
-			class="position-absolute p-3 text-white font-weight-bold"
-			style="
-				width:12em;top:20%;left:0;
-				border-radius: 0 50px 50px 0;
-				background-image:linear-gradient(to right, #4E4B78, #74B1BE);"
+			v-for="location in list"
+			:key="location.adcode"
+			style="margin-top:-21px;margin-left:-25px"
+			:style="location.style"
+			@click="setCustomerCity(location.adcode)"
 		>
-			<h5>&nbsp;</h5>
-			<h5 class="mb-0">&nbsp;</h5>
-		</div>
+			<b-img
+				style="width: 50px"
+				:src="`/static/location/flag-${customer.cityAs === location.adcode ? 'focus' : 'blur'}.png`"
+			/>
 
-		<b-img
-			class="position-absolute"
-			style="top: 10%; right:0; width: 65%"
-			src="./image/heading.png"
-		/>
-
-		<div
-			class="position-absolute p-3 text-white font-weight-bold"
-			id="app-location-title-text"
-			style="top:20%;left:0;text-shadow: 2px 2px 4px #000;"
-		>
-			<h5>了解城市历史变迁</h5>
-			<h5 class="mb-0">弘扬传统文化</h5>
-		</div>
-
-		<div
-			class="position-absolute p-3 text-white"
-			id="app-location-welcome"
-			style="top:47%;left:0;font-size:14px"
-		>
-			<p class="mb-1">Welcome</p>
-			<p class="mb-0">城市记忆博物馆</p>
-		</div>
-
-		<b-img
-			class="position-absolute ml-3"
-			style="top: 78%; left:0; width: 30%"
-			src="./image/notice.png"
-		/>
-
-		<div
-			id="app-location-selection"
-			class="position-absolute w-100"
-			style="top: 97%"
-		>
-
-			<b-aspect
-				aspect="1:1"
+			<b-img
 				class="position-absolute"
-				style="width:100%;top:0;left:0"
-			>
-				<b-img
-					class="position-absolute"
-					style="left:5%;width: 90%"
-					src="./image/plate-background.png"
-				/>
+				src="/static/location/car.png"
+				style="width:48px;bottom:0"
+				:class="`app-car-${location.direction}`"
+				:style="location.car"
+			/>
 
-				<b-img
-					class="position-absolute"
-					style="right:17%;width: 12%;top:18%"
-					src="./image/car.png"
-				/>
-
-				<b-row
-					no-gutters
-					class="h-100"
-				>
-					<b-col
-						cols="6"
-						class="position-relative"
-					>
-						<div class="position-absolute" style="top:3.5%;width: 96%">
-							<app-location-plate
-								v-for="city in leftList"
-								:key="city.plate"
-								:name="city.name"
-								:title="city.title"
-								:description="city.description"
-								:plate="city.plate"
-								:active="customer.cityAs === city.adcode"
-								align="left"
-								@click.native="setCustomerCity(city.adcode)"
-							/>
-						</div>
-					</b-col>
-					<b-col
-						cols="6"
-						class="position-relative"
-					>
-						<div class="position-absolute" style="top:-16%;width: 96%;right: 0">
-							<app-location-plate
-								v-for="city in rightList"
-								:key="city.plate"
-								:name="city.name"
-								:title="city.title"
-								:description="city.description"
-								:plate="city.plate"
-								:active="customer.cityAs === city.adcode"
-								align="right"
-								@click.native="setCustomerCity(city.adcode)"
-							/>
-						</div>
-					</b-col>
-				</b-row>
-			</b-aspect>
-
+			<p
+				class="position-absolute w-100 text-center"
+				:style="{
+					color: customer.cityAs === location.adcode ? '#fff' : '#4E4B78'
+				}"
+				style="top:0;left:0"
+			>{{ location.name }}</p>
 		</div>
 	</b-aspect>
 </div>
@@ -145,7 +59,6 @@
 </template>
 
 <script>
-import AppLocationPlate from './Plate.vue';
 
 export default {
 	data() {
@@ -155,99 +68,88 @@ export default {
 			}
 		};
 	},
-	components: {
-		AppLocationPlate
-	},
 	computed: {
-		leftList() {
+		list() {
 			return [
 				{
 					name: '苏州',
 					title: '桃花坞',
-					description: '源于宋代“姑苏版”年画',
-					plate: 'taohuawu',
-					adcode: '320500'
+					adcode: '320500',
+					direction: 'right',
+					style: { left: '77%', top: '74%' },
+					car: { left: '56px', top: '27px' }
 				},
 				{
 					name: '南京',
 					title: '纸鸢',
-					description: '距今2000多年“追风的梦',
-					plate: 'zhiyuan',
-					adcode: '320100'
+					adcode: '320100',
+					direction: 'right',
+					style: { left: '72%', top: '170%' },
+					car: { left: '71px', top: '19px' }
 				},
 				{
 					name: '无锡',
 					title: '惠山泥人',
-					description: '独特黑泥“不老娃娃”',
-					plate: 'huishanniren',
-					adcode: '320200'
+					adcode: '320200',
+					direction: 'right',
+					style: { left: '35%', top: '114%' },
+					car: { left: '75px', top: '3px' }
 				},
 				{
 					name: '新疆',
 					title: '桑皮纸',
-					description: '千年工艺“纸业活化石”',
-					plate: 'sangpizhi',
-					adcode: '650000'
+					adcode: '650000',
+					direction: 'left',
+					style: { left: '23%', top: '161%' },
+					car: { left: '-51px', top: '30px' }
 				},
 				{
 					name: '南通',
 					title: '棕编',
-					description: '始于三国时期“千年奇葩”',
-					plate: 'zongbian',
-					adcode: '320600'
+					adcode: '320600',
+					direction: 'right',
+					style: { left: '50%', top: '145%' },
+					car: { left: '60px', top: '31px' }
 				},
 				{
 					name: '芜湖',
 					title: '石器雕刻',
-					description: '跨越时代“考古学重大发现”',
-					plate: 'shiqidiaoke',
-					adcode: '340200'
+					adcode: '340200',
+					direction: 'right',
+					style: { left: '27%', top: '188%' },
+					car: { left: '68px', top: '-24px' }
 				},
-			];
-		},
-		rightList() {
-			return [
 				{
 					name: '上海',
 					title: '皮影戏',
-					description: '始于西汉“百戏之首”',
-					plate: 'piyingxi',
-					adcode: '310000'
-				},
-				{
-					name: '苏州',
-					title: '昆曲',
-					description: '14世纪“中国最古老的戏曲”',
-					plate: 'kunqu',
-					adcode: '320500'
-				},
-				{
-					name: '南京',
-					title: '脸谱',
-					description: '距今4000多年“戏说国粹”',
-					plate: 'lianpu',
-					adcode: '320100'
+					adcode: '310000',
+					direction: 'right',
+					style: { left: '21%', top: '86%' },
+					car: { left: '54px', top: '28px' }
 				},
 				{
 					name: '扬州',
 					title: '江都漆画',
-					description: '源于两汉“自成体系”',
-					plate: 'jiangduqihua',
-					adcode: '321000'
+					adcode: '321000',
+					direction: 'left',
+					style: { left: '19%', top: '131%' },
+					car: { left: '-39px', top: '31px' }
 				},
 				{
 					name: '徐州',
 					title: '剪纸',
-					description: '公元六世纪“独特艺术语言”',
-					plate: 'jianzhi',
-					adcode: '320300'
+					adcode: '320300',
+					direction: 'right',
+					style: { left: '72%', top: '131%' },
+					car: { left: '56px', top: '23px' }
 				},
 				{
 					name: '镇江',
 					title: '太平泥',
-					description: '公元420年“仅当地黄土捏制”',
-					plate: 'taipingni',
-					adcode: '321100'
+					adcode: '321100',
+					direction: 'right',
+					style: { left: '77%', top: '108%' },
+					car: { left: '56px', top: '27px' }
 				},
 			];
 		}
@@ -270,5 +172,10 @@ export default {
 </script>
 
 <style>
+.app-car-left {
+}
 
+.app-car-right {
+	transform: scaleX(-1);
+}
 </style>
