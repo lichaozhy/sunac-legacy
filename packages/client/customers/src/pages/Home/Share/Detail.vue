@@ -97,7 +97,7 @@ export default {
 			const baseOptions = {
 				title: share.title,
 				imgUrl: `${location.origin}/api/image/${share.imageList[0]}/image.png`,
-				link: `${location.origin}/api/wechat/share?type=photo&id=${share.id}`
+				link: `${location.origin}/api/wechat/share?shareType=share&shareItemId=${share.id}`
 			};
 
 			this.$wx.updateTimelineShareData(baseOptions);

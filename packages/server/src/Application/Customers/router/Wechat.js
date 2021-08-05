@@ -7,6 +7,25 @@ const OPEN_WECHAT_USERINFO = 'https://api.weixin.qq.com/sns/userinfo';
 
 const USERINFO_SCOPE_REG = /snsapi_userinfo/;
 
+const StateHash = {
+	photo(id) {
+		return `/photo?preview=${id}`;
+	},
+	share(id) {
+		return `/share/${id}/detail`;
+	}
+};
+
+function resolveState(string) {
+	try {
+		const [type, id] = string.split('-');
+
+		return `/api/wechat/share?shareType=${type}&shareItemId=${id}`;
+	} catch (err) {
+		return '/';
+	}
+}
+
 module.exports = Router(function SunacLegacyApi(router, {
 	options, Model, Log, Utils, Wechat
 }) {
@@ -62,11 +81,26 @@ module.exports = Router(function SunacLegacyApi(router, {
 				]
 			});
 
+			if (!customer && !USERINFO_SCOPE_REG.test(authorization.scope)) {
+				// oauth scope='snsapi_userinfo'
+				const oauthURL = Utils.WechatOauthRedirectURL({
+					appid: options.wx.appid,
+					origin: options.server.customers.origin,
+					scope: 'snsapi_userinfo',
+					state
+				});
+
+				ctx.redirect(oauthURL);
+
+				return;
+			}
+
 			if (customer) {
 				// finding out customer
 				ctx.session.customerId = customer.id;
-				ctx.redirect('/#test');
-			} else if (USERINFO_SCOPE_REG.test(authorization.scope)) {
+			}
+
+			if (USERINFO_SCOPE_REG.test(authorization.scope)) {
 				// create new customer
 				const { openid, access_token } = authorization;
 				const userinfo = await requestOpenWechatUserinfo(access_token, openid);
@@ -89,17 +123,9 @@ module.exports = Router(function SunacLegacyApi(router, {
 				});
 
 				ctx.session.customerId = customer.id;
-				ctx.redirect('/');
-			} else {
-				// oauth scope='snsapi_userinfo'
-				const oauthURL = Utils.WechatOauthRedirectURL({
-					appid: options.wx.appid,
-					origin: options.server.customers.origin,
-					scope: 'snsapi_userinfo'
-				});
-
-				ctx.redirect(oauthURL);
 			}
+
+			ctx.redirect(state ? resolveState(state) : '/');
 		})
 		.get('/jssdk/config', async function generateConfig(ctx) {
 			const config = {
@@ -120,5 +146,14 @@ module.exports = Router(function SunacLegacyApi(router, {
 				nonceStr: config.noncestr,
 				signature: crypto.createHash('sha1').update(raw).digest().toString('hex')
 			};
+		})
+		.get('/share', async function redirectFromShare(ctx) {
+			const { shareType, shareItemId } = ctx.query;
+
+			if (!StateHash[shareType]) {
+				return ctx.throw(400);
+			}
+
+			ctx.redirect(`/#${StateHash[shareType](shareItemId)}`);
 		});
 });

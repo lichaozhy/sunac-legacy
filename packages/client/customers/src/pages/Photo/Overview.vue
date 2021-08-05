@@ -92,6 +92,23 @@
 	>
 		<b-form-text>已经到底啦</b-form-text>
 	</div>
+
+	<b-button
+		variant="default"
+		size="lg"
+		class="position-fixed text-white text-center border-0"
+		:to="{ name: 'Home' }"
+		style="
+			padding-top: 14px;
+			right:10px;
+			bottom:50px;
+			width:60px;
+			height:60px;
+			background:#ccc;
+			border-radius:100%;
+			background-image: linear-gradient(45deg, #4E4B78, #74B1BE);
+		"
+	><b-icon-house /></b-button>
 </div>
 
 </template>
@@ -127,7 +144,7 @@ export default {
 			const baseOptions = {
 				title: photo.title,
 				imgUrl: `${location.origin}/api/image/${photo.image}/image.png`,
-				link: `${location.origin}/api/wechat/share?type=photo&id=${photo.id}`
+				link: `${location.origin}/api/wechat/share?shareType=photo&shareItemId=${photo.id}`
 			};
 
 			this.$wx.updateTimelineShareData(baseOptions);
@@ -196,7 +213,7 @@ export default {
 			this.refresh();
 		}
 	},
-	mounted() {
+	async mounted() {
 		this.refresh();
 		this.getCityList();
 	}
