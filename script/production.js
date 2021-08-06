@@ -25,6 +25,6 @@ module.exports = SunacLegacy({
 	wx: {
 		appid: wechat.appid,
 		appsecret: wechat.appsecret,
-		debug: true
+		debug: false
 	}
 });
