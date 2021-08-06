@@ -1,7 +1,26 @@
 <template>
 
-<div class="p-2 h-100 overflow-auto">
-	<b-button-toolbar>
+<div
+	class="h-100 overflow-auto"
+	style="background-color:#fafafa"
+>
+	<div
+		style="background-color:#fff"
+		class="p-2"
+	>
+		<b-aspect
+			class="app-shadow app-background-center round-sm"
+			aspect="16:9"
+			style="background-color:#ccc"
+		>等一张图</b-aspect>
+
+		<h5 class="mt-3 font-weight-bold">这里有一个标题</h5>
+		<b-form-text
+			class="pb-3"
+		>让民间艺术唤发新的生命力<br>让传统变得流行，让无用变得有用，才是手艺得真正传承</b-form-text>
+	</div>
+
+	<b-button-toolbar class="mt-3">
 		<b-nav class="font-weight-bold app-nav mr-auto">
 			<b-nav-item
 				v-for="mode in modeList"
@@ -21,7 +40,7 @@
 	</b-button-toolbar>
 
 	<vue-masonry-wall
-		class="mt-3"
+		class="mt-3 px-2"
 		:items="topicList"
 		:options="{width: 360, padding: 0}"
 		@append="append"
@@ -32,33 +51,34 @@
 					body-class="p-2"
 					header-class="font-weight-bold bg-white px-2 pt-3 pb-0 border-0 text-truncate"
 					class="mb-3 round-sm app-shadow"
-					style=""
-					:header="item.title"
-					@click="goDetail(item.id)"
 				>
 					<b-row no-gutters>
-						<b-col class="pr-2 d-flex flex-column justify-content-between" cols="7">
-							<p style="font-size:14px" class="mb-0">{{ item.description | sub32 }}</p>
-							<b-button-toolbar style="font-size: 12px">
-								<div
-									class="mr-auto"
-									v-if="item.validatedAt !== null"
-								><b-icon-eye class="mr-1" />{{ item.read }}</div>
-
-								<div
-									class="mr-auto"
-									v-if="item.validatedAt === null"
-								>正在审核</div>
-
-								<div><b-icon-person class="mr-1" />{{ item.createdBy.nickname }}</div>
-							</b-button-toolbar>
-						</b-col>
-						<b-col cols="5">
+						<b-col cols="2">
 							<b-aspect
-								class="round-sm app-background-center"
-								aspect="16:10"
+								class="round-sm app-background-center w-100 rounded-circle"
+								aspect="1:1"
 								:style="{'background-image': `url(/api/image/${item.banner}/image.png)`}"
 							></b-aspect>
+						</b-col>
+						<b-col cols="7" class="d-flex align-items-center px-3 font-weight-bold">
+							<div class="text-truncate">{{ item.title }}</div>
+						</b-col>
+						<b-col cols="3" class="text-center text-nowrap d-flex align-items-center">
+							<b-button
+								pill
+								block
+								class="text-white"
+								style="background-image:linear-gradient(#FFAE86 0%, #FFC886 100%)"
+								:to="{ name: 'Topic.Detail', params: { topicId: item.id } }"
+								v-if="item.validatedAt !== null"
+							>一起讨论</b-button>
+
+							<b-button
+								block
+								variant="link"
+								disabled
+								v-if="item.validatedAt === null"
+							>未审核</b-button>
 						</b-col>
 					</b-row>
 				</b-card>
@@ -74,7 +94,7 @@
 
 	<div
 		v-if="total <= topicList.length"
-		class="text-center mt-5"
+		class="text-center mt-4"
 	>
 		<b-form-text>已经到底啦</b-form-text>
 	</div>
@@ -103,8 +123,8 @@ export default {
 	computed: {
 		modeList() {
 			return [
+				{ value: 'hot', text: '热门话题' },
 				{ value: 'prize', text: '有奖话题' },
-				{ value: 'hot', text: '热门' },
 				{ value: 'last', text: '最新' },
 			];
 		}
@@ -114,12 +134,6 @@ export default {
 			if (this.topicList.length < this.total) {
 				this.getTopicList();
 			}
-		},
-		goDetail(topicId) {
-			this.$router.push({
-				name: 'Topic.Detail',
-				params: { topicId }
-			});
 		},
 		selectMode(value) {
 			this.currentMode = value;

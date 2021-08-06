@@ -18,76 +18,105 @@ const router = new VueRouter({
 				{
 					name: 'Home.Share.Overview',
 					path: 'share/overview',
-					component: Page.Home.Share.Overview
+					component: Page.Home.Share.Overview,
 				},
 				{
 					name: 'Home.Share.Ranking',
 					path: 'share/ranking',
 					component: Page.Home.Share.Ranking
 				},
-			]
+			],
+			beforeEnter(_to, _from, next) {
+				document.title = '城市记忆博物馆';
+				next();
+			}
 		},
 
 		{
 			name: 'Share.Detail',
 			path: '/share/:shareId/detail',
-			component: Page.Home.Share.Detail
+			component: Page.Home.Share.Detail,
+			beforeEnter(_to, _from, next) {
+				document.title = '非遗圈';
+				next();
+			}
 		},
 
 		{
 			name: 'Photo',
 			path: '/photo',
-			component: Page.Photo.Overview
+			component: Page.Photo.Overview,
+			beforeEnter(_to, _from, next) {
+				document.title = '活动相册';
+				next();
+			}
 		},
 
 		{
 			name: 'Figure',
 			path: '/figure',
-			component: Page.Figure.Overview
+			component: Page.Figure.Overview,
+			beforeEnter(_to, _from, next) {
+				document.title = '非遗传承人';
+				next();
+			}
 		},
 
 		{
 			name: 'Location',
 			path: '/location',
-			component: Page.Location.Selector
-		},
-
-		{
-			name: 'Reference',
-			path: '/reference',
-			component: Page.Reference.Overview
+			component: Page.Location.Selector,
+			beforeEnter(_to, _from, next) {
+				document.title = '选择关注城市';
+				next();
+			}
 		},
 
 		{
 			name: 'Topic',
 			path: '/topic',
-			component: Page.Topic.Overview
+			component: Page.Topic.Overview,
+			beforeEnter(_to, _from, next) {
+				document.title = '话题广场';
+				next();
+			}
 		},
 		{
 			name: 'Topic.Detail',
 			path: '/topic/:topicId/detail',
-			component: Page.Topic.Detail
-		},
-		{
-			name: 'Topic.Post.Detail',
-			path: '/topic/:topicId/post/:postId/detail',
-			component: Page.Topic.Post
+			component: Page.Topic.Detail,
+			beforeEnter(_to, _from, next) {
+				document.title = '话题动态';
+				next();
+			}
 		},
 
 		{
 			name: 'Creation.Post',
 			path: '/topic/:topicId/post/creation',
-			component: Page.Creation.Post
+			component: Page.Creation.Post,
+			beforeEnter(_to, _from, next) {
+				document.title = '发布话题动态';
+				next();
+			}
 		},
 		{
 			name: 'Creation.Share',
 			path: '/share/creation',
-			component: Page.Creation.Share
+			component: Page.Creation.Share,
+			beforeEnter(_to, _from, next) {
+				document.title = '发布非遗圈分享';
+				next();
+			}
 		},
 		{
 			name: 'Creation.Topic',
 			path: '/topic/creation',
-			component: Page.Creation.Topic
+			component: Page.Creation.Topic,
+			beforeEnter(_to, _from, next) {
+				document.title = '发布话题';
+				next();
+			}
 		}
 	]
 });

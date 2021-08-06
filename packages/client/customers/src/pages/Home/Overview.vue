@@ -33,7 +33,7 @@
 	<b-button
 		variant="link"
 		class="position-absolute text-white"
-		style="right: 0.75em;top: 0.25em;background:rgba(0,0,0,0.3);border-radius: 20px"
+		style="right: 0.75em;top: 1em;background:rgba(0,0,0,0.3);border-radius: 20px"
 		:to="{ name: 'Location' }"
 	><b-icon-geo-alt-fill
 		class="mr-1"

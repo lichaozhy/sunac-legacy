@@ -1,143 +1,100 @@
 <template>
 
-<div class="h-100 overflow-auto pb-5">
-	<b-aspect
-		v-if="topic.banner"
-		aspect="21:10"
-		class="app-background-center w-100 position-relative"
-		:style="{'background-image':`url(/api/image/${topic.banner}/image.png)`}"
+<div
+	class="h-100 overflow-auto pb-5 px-2 pt-2"
+	style="background:#fafafa"
+>
+	<vue-masonry-wall
+		:items="post.list"
+		:options="{width: 360, padding: 0}"
+		@append="append"
 	>
-		<div
-			style="background:rgba(0,0,0,0.5);height:80px;left:60px;right:60px;top:25px"
-			class="text-white position-absolute p-3 d-flex flex-column justify-content-between round-sm"
-		>
-			<h6 class="text-truncate">{{ topic.title }}</h6>
-			<b-button-toolbar style="font-size:12px">
-				<div class="mr-auto">{{ topic.read }}<span class="ml-1">阅读</span></div>
-				<div>{{ post.total }}<span class="ml-1">回复</span></div>
-			</b-button-toolbar>
-		</div>
-	</b-aspect>
+		<template v-slot:default="{item, index}">
 
-	<div class="px-2" style="margin-top: -3em">
-		<b-card
-			body-class="p-2 mb-3"
-			header-class="font-weight-bold bg-white p-2 border-0 text-truncate"
-			class="mb-3 round-sm app-shadow"
-		>
-			<template #header>
-				<b-button-toolbar>
-					<b-avatar :src="createdBy.headimgurl" />
-					<b-button
-						class="font-weight-bold text-dark"
-						variant="link"
-					>主持人：{{ createdBy.nickname }}</b-button>
-				</b-button-toolbar>
-			</template>
-			<p style="height:4.25em;" class="mb-0">导语：{{topic.description | sub64}}</p>
-		</b-card>
-
-		<b-card
-			header-class="bg-white p-2 text-truncate"
-			no-body
-			class="round-sm app-shadow"
-		>
-			<template #header>
-				<b-button-toolbar id="app-topic-detail-heading">
-					<b-nav class="font-weight-bold app-nav mr-auto">
-						<b-nav-item active>动态</b-nav-item>
-					</b-nav>
-
-					<b-button
-						class="mr-1"
-						variant="link"
-						:class="{'active':post.mode === 'hot'}"
-						@click="setMode('hot')"
-					><b-icon-star class="mr-1" />最热</b-button>
-					<b-button
-						variant="link"
-						:class="{'active':post.mode === 'last'}"
-						@click="setMode('last')"
-					><b-icon-sort-down class="mr-1" />最新</b-button>
-				</b-button-toolbar>
-			</template>
-
-
-			<vue-masonry-wall
-				:items="post.list"
-				:options="{width: 360, padding: 0}"
-				@append="append"
+			<b-card
+				header-class="bg-white border-0 pb-0"
+				footer-class="bg-white border-0 px-2 pt-0"
+				body-class="px-2 pb-2 pt-2"
+				class="round-sm border-0 mb-3"
+				style="box-shadow: 0 2px 4px rgba(0,0,0,0.3)"
 			>
-				<template v-slot:default="{item, index}">
-					<div class="p-2 border-bottom">
-						<b-button-toolbar>
-							<div class="mr-auto d-flex">
-								<b-avatar class="mr-2" :src="item.createdBy.headimgurl" rounded />
-								<div class="d-flex flex-column adjust-content-center">
-									<div>{{ item.createdBy.nickname }}</div>
-									<b-form-text class="mt-0">{{ item.createdAt | localDatetime }}</b-form-text>
-								</div>
-							</div>
-							<b-button
-								variant="link"
-								v-if="item.validatedAt !== null"
-								@click="likePostByIndex(index)"
-							>{{ item.like }}<b-icon-heart
-								class="ml-1"
-							/></b-button>
-
-							<b-button
-								variant="link"
-								v-if="item.validatedAt === null"
-								disabled
-							>正在审核</b-button>
-						</b-button-toolbar>
-
-						<p
-							class="mb-0 mt-2"
-							style="font-size:14px"
-							v-if="item.raw.length >= 64 && !item.expanded"
-						>{{ item.raw | sub64 }}</p>
-
-						<p
-							class="mb-0 mt-2"
-							style="font-size:14px"
-							v-if="item.raw.length < 64 || item.expanded"
-						>{{ item.raw }}</p>
-
-						<span v-if="item.raw.length >= 64" style="font-size:14px">
-							<b-link v-if="!item.expanded" @click="expand(index)">展开</b-link>
-							<b-link v-if="item.expanded" @click="collapse(index)">收起</b-link>
-						</span>
-
-						<b-form-row v-if="item.imageList.length > 0" class="mt-2">
-							<b-col
-								cols="4"
-								class="mb-2"
-								v-for="imageId in item.imageList"
-								:key="imageId"
-							>
-								<b-aspect
-									class="w-100 border"
-									aspect="1:1"
-									style="background-size:cover;background-position:center"
-									:style="{'background-image': `url(/api/image/${imageId}/image.png)`}"
-								></b-aspect>
-							</b-col>
-						</b-form-row>
-					</div>
-
+				<template #header>
+					<b-button-toolbar class="align-items-center">
+						<b-avatar class="mr-2 rounded-circle" :src="item.createdBy.headimgurl" />
+						<div class="mr-auto">{{ item.createdBy.nickname }}</div>
+						<b-form-text class="mt-0">{{ item.createdAt | localDatetime }}</b-form-text>
+					</b-button-toolbar>
 				</template>
 
-			</vue-masonry-wall>
+				<template #footer>
+					<b-button-toolbar>
+						<b-form-input
+							class="w-75 rounded-pill mr-auto bg-secondary border-0"
+							size="sm"
+							placeholder="说点什么吧…"
+							readonly
+						/>
 
-			<div
-				v-if="post.total <= post.list.length"
-				class="text-center my-2"
-			>
-				<b-form-text>已经到底啦</b-form-text>
-			</div>
-		</b-card>
+						<b-button
+							variant="link"
+							v-if="item.validatedAt !== null"
+							@click="likePostByIndex(index)"
+						>{{ item.like }}<b-icon-heart
+							class="ml-1"
+						/></b-button>
+
+						<b-button
+							variant="link"
+							v-if="item.validatedAt === null"
+							disabled
+						>正在审核</b-button>
+					</b-button-toolbar>
+				</template>
+
+				<pre
+					class="mb-0 w-100"
+					style="font-size:14px;white-space:break-spaces"
+					v-if="item.raw.length >= 64 && !item.expanded"
+				>{{ item.raw | sub64 }}</pre>
+
+				<pre
+					class="mb-0 mt-2 w-100"
+					style="font-size:14px;white-space:break-spaces"
+					v-if="item.raw.length < 64 || item.expanded"
+				>{{ item.raw }}</pre>
+
+				<span v-if="item.raw.length >= 64" style="font-size:14px">
+					<b-link v-if="!item.expanded" @click="expand(index)">展开</b-link>
+					<b-link v-if="item.expanded" @click="collapse(index)">收起</b-link>
+				</span>
+
+				<b-form-row v-if="item.imageList.length > 0" class="mt-2">
+					<b-col
+						cols="4"
+						class="mb-2"
+						v-for="imageId in item.imageList"
+						:key="imageId"
+					>
+						<b-aspect
+							class="w-100 border"
+							aspect="1:1"
+							style="background-size:cover;background-position:center"
+							:style="{'background-image': `url(/api/image/${imageId}/image.png)`}"
+						></b-aspect>
+					</b-col>
+				</b-form-row>
+
+
+			</b-card>
+		</template>
+
+	</vue-masonry-wall>
+
+	<div
+		v-if="post.total <= post.list.length"
+		class="text-center my-2"
+	>
+		<b-form-text>已经到底啦</b-form-text>
 	</div>
 
 	<b-button

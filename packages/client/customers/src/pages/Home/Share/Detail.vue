@@ -123,6 +123,7 @@ export default {
 		async like() {
 			await this.$app.Api.Share(this.share.id).like();
 			this.share.like++;
+			this.getLiked();
 		},
 		async getLiked() {
 			const list = await this.$app.Api.Customer.TodayLiked.query();
