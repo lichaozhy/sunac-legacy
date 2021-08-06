@@ -123,6 +123,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 				});
 
 				ctx.session.customerId = customer.id;
+
+				return ctx.redirect('/#/location');
 			}
 
 			ctx.redirect(state ? resolveState(state) : '/');

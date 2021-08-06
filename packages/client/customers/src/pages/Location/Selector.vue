@@ -42,6 +42,7 @@
 				src="/static/location/car.png"
 				style="width:48px;bottom:0"
 				:class="`app-car-${location.direction}`"
+				v-if="customer.cityAs === location.adcode"
 				:style="location.car"
 			/>
 

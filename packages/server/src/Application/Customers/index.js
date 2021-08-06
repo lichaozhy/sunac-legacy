@@ -3,6 +3,7 @@ const DuckWebKoaRouter = require('@produck/duck-web-koa-router');
 const DuckWebKoaAcl = require('@produck/duck-web-koa-acl');
 const KoaBody = require('koa-body');
 const KoaSession = require('koa-session');
+const KoaCompress = require('koa-compress');
 const serve = require('koa-static');
 const path = require('path');
 
@@ -14,6 +15,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 	app.keys = [Utils.salt()];
 
 	app
+		.use(KoaCompress())
 		.use(KoaSession(app))
 		.use(async function validateSession(ctx, next) {
 			if (!ctx.session.customerId && options.server.customers.dev) {
@@ -45,10 +47,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 		})
 		.use(KoaBody())
 		.use(AppRouter().routes())
-		.use(serve(path.resolve('www/customers'), {
-			gzip: true,
-			maxAge: 3600
-		}));
+		.use(serve(path.resolve('www/customers'), { maxAge: 3600000 }));
 }, {
 	plugins: [
 		DuckWebKoaAcl({

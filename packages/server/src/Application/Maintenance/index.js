@@ -3,6 +3,7 @@ const DuckWebKoaRouter = require('@produck/duck-web-koa-router');
 const DuckWebKoaAcl = require('@produck/duck-web-koa-acl');
 const KoaBody = require('koa-body');
 const	KoaSession = require('koa-session');
+const KoaCompress = require('koa-compress');
 const serve = require('koa-static');
 const path = require('path');
 
@@ -14,10 +15,8 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 	app.keys = [Utils.salt()];
 
 	app
-		.use(serve(path.resolve('www/maintenance'), {
-			maxAge: 3600,
-			gzip: true
-		}))
+		.use(KoaCompress())
+		.use(serve(path.resolve('www/maintenance'), { maxAge: 3600000 }))
 		.use(KoaSession(app))
 		.use(KoaBody())
 		.use(AppRouter().routes());
