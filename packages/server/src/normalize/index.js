@@ -114,7 +114,7 @@ module.exports = function normalize(_options = {}) {
 				port: _port = options.server.customers.port,
 				origin: _origin = options.server.customers.origin,
 				dev: _dev = options.server.customers.dev,
-				tls: _tls
+				tls: _tls = options.server.customers.tls
 			} = _customers;
 
 			if (typeof _host !== 'string') {
@@ -133,7 +133,7 @@ module.exports = function normalize(_options = {}) {
 				throw new Error('Invalid ".server.customers.origin", a string expected.');
 			}
 
-			if (!isObject(_tls) || !_tls.key || !_tls.cert) {
+			if (!isObject(_tls) || (_tls !== null && (!_tls.key || !_tls.cert))) {
 				throw new Error('Invalid ".server.customers.tls", a string expected.');
 			}
 

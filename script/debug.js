@@ -7,9 +7,6 @@ const product = SunacLegacy({
 			port: 8000
 		}
 	},
-	storage: {
-		path: process.cwd()
-	},
 	log: {
 		path: ''
 	},

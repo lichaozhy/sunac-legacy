@@ -62,6 +62,7 @@ module.exports = Duck({
 	const { sequelize, Model } = SunacLegacyDatabase({
 		namespace: `${product.meta.namespace}_`,
 		storage: Workspace.resolve('root', finalOptions.database.options.path),
+		onLog: () => {}
 	});
 
 	injection.ShareLike = ShareLikeCache(sequelize, finalOptions.cityList);
@@ -82,17 +83,49 @@ module.exports = Duck({
 		Customers: Web.Application('legacy.customers')
 	};
 
+	const Logger = {
+		customers: _ => Log.accessCustomers(_),
+		administration: _ => Log.accessAdministration(_),
+		maintenance: _ => Log.accessMaintenance(_),
+	};
+
 	const LogWrapedApp = {
-		Administration: DuckLog.Adapter.HttpServer(Application.Administration, _ => Log.access(_)),
-		Maintenance: DuckLog.Adapter.HttpServer(Application.Maintenance, _ => Log.access(_)),
-		Customers: DuckLog.Adapter.HttpServer(Application.Customers, _ => Log.access(_)),
+		Administration: DuckLog.Adapter.HttpServer(Application.Administration, Logger.administration),
+		Maintenance: DuckLog.Adapter.HttpServer(Application.Maintenance, Logger.maintenance),
+		Customers: DuckLog.Adapter.HttpServer(Application.Customers, Logger.customers),
 	};
 
 	Log('system');
 	Log('db');
 	Log('wechat');
-	Log('access', {
-		AppenderList: [DuckLog.Appender.Console()],
+
+	Log('accessCustomers', {
+		AppenderList: [
+			DuckLog.Appender.Console(),
+			DuckLog.Appender.File({
+				file: { pathname: Workspace.resolve('log', finalOptions.log.access.customers) }
+			})
+		],
+		format: DuckLog.Format.ApacheCLF()
+	});
+
+	Log('accessMaintenance', {
+		AppenderList: [
+			DuckLog.Appender.Console(),
+			DuckLog.Appender.File({
+				file: { pathname: Workspace.resolve('log', finalOptions.log.access.maintenance) }
+			})
+		],
+		format: DuckLog.Format.ApacheCLF()
+	});
+
+	Log('accessAdministration', {
+		AppenderList: [
+			DuckLog.Appender.Console(),
+			DuckLog.Appender.File({
+				file: { pathname: Workspace.resolve('log', finalOptions.log.access.administration) }
+			})
+		],
 		format: DuckLog.Format.ApacheCLF()
 	});
 

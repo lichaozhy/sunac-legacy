@@ -21,7 +21,7 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 	app.keys = [Utils.salt()];
 
 	app
-		.use(serve(path.resolve('www/administration'), { gzip: true }))
+		.use(serve(path.resolve('www/administration'), { gzip: true, maxAge: 3600 }))
 		.use(KoaSession(app))
 		.use(bodyparser)
 		.use(AppRouter().routes());
