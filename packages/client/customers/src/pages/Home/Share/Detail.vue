@@ -1,6 +1,6 @@
 <template>
 
-<div class="px-2 pb-5 overflow-auto">
+<div class="px-2 pb-5 pt-2 overflow-auto">
 	<b-button-toolbar>
 		<div class="mr-auto d-flex">
 			<b-avatar class="mr-2" :src="customer.headimgurl" />

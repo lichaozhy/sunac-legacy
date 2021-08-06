@@ -2,7 +2,7 @@
 
 <div
 	id="app-home-overview"
-	class="px-2 position-relative"
+	class="px-2 pt-2 position-relative"
 >
 	<b-carousel
 		class="app-carousel"
