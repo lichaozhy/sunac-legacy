@@ -63,16 +63,6 @@ const router = new VueRouter({
 		},
 
 		{
-			name: 'Location',
-			path: '/location',
-			component: Page.Location.Selector,
-			beforeEnter(_to, _from, next) {
-				document.title = '选择关注城市';
-				next();
-			}
-		},
-
-		{
 			name: 'Topic',
 			path: '/topic',
 			component: Page.Topic.Overview,

@@ -34,7 +34,7 @@
 		variant="link"
 		class="position-absolute text-white"
 		style="right: 0.75em;top: 1em;background:rgba(0,0,0,0.3);border-radius: 20px"
-		:to="{ name: 'Location' }"
+		@click="$store.commit('openLocation')"
 	><b-icon-geo-alt-fill
 		class="mr-1"
 	/>{{ cityMap[cityAs] && cityMap[cityAs].name }}</b-button>

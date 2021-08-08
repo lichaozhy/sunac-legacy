@@ -2,8 +2,8 @@
 
 <div class="h-100 overflow-auto" id="app">
 	<router-view></router-view>
-
 	<app-sharing-mask />
+	<app-location />
 </div>
 
 </template>

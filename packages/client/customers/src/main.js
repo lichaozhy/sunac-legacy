@@ -8,13 +8,16 @@ import AppPlugin from './plugin/app';
 
 import { BootstrapVue, BootstrapVueIcons } from 'bootstrap-vue';
 import bvOptions from './bvOptions.json';
-import AppSharingMask from './components/SharingMask.vue';
+
+import AppSharingMask from './components/SharingMask';
+import AppLocation from './components/Location';
 
 Vue.use(BootstrapVue, bvOptions);
 Vue.use(BootstrapVueIcons);
 Vue.use(AppPlugin);
 
 Vue.component('app-sharing-mask', AppSharingMask);
+Vue.component('app-location', AppLocation);
 
 Vue.config.productionTip = false;
 
@@ -72,6 +75,17 @@ window.addEventListener('load', async function bootstrap() {
 			}
 
 			application.$mount('#app');
+
+			if (!window.localStorage.getItem('locationShownAt')) {
+				window.localStorage.setItem('locationShownAt', Date.now() - 13 * 3600 * 1000);
+			}
+
+			const lastLocationShownAt = window.localStorage.getItem('locationShownAt');
+
+			if (Date.now() - lastLocationShownAt > 12 * 3600 * 1000) {
+				store.commit('openLocation');
+				window.localStorage.setItem('locationShownAt', Date.now());
+			}
 		});
 	});
 

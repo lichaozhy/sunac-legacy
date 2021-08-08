@@ -5,7 +5,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state: {
-		sharing: false
+		sharing: false,
+		isLocationShow: false
 	},
 	mutations: {
 		closeSharing(state) {
@@ -13,6 +14,13 @@ export default new Vuex.Store({
 		},
 		openShareing(state) {
 			state.sharing = true;
+		},
+
+		closeLocation(state) {
+			state.isLocationShow = false;
+		},
+		openLocation(state) {
+			state.isLocationShow = true;
 		}
 	},
 	actions: {

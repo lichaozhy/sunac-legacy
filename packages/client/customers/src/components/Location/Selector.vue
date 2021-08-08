@@ -2,7 +2,9 @@
 
 <div
 	id="app-location"
-	class="overflow-auto h-100 position-relative"
+	class="overflow-auto h-100 w-100 position-fixed"
+	style="top:0;left:0;z-index:9999"
+	v-if="$store.state.isLocationShow"
 >
 	<div class="position-relative">
 		<b-img
@@ -15,7 +17,7 @@
 			block
 			class="position-absolute text-white"
 			style="bottom: 1.75em;font-size:1rem"
-			:to="{ name: 'Home' }"
+			@click="$store.commit('closeLocation')"
 		>&nbsp;</b-button>
 	</div>
 
@@ -173,9 +175,6 @@ export default {
 </script>
 
 <style>
-.app-car-left {
-}
-
 .app-car-right {
 	transform: scaleX(-1);
 }
