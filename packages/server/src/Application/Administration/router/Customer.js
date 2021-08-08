@@ -5,7 +5,7 @@ function Customer(data) {
 	return {
 		id: data.id,
 		name: data.name,
-		phont: data.phone,
+		phone: data.phone,
 		cityAs: data.cityAs,
 		createdAt: data.createdAt,
 		wechat: {

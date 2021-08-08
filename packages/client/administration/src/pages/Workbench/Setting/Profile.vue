@@ -163,6 +163,10 @@
 						size="sm"
 					></b-avatar>
 				</template>
+
+				<template #cell(createdAt)="row">
+					{{ row.item.createdAt | localDatetime }}
+				</template>
 			</b-table>
 		</div>
 	</b-modal>
@@ -259,6 +263,7 @@ export default {
 			return list.map(data => {
 				return {
 					id: data.id,
+					phone: data.phone,
 					openid: data.wechat.openid,
 					nickname: data.wechat.nickname,
 					avatarSrc: data.wechat.headimgurl,
