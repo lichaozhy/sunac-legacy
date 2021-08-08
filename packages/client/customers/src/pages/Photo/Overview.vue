@@ -1,6 +1,9 @@
 <template>
 
-<div id="app-photo" class="overflow-auto h-100 pb-5">
+<div
+	id="app-photo"
+	class="h-100 pb-5"
+>
 	<b-img src="./image/banner.png" class="w-100"></b-img>
 
 	<b-nav class="mt-3 font-weight-bold app-nav flex-nowrap text-nowrap w-100 overflow-auto">
@@ -54,7 +57,6 @@
 				</b-card>
 			</template>
 		</vue-masonry-wall>
-		<app-sharing-mask />
 	</div>
 
 	<b-modal

@@ -1,12 +1,12 @@
 <template>
 
-<div class="px-2 pb-5 pt-2 overflow-auto">
+<div id="app-share-detail" class="px-2 pb-5 pt-2">
 	<b-button-toolbar>
 		<div class="mr-auto d-flex">
 			<b-avatar class="mr-2" :src="customer.headimgurl" />
 			<div class="d-flex flex-column adjust-content-center">
 				<div>{{ customer.nickname }}</div>
-				<b-form-text class="mt-0">{{ customer.cityAs }}</b-form-text>
+				<b-form-text class="mt-0">{{ cityName }}</b-form-text>
 			</div>
 		</div>
 		<b-button
@@ -45,7 +45,9 @@
 
 	<h4 class="mt-4 font-weight-bold">{{ share.title }}</h4>
 
-	<pre>{{ share.raw }}</pre>
+	<pre
+		style="white-space:break-spaces"
+	>{{ share.raw }}</pre>
 
 	<b-button-toolbar class="mt-3">
 		<b-button
@@ -68,7 +70,6 @@
 			v-if="likedMap[share.id]"
 		/>{{ share.like }}</b-button>
 	</b-button-toolbar>
-	<app-sharing-mask />
 </div>
 
 </template>
@@ -77,6 +78,7 @@
 export default {
 	data() {
 		return {
+			cityList: [],
 			likedMap: {},
 			customer: {
 				nickname: '',
@@ -91,6 +93,13 @@ export default {
 				like: 0
 			}
 		};
+	},
+	computed: {
+		cityName() {
+			const city = this.cityList.find(city => city.adcode === this.customer.cityAs);
+
+			return city ? city.name : this.customer.cityAs;
+		}
 	},
 	methods: {
 		requestShareing(share) {
@@ -130,10 +139,14 @@ export default {
 
 			list.forEach(like => this.$set(this.likedMap, like.share, true));
 		},
+		async getCityList() {
+			this.cityList = await this.$app.Api.City.query();
+		},
 	},
 	mounted() {
 		this.getShare();
 		this.getLiked();
+		this.getCityList();
 	}
 };
 </script>

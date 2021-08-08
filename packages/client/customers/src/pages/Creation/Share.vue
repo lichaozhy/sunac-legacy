@@ -1,6 +1,6 @@
 <template>
 
-<div class="p-2 overflow-auto">
+<div class="p-2">
 	<b-form @submit.prevent="createShare">
 		<b-form-group
 			class="required"
@@ -24,10 +24,11 @@
 					<b-aspect aspect="1:1" ><b-button
 						block
 						class="h-100 round-sm"
-						style="font-size:48px"
+						style="font-size:40px"
 						@click="browseFile"
 					><b-icon-plus
 					/><p
+						class="mb-0"
 						style="font-size:14px"
 					>（{{ form.imageList.length }}/9）</p></b-button></b-aspect>
 				</b-col>
@@ -54,7 +55,7 @@
 				placeholder="请输入非遗分享的文字内容"
 				no-resize
 			/>
-			<b-form-text>至少32个字</b-form-text>
+			<b-form-text>至少6个字</b-form-text>
 			<b-form-text
 				class="position-absolute"
 				style="bottom:30px;right:10px"
@@ -106,7 +107,7 @@ export default {
 				return false;
 			}
 
-			if (this.form.raw.length < 32) {
+			if (this.form.raw.length < 6) {
 				return false;
 			}
 

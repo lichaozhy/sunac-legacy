@@ -4,6 +4,10 @@ module.exports = Router(function SunacLegacyAdministrationCity(router, {
 	Utils, options
 }) {
 	router
+		.use(async function setStaticCache(ctx, next) {
+			await next();
+			ctx.set('Cache-Control', 'max-age=31536000');
+		})
 		.get('/', async function getCityList(ctx) {
 			const { name } = ctx.query;
 

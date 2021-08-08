@@ -33,15 +33,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 		};
 	}
 
-	function Banner(data) {
-		return {
-			id: data.id,
-			image: data.image,
-			city: data.city,
-			createdAt: data.createdAt
-		};
-	}
-
 	async function getWechatMedia(mediaId) {
 		const queryString = [
 			`access_token=${Wechat.accessToken}`,
@@ -83,6 +74,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			return next();
 		})
 		.get('/customer', async function getPrincipalCustomer(ctx) {
+			ctx.set('Cache-Control', 'max-age=3600');
 			ctx.body = Customer(ctx.state.customer);
 		})
 		.get('/customer/today/like', async function getTodayList(ctx) {

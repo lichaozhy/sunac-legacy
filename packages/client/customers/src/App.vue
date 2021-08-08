@@ -1,9 +1,10 @@
 <template>
 
-<router-view
-	class="h-100"
-	id="app"
-></router-view>
+<div class="h-100 overflow-auto" id="app">
+	<router-view></router-view>
+
+	<app-sharing-mask />
+</div>
 
 </template>
 

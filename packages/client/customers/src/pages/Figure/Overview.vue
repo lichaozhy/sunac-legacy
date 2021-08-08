@@ -2,7 +2,7 @@
 
 <div
 	id="app-figure"
-	class="overflow-auto h-100 pb-5"
+	class="h-100 pb-5"
 >
 	<b-link
 		href="https://fkwcd.cn/v/24ojmZ65"

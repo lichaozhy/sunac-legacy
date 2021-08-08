@@ -25,6 +25,7 @@ const FILE_NAME ={
 
 const OPEN_WECHAT_JS_SDK_TICKET= 'https://api.weixin.qq.com/cgi-bin/ticket/getticket';
 const OPEN_WECHAT_APP_TOKEN = 'https://api.weixin.qq.com/cgi-bin/token';
+const WAIT_5S = new Promise(resolve => setTimeout(() => resolve()), 5000);
 
 async function refreshToken() {
 	const queryString = [
@@ -51,6 +52,11 @@ async function refreshJsSdkTicket() {
 	const body = await res.json();
 	const now = new Date();
 
+	if (!body.ticket) {
+		await WAIT_5S();
+		await refreshJsSdkTicket();
+	}
+
 	config.jsapi.ticket = body.ticket;
 	config.jsapi.createdAt = now;
 
@@ -58,9 +64,6 @@ async function refreshJsSdkTicket() {
 
 	await fs.writeFile(path.join(config.dirpath, FILE_NAME.JS_SDK_TIEKCT), jsonOfJsSdkTicket);
 }
-
-// 如果没有主动观察，可能会失效
-// 一次失败就续上了
 
 const HOUR = 3600000;
 

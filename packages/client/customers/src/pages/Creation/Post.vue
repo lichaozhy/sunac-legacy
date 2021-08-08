@@ -1,6 +1,6 @@
 <template>
 
-<div class="p-2 overflow-auto">
+<div class="p-2">
 	<b-form @submit.prevent="createPost">
 		<b-form-group
 			label="图片"
@@ -28,6 +28,7 @@
 						style="font-size:48px"
 					><b-icon-plus
 					/><p
+						class="mb-0"
 						style="font-size:14px"
 					>（{{ form.imageList.length }}/9）</p></b-button></b-aspect>
 				</b-col>

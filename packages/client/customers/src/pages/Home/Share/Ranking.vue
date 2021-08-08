@@ -1,6 +1,7 @@
 <template>
 
 <div
+	id="app-home-share-ranking"
 	class="px-0 w-100 pb-5"
 >
 	<b-aspect
@@ -110,22 +111,6 @@
 			@click="goShare(share.id)"
 		>
 			<b-row no-gutters>
-				<!-- <b-col cols="4">
-					<b-aspect
-						aspect="16:10"
-						class="w-100"
-						style="
-							background-position:center;
-							background-size:cover;
-							border-radius:4px;
-							overflow:hidden;
-							box-shadow: 2px 2px 6px 0 rgba(0,0,0,0.1);
-						"
-						:style="{
-							'background-image': `url(/api/image/${share.imageList[0]}/image.png)`
-						}"
-					></b-aspect>
-				</b-col> -->
 				<b-col cols="9" class="d-flex align-items-center">
 					<b-avatar size="md" class="border mx-4" :src="share.createdBy.headimgurl" />
 					<p class="mb-0" style="font-size:14px">{{ share.createdBy.nickname }}</p>

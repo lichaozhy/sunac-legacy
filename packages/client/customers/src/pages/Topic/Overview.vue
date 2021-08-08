@@ -1,7 +1,7 @@
 <template>
 
 <div
-	class="h-100 overflow-auto"
+	id="app-figure"
 	style="background-color:#fafafa"
 >
 	<div

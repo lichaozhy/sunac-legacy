@@ -1,6 +1,7 @@
 <template>
 
 <div
+	id="app-topic-detail"
 	class="h-100 overflow-auto pb-5 px-2 pt-2"
 	style="background:#fafafa"
 >
@@ -58,7 +59,7 @@
 				>{{ item.raw | sub64 }}</pre>
 
 				<pre
-					class="mb-0 mt-2 w-100"
+					class="mb-0 w-100"
 					style="font-size:14px;white-space:break-spaces"
 					v-if="item.raw.length < 64 || item.expanded"
 				>{{ item.raw }}</pre>

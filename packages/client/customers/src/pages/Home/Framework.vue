@@ -1,9 +1,6 @@
 <template>
 
-<div
-	id="app-home-framework"
-	class="overflow-auto"
->
+<div id="app-home-framework">
 	<app-home-overview ref="overview" />
 	<router-view ref="sub"></router-view>
 </div>

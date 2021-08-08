@@ -11,7 +11,7 @@ function Figure(data) {
 	};
 }
 
-module.exports = Router(function SunacLegacyAdministrationFigure(router, {
+module.exports = Router(function SunacLegacyCustomersFigure(router, {
 	Model, AccessControl: $ac
 }) {
 	router
