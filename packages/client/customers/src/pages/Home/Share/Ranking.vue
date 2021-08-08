@@ -23,10 +23,15 @@
 				class="h-100"
 				style="color:#4E4B78"
 			>
-				<b-col cols="4" class="position-relative h-100">
+				<b-col
+					cols="4"
+					class="position-relative h-100"
+					v-for="rank in [1, 0, 2]"
+					:key="rank"
+				>
 					<div
 						class="text-center position-absolute w-100"
-						style="top: 42%"
+						:style="{ top: podiumStyleList[rank].headTop }"
 					>
 						<b-img
 							class="position-absolute crown side"
@@ -34,9 +39,9 @@
 						/>
 
 						<b-avatar
-							size="44px"
+							:size="podiumStyleList[rank].headSize"
 							class="mx-auto"
-							:src="shareList[1] && shareList[1].createdBy.headimgurl"
+							:src="top3[rank].createdBy.headimgurl"
 						/>
 					</div>
 
@@ -44,58 +49,8 @@
 						class="position-absolute w-100 text-center"
 						style="bottom: -20%"
 					>
-						<h6 class="mb-0 font-weight-bold">{{ shareList[1] && shareList[1].createdBy.nickname }}</h6>
-						<p style="font-size:12px">1000赞</p>
-					</div>
-				</b-col>
-				<b-col cols="4" class="position-relative h-100">
-					<div
-						class="text-center position-absolute w-100"
-						style="top: 34%"
-					>
-						<b-img
-							class="position-absolute crown"
-							src="./image/crown.png"
-						/>
-
-						<b-avatar
-							size="50px"
-							class="mx-auto"
-							:src="shareList[0] && shareList[0].createdBy.headimgurl"
-						/>
-					</div>
-
-					<div
-						class="position-absolute w-100 text-center"
-						style="bottom: -20%"
-					>
-						<h6 class="mb-0 font-weight-bold">{{ shareList[0] && shareList[0].createdBy.nickname }}</h6>
-						<p style="font-size:12px">1000赞</p>
-					</div>
-				</b-col>
-				<b-col cols="4" class="position-relative h-100">
-					<div
-						class="text-center position-absolute w-100"
-						style="top: 55%"
-					>
-						<b-img
-							class="position-absolute crown side"
-							src="./image/crown.png"
-						/>
-
-						<b-avatar
-							size="40px"
-							class="mx-auto"
-							:src="shareList[2] && shareList[2].createdBy.headimgurl"
-						/>
-					</div>
-
-					<div
-						class="position-absolute w-100 text-center"
-						style="bottom: -20%"
-					>
-						<h6 class="mb-0 font-weight-bold">{{ shareList[2] && shareList[2].createdBy.nickname }}</h6>
-						<p style="font-size:12px">1000赞</p>
+						<h6 class="mb-0 font-weight-bold">{{ top3[rank].createdBy.nickname }}</h6>
+						<p style="font-size:12px">{{ top3[rank].like }}赞</p>
 					</div>
 				</b-col>
 			</b-row>
@@ -141,6 +96,26 @@ export default {
 			shareList: [],
 		};
 	},
+	computed: {
+		podiumStyleList() {
+			return [
+				{ headTop: '34%', headSize: '50px' },
+				{ headTop: '42%', headSize: '44px' },
+				{ headTop: '55%', headSize: '40px' }
+			];
+		},
+		top3() {
+			return new Array(3).fill(null).map((_, index) => {
+				const share = this.shareList[index];
+
+				return share ? share : {
+					headimgurl: '',
+					like: '--',
+					createdBy: { nickname: 'N/A' }
+				};
+			});
+		}
+	},
 	methods: {
 		async getShareTop20List() {
 			this.shareList = await this.$app.Api.Share.top({ number: 20 });
@@ -151,6 +126,7 @@ export default {
 	},
 	mounted() {
 		this.getShareTop20List();
+		window.a = this;
 	}
 };
 </script>
