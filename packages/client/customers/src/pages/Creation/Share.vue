@@ -152,6 +152,15 @@ export default {
 				});
 
 				await this.$router.push({ name: 'Home' });
+
+				setTimeout(() => {
+					this.$bvToast.toast('发布非遗圈成功', {
+						variant: 'dark',
+						noCloseButton: true,
+						toastClass: 'border-0 bg-dark text-white text-center mt-3',
+						toaster: 'b-toaster-top-full'
+					});
+				});
 			} catch (err) {
 				this.$bvToast.toast('发布分享失败', { variant: 'danger' });
 			}

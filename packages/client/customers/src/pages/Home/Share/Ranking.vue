@@ -126,7 +126,6 @@ export default {
 	},
 	mounted() {
 		this.getShareTop20List();
-		window.a = this;
 	}
 };
 </script>

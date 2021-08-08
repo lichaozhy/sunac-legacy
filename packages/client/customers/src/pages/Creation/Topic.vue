@@ -69,7 +69,6 @@
 <script>
 export default {
 	data() {
-		window.a  = this;
 		return {
 			form: {
 				title: '',
@@ -111,7 +110,16 @@ export default {
 					description: this.form.description
 				});
 
-				await this.$router.push({ name: 'Home' });
+				await this.$router.back();
+
+				setTimeout(() => {
+					this.$bvToast.toast('创建主题成功', {
+						variant: 'dark',
+						noCloseButton: true,
+						toastClass: 'border-0 bg-dark text-white text-center mt-3',
+						toaster: 'b-toaster-top-full'
+					});
+				});
 			} catch (err) {
 				this.$bvToast.toast('发布话题失败', { variant: 'danger' });
 			}

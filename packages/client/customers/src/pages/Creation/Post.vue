@@ -133,11 +133,16 @@ export default {
 					imageList: this.form.imageList
 				});
 
-				// await this.$router.replace({
-				// 	name: 'Topic.Detail',
-				// 	params: { topicId: this.$route.params.topicId }
-				// });
-				this.$router.back();
+				await this.$router.back();
+
+				setTimeout(() => {
+					this.$bvToast.toast('回复成功', {
+						variant: 'dark',
+						noCloseButton: true,
+						toastClass: 'border-0 bg-dark text-white text-center mt-3',
+						toaster: 'b-toaster-top-full'
+					});
+				}, 50);
 			} catch (err) {
 				this.$bvToast.toast('回复失败', { variant: 'danger' });
 			}
