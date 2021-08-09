@@ -25,7 +25,7 @@
 				placeholder="请输入话题描述"
 				no-resize
 			/>
-			<b-form-text>至少32个字</b-form-text>
+			<b-form-text>至少4个字</b-form-text>
 			<b-form-text
 				class="position-absolute"
 				style="bottom:30px;right:10px"
@@ -83,7 +83,7 @@ export default {
 				return false;
 			}
 
-			if (this.form.description.length < 32) {
+			if (this.form.description.length < 4) {
 				return false;
 			}
 

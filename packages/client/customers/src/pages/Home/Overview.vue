@@ -94,7 +94,7 @@ export default {
 	data() {
 		return {
 			cityList: [],
-			referenceList: new Array(5).fill(null).map(() => {
+			referenceList: new Array(4).fill(null).map(() => {
 				return { id: null, title: '数量不足', thumbUrl: '', href: '' };
 			}),
 			bannerList: [],

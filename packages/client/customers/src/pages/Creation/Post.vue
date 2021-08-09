@@ -47,7 +47,7 @@
 				placeholder="请输入回复内容"
 				no-resize
 			/>
-			<b-form-text>至少16个字</b-form-text>
+			<b-form-text>至少6个字</b-form-text>
 			<b-form-text
 				class="position-absolute"
 				style="bottom:30px;right:10px"
@@ -60,7 +60,7 @@
 		>
 			<b-form-input
 				v-model="form.phone"
-				placeholder="您的手机号码"
+				placeholder="您的手机号码（可选）"
 				class="border-0 bg-secondary round-sm"
 			/>
 		</b-form-group>
@@ -94,7 +94,7 @@ export default {
 	},
 	computed: {
 		isValid() {
-			if (this.form.raw.length < 16) {
+			if (this.form.raw.length < 6) {
 				return false;
 			}
 

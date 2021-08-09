@@ -93,7 +93,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				return ctx.throw(400, 'Invalid ".banner"');
 			}
 
-			if (!description || description.length < 16) {
+			if (!description || description.length < 4) {
 				return ctx.throw(400, 'Invalid ".description"');
 			}
 
