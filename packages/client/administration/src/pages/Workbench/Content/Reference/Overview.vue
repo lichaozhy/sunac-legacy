@@ -120,6 +120,13 @@ export default {
 		};
 	},
 	computed: {
+		cityNameMap() {
+			const map = {};
+
+			this.meta.cityList.forEach(city => map[city.adcode] = city.name);
+
+			return map;
+		},
 		referenceFieldList() {
 			return [
 				{ key: 'title', label: '标题' },
@@ -172,7 +179,7 @@ export default {
 					href: reference.href,
 					abstract: reference.abstract,
 					thumb: reference.thumb,
-					city: this.meta.cityList.find(city => city.adcode === reference.city).name,
+					city: this.cityNameMap[reference.city],
 					createdAt: this.$app.Filter.localDatetime(reference.createdAt)
 				};
 			});

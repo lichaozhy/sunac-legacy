@@ -122,7 +122,13 @@ module.exports = Router(function SunacLegacyApi(router, {
 				return ctx.body = Image(existedImage);
 			}
 
-			const pngBuffer = await sharp(imageFileBuffer).png().toBuffer();
+			const pngBuffer = await sharp(imageFileBuffer).png({
+				compressionLevel: 9,
+				palette: true,
+				quality: 50,
+				colors: 128
+			}).toBuffer();
+
 			const storeDir = Workspace.resolve('image', hash);
 
 			if (!await fs.pathExists(storeDir)) {
