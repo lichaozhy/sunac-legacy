@@ -122,7 +122,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				return ctx.body = Image(existedImage);
 			}
 
-			const pngBuffer = await sharp(imageFileBuffer).png({
+			const pngBuffer = await sharp(imageFileBuffer).resize(600).png({
 				compressionLevel: 9,
 				palette: true,
 				quality: 50,

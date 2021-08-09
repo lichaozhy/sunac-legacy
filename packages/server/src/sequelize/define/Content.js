@@ -115,7 +115,7 @@ function Topic(sequelize, namespace) {
 		validatedBy: TYPE_SHA_ID,
 		deletedAt: DataTypes.DATE,
 	}, {
-		tableName: `${namespace}content_reply`
+		tableName: `${namespace}content_topic_post_reply`
 	});
 }
 
