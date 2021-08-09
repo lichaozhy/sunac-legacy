@@ -145,7 +145,7 @@ export default {
 		requestSharing(photo) {
 			const baseOptions = {
 				title: photo.title,
-				imgUrl: `${location.origin}/api/image/${photo.image}/image.png`,
+				imgUrl: `${location.origin}${photo.image}`,
 				link: `${location.origin}/api/wechat/share?shareType=photo&shareItemId=${photo.id}`
 			};
 

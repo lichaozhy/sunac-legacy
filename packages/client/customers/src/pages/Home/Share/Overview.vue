@@ -46,15 +46,17 @@
 					<div class="d-flex">
 						<b-avatar size="sm" :src="item.createdBy.headimgurl" />
 						<b-form-text class="ml-1 mr-auto">{{ item.createdBy.nickname }}</b-form-text>
+
 						<b-link
-							:disabled="likedMap[item.id]"
-							v-if="item.validatedAt !== null"
+							v-if="item.validatedAt !== null && !likedMap[item.id]"
 							@click="likeShare(item)"
-						><span class="mr-1">{{ item.like }}</span><b-icon-heart
-							v-if="!likedMap[item.id]"
-						/><b-icon-heart-fill
-							v-if="likedMap[item.id]"
-						/></b-link>
+						><span class="mr-1">{{ item.like }}</span><b-icon-heart /></b-link>
+
+						<b-link
+							v-if="item.validatedAt !== null && likedMap[item.id]"
+							@click="unlikeShare(item)"
+						><span class="mr-1">{{ item.like }}</span><b-icon-heart-fill /></b-link>
+
 						<b-form-text v-if="item.validatedAt === null">未审核</b-form-text>
 					</div>
 				</template>
@@ -156,10 +158,14 @@ export default {
 			});
 		},
 		async likeShare(share) {
-			console.log(share);
 			await this.$app.Api.Share(share.id).like();
 			share.like++;
 			this.$set(this.likedMap, share.id, true);
+		},
+		async unlikeShare(share) {
+			await this.$app.Api.Share(share.id).unlike();
+			share.like--;
+			this.$delete(this.likedMap, share.id);
 		},
 		goShare(shareId) {
 			this.$router.push({ name: 'Share.Detail', params: { shareId } });

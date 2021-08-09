@@ -11,13 +11,13 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 	};
 
 	const cache = {
-		top20OfCityMap: {},
+		top30OfCityMap: {},
 		shareLikeMap: {}
 	};
 
 	return Object.freeze({
 		top(adcode, number = 20) {
-			return cache.top20OfCityMap[adcode].slice(0, number);
+			return cache.top30OfCityMap[adcode].slice(0, number);
 		},
 		commit(shareId) {
 			if (!cache.shareLikeMap[shareId]) {
@@ -26,10 +26,17 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 
 			return ++cache.shareLikeMap[shareId];
 		},
+		revert(shareId) {
+			return --cache.shareLikeMap[shareId];
+		},
 		get(shareId) {
 			const count = cache.shareLikeMap[shareId];
 
 			return count === undefined ? 0 : count;
+		},
+		remove(shareId) {
+			delete cache.shareLikeMap[shareId];
+
 		},
 		async compute() {
 			const list = await Model.Like.findAll({
@@ -46,10 +53,10 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 					group: ['share'],
 					order: [[Sequelize.fn('COUNT', 'share'), 'DESC']],
 					offset: 0,
-					limit: 20
+					limit: 30
 				});
 
-				cache.top20OfCityMap[adcode] = list.map(like => like.share);
+				cache.top30OfCityMap[adcode] = list.map(like => like.share);
 			}
 
 			list.forEach(like => {

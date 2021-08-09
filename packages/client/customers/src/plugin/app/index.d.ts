@@ -150,6 +150,7 @@ declare namespace Api {
 	interface ShareInstance {
 		get(): Promise<Model.Share>;
 		like(): Promise<Model.Like>;
+		unlike(): Promise<Model.Like>;
 	}
 
 	interface Topic {

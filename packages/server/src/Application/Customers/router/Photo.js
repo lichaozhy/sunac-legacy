@@ -41,11 +41,10 @@ module.exports = Router(function SunacLegacyApi(router, {
 			};
 		})
 		.post('/:photoId/like', async function createPhotoLike(ctx) {
-			const { customer } = ctx.state;
 			const { photoId } = ctx.params;
 
 			const photo = await Model.Photo.findOne({
-				where: { id: photoId, city: customer.cityAs },
+				where: { id: photoId },
 			});
 
 			if (!photo) {

@@ -85,7 +85,7 @@
 					</b-col>
 				</b-form-row>
 
-
+				<h6 class="my-3">#{{ topic.title }}#</h6>
 			</b-card>
 		</template>
 

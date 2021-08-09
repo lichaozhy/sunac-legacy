@@ -152,9 +152,8 @@ module.exports = Router(function SunacLegacyApi(router, {
 			}
 
 			const now = new Date();
-			const like = await Model.CustomerLikeShare.create({
-				customer: customer.id, share: share.id, createdAt: now
-			});
+			const like = await Model.CustomerLikeShare
+				.create({ customer: customer.id, share: share.id, createdAt: now });
 
 			ShareLike.commit(share.id);
 
@@ -162,6 +161,30 @@ module.exports = Router(function SunacLegacyApi(router, {
 				share: like.share,
 				customer: like.customer,
 				createdAt: now
+			};
+		})
+		.delete('/:shareId/like', async function deleteShareLike(ctx) {
+			const { customer, share } = ctx.state;
+
+			const like = await Model.CustomerLikeShare.findOne({
+				where: {
+					customer: customer.id,
+					share: share.id,
+					createdAt: { [Op.gt]: getToday0() }
+				}
+			});
+
+			if (!like) {
+				return ctx.throw(404, 'have NOT liked.');
+			}
+
+			await like.destroy();
+			ShareLike.revert(share.id);
+
+			ctx.body = {
+				share: like.share,
+				customer: like.customer,
+				createdAt: like.createdAt
 			};
 		});
 });

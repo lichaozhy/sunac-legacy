@@ -101,6 +101,9 @@ const app = {
 				},
 				like() {
 					return agent.post(`/share/${shareId}/like`).then(pickData);
+				},
+				unlike() {
+					return agent.delete(`/share/${shareId}/like`).then(pickData);
 				}
 			};
 		}, {

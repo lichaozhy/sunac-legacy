@@ -67,7 +67,7 @@
 								pill
 								block
 								class="text-white"
-								style="background-image:linear-gradient(#FFAE86 0%, #FFC886 100%)"
+								style="background-color:#57a7b5"
 								:to="{ name: 'Topic.Detail', params: { topicId: item.id } }"
 								v-if="item.validatedAt !== null"
 							>一起讨论</b-button>
