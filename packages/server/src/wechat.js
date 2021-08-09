@@ -67,6 +67,16 @@ async function refreshJsSdkTicket() {
 
 const HOUR = 3600000;
 
+setInterval(async () => {
+	if (new Date() - config.access_token.createdAt > HOUR) {
+		await refreshToken();
+	}
+
+	if (new Date() - config.jsapi.createdAt > HOUR) {
+		await refreshJsSdkTicket();
+	}
+}, 60000);
+
 const wechat = {
 	fetchAccessToken() {
 		if (new Date() - config.access_token.createdAt > HOUR) {

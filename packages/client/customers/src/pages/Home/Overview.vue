@@ -52,7 +52,7 @@
 				<b-link :to="{ name: 'Topic' }">
 					<div
 						class="w-100 h-100 position-relative app-reference app-background-center"
-						style="background-image:url(/static/image/topic.png);background-size: 113%"
+						style="background-image:url(/static/image/topic.png);background-size:cover"
 					></div>
 				</b-link>
 			</b-col>
@@ -61,7 +61,7 @@
 					<b-link :to="{ name: 'Figure' }">
 						<div
 							class="w-100 h-100 position-relative app-reference app-background-center"
-							style="background-image:url(/static/image/figure.png);background-size: 105%"
+							style="background-image:url(/static/image/figure.png);background-size:cover"
 						></div>
 					</b-link>
 				</div>
@@ -69,18 +69,12 @@
 					<b-link :to="{ name: 'Photo' }">
 						<div
 							class="w-100 h-100 position-relative app-reference app-background-center"
-							style="background-image:url(/static/image/photo.png);background-size: 105%"
+							style="background-image:url(/static/image/photo.png);background-size:cover"
 						></div>
 					</b-link>
 				</div>
 			</b-col>
 		</b-row>
-
-		<b-img
-			src="./image/heading.png"
-			class="position-absolute"
-			style="height:1.5em;top:0;left:0"
-		/>
 	</b-aspect>
 
 	<b-nav class="mt-3 font-weight-bold app-nav">

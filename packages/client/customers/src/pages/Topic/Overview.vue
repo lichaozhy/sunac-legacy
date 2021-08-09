@@ -4,20 +4,19 @@
 	id="app-figure"
 	style="background-color:#fafafa"
 >
+
+	<b-link
+		href="https://fkwcd.cn/v/24ojmZ65"
+	><b-img src="./image/banner.png" class="w-100" /></b-link>
+
 	<div
 		style="background-color:#fff"
 		class="p-2"
 	>
-		<b-aspect
-			class="app-shadow app-background-center round-sm"
-			aspect="16:9"
-			style="background-color:#ccc"
-		>等一张图</b-aspect>
-
-		<h5 class="mt-3 font-weight-bold">这里有一个标题</h5>
-		<b-form-text
-			class="pb-3"
-		>让民间艺术唤发新的生命力<br>让传统变得流行，让无用变得有用，才是手艺得真正传承</b-form-text>
+		<h5 class="mt-2 font-weight-bold">#咱的非遗去哪啦#</h5>
+		<p
+			class="text-black-50"
+		>非遗，听起来遥不可及，原来，它一直就在我们身边，盘点一下我们生活中你不知道的非遗——</p>
 	</div>
 
 	<b-button-toolbar class="mt-3">

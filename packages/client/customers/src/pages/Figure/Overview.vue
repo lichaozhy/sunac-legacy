@@ -45,8 +45,6 @@
 	</div>
 
 	<div style="height: 60px;background-image:linear-gradient(#FAFAFA, rgba(0,0,0,0))"></div>
-
-
 </div>
 
 </template>
@@ -85,7 +83,7 @@ export default {
 		},
 		leftList() {
 			const list = this.figureList
-				.slice(0, Math.floor(this.figureList.length / 2))
+				.slice(0, Math.ceil(this.figureList.length / 2))
 				.map(figure => {
 					return { type: 'figure', options: figure };
 				});
@@ -98,7 +96,7 @@ export default {
 		},
 		rightList() {
 			const list = this.figureList
-				.slice(Math.floor(this.figureList.length / 2))
+				.slice(Math.ceil(this.figureList.length / 2))
 				.map(figure => {
 					return { type: 'figure', options: figure };
 				});
