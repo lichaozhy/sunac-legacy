@@ -115,6 +115,13 @@ export default {
 			return this.sharetop3
 				.map(share => Object.assign(share, { top: true }))
 				.concat(this.shareList);
+		},
+		topShareMap() {
+			const map = {};
+
+			this.sharetop3.forEach(share => map[share.id] = share);
+
+			return map;
 		}
 	},
 	methods: {
@@ -141,7 +148,12 @@ export default {
 			});
 
 			this.total = total;
-			list.forEach((share) => this.shareList.push(share));
+
+			list.forEach((share) => {
+				if (!this.topShareMap[share.id]) {
+					this.shareList.push(share);
+				}
+			});
 		},
 		async likeShare(share) {
 			console.log(share);
