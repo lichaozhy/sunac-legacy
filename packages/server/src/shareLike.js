@@ -33,6 +33,7 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 		},
 		async compute() {
 			const list = await Model.Like.findAll({
+				include: [{ model: Model.Share, where: { deletedAt: null }, required: true}],
 				attributes: ['share', [Sequelize.fn('COUNT', 'share'), 'liked']],
 				group: ['share'],
 				order: [[Sequelize.fn('COUNT', 'share'), 'DESC']]
@@ -41,7 +42,7 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 			for (const adcode of cityList) {
 				const list = await await Model.Like.findAll({
 					attributes: ['share', [Sequelize.fn('COUNT', 'share'), 'liked']],
-					include: [{ model: Model.Share, where: { city: adcode }, required: true }],
+					include: [{ model: Model.Share, where: { city: adcode, deletedAt: null }, required: true }],
 					group: ['share'],
 					order: [[Sequelize.fn('COUNT', 'share'), 'DESC']],
 					offset: 0,
