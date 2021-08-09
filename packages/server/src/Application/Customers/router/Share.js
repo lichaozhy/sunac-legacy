@@ -51,7 +51,10 @@ module.exports = Router(function SunacLegacyApi(router, {
 				order: [['createdAt', 'DESC']]
 			});
 
-			ctx.body = idList.map(id => list.find(share => share.id === id)).map(Share);
+			ctx.body = idList
+				.map(id => list.find(share => share.id === id))
+				.filter(share => share)
+				.map(Share);
 		})
 		.get('/', async function getShareList(ctx) {
 			const { customer } = ctx.state;

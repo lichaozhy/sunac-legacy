@@ -51,8 +51,8 @@
 			<b-col cols="5" class="pr-1">
 				<b-link :to="{ name: 'Topic' }">
 					<div
-						class="w-100 h-100 position-relative app-reference app-background-center"
-						style="background-image:url(/static/image/topic.png);background-size:cover"
+						class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
+						style="background-image:url(/static/image/topic.png);"
 					></div>
 				</b-link>
 			</b-col>
@@ -60,16 +60,16 @@
 				<div class="h-50 pb-1">
 					<b-link :to="{ name: 'Figure' }">
 						<div
-							class="w-100 h-100 position-relative app-reference app-background-center"
-							style="background-image:url(/static/image/figure.png);background-size:cover"
+							class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
+							style="background-image:url(/static/image/figure.png);"
 						></div>
 					</b-link>
 				</div>
 				<div class="h-50 pt-1">
 					<b-link :to="{ name: 'Photo' }">
 						<div
-							class="w-100 h-100 position-relative app-reference app-background-center"
-							style="background-image:url(/static/image/photo.png);background-size:cover"
+							class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
+							style="background-image:url(/static/image/photo.png);"
 						></div>
 					</b-link>
 				</div>

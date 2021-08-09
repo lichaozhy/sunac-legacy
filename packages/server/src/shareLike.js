@@ -34,10 +34,6 @@ module.exports = function ShareLikeCache(sequelize, cityList) {
 
 			return count === undefined ? 0 : count;
 		},
-		remove(shareId) {
-			delete cache.shareLikeMap[shareId];
-
-		},
 		async compute() {
 			const list = await Model.Like.findAll({
 				include: [{ model: Model.Share, where: { deletedAt: null }, required: true}],
