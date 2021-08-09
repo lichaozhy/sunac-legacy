@@ -71,6 +71,13 @@ export default {
 			}
 		};
 	},
+	watch: {
+		'$store.state.isLocationShow'(value) {
+			if (value === true) {
+				this.getCustomer();
+			}
+		}
+	},
 	computed: {
 		list() {
 			return [
@@ -165,7 +172,7 @@ export default {
 		},
 		async setCustomerCity(adcode) {
 			await this.$app.Api.Customer.update({ cityAs: adcode });
-			await this.$router.replace({ name: 'Home' });
+			this.$store.commit('closeLocation');
 		}
 	},
 	mounted() {

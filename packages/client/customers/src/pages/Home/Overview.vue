@@ -110,6 +110,13 @@ export default {
 			return map;
 		}
 	},
+	watch: {
+		'$store.state.isLocationShow'(value) {
+			if (value === false) {
+				this.refresh();
+			}
+		}
+	},
 	methods: {
 		async getReferenceList() {
 			const { list } = await this.$app.Api.Reference.query({ from: 0, size: this.referenceList.length});

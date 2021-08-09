@@ -96,6 +96,13 @@ export default {
 			shareList: [],
 		};
 	},
+	watch: {
+		'$store.state.isLocationShow'(value) {
+			if (value === false) {
+				this.refresh();
+			}
+		}
+	},
 	computed: {
 		podiumStyleList() {
 			return [

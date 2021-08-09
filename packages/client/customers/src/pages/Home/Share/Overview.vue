@@ -108,6 +108,13 @@ export default {
 			total: 0
 		};
 	},
+	watch: {
+		'$store.state.isLocationShow'(value) {
+			if (value === false) {
+				this.refresh();
+			}
+		}
+	},
 	filters: {
 		substring(string) {
 			return string.length < 10 ? string : (string.substr(0, 10) + '...');
