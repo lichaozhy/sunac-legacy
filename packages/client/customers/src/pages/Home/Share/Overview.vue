@@ -15,6 +15,7 @@
 				footer-class="px-2 py-1"
 				footer-bg-variant="white"
 				v-if="item"
+				v-show="!item.hide"
 				style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
 			>
 				<b-img
@@ -152,9 +153,11 @@ export default {
 			this.total = total;
 
 			list.forEach((share) => {
-				if (!this.topShareMap[share.id]) {
-					this.shareList.push(share);
+				if (this.topShareMap[share.id]) {
+					share.hide = true;
 				}
+
+				this.shareList.push(share);
 			});
 		},
 		async likeShare(share) {
@@ -167,8 +170,8 @@ export default {
 			share.like--;
 			this.$delete(this.likedMap, share.id);
 		},
-		goShare(shareId) {
-			this.$router.push({ name: 'Share.Detail', params: { shareId } });
+		goShare(share) {
+			this.$router.push({ name: 'Share.Detail', params: { shareId: share.id } });
 		},
 		async refresh() {
 			this.lastUpdatedAt = new Date();

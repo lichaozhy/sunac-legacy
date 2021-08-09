@@ -20,7 +20,7 @@
 					<h5 class="mt-3 font-weight-bold">非遗电台</h5>
 				</b-col>
 				<b-col cols="6">
-					<b-img src="./image/figure.svg" style="height: 60px"  />
+					<b-img src="./image/figure.png" style="height: 60px"  />
 					<h5 class="mt-3 font-weight-bold">我是非遗传承人</h5>
 				</b-col>
 			</b-row>
