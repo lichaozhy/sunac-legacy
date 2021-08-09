@@ -18,14 +18,14 @@
 				style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
 			>
 				<b-img
-					v-if="index < 3"
+					v-if="item.top && index < 3"
 					src="./image/hot.png"
 					class="position-absolute"
 					style="height: 36px;top:0;right:0"
 				/>
 
 				<b-img
-					v-if="index < 3"
+					v-if="item.top && index < 3"
 					:src="`/static/no/${index + 1}.png`"
 					class="position-absolute"
 					style="height: 20px;top:0;left:0"
@@ -34,7 +34,7 @@
 				<b-img
 					:src="`/api/image/${item.imageList[0]}/image.png`"
 					class="w-100"
-					@click="goShare(item.id)"
+					@click="goShare(item)"
 				/>
 
 				<template #footer>
@@ -49,7 +49,7 @@
 						<b-link
 							:disabled="likedMap[item.id]"
 							v-if="item.validatedAt !== null"
-							@click="likeShareByIndex(index)"
+							@click="likeShare(item)"
 						><span class="mr-1">{{ item.like }}</span><b-icon-heart
 							v-if="!likedMap[item.id]"
 						/><b-icon-heart-fill
@@ -112,7 +112,9 @@ export default {
 	},
 	computed: {
 		allShareList() {
-			return this.sharetop3.concat(this.shareList);
+			return this.sharetop3
+				.map(share => Object.assign(share, { top: true }))
+				.concat(this.shareList);
 		}
 	},
 	methods: {
@@ -141,9 +143,8 @@ export default {
 			this.total = total;
 			list.forEach((share) => this.shareList.push(share));
 		},
-		async likeShareByIndex(index) {
-			const share = this.shareList[index];
-
+		async likeShare(share) {
+			console.log(share);
 			await this.$app.Api.Share(share.id).like();
 			share.like++;
 			this.$set(this.likedMap, share.id, true);
