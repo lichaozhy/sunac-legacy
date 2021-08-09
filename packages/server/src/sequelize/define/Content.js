@@ -104,6 +104,19 @@ function Topic(sequelize, namespace) {
 	}, {
 		tableName: `${namespace}content_topic_post_image`
 	});
+
+	sequelize.define('Reply', {
+		id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+		post: TYPE_SHA_ID,
+		raw: DataTypes.STRING,
+		createdAt: DataTypes.DATE,
+		createdBy: TYPE_SHA_ID,
+		validatedAt: DataTypes.DATE,
+		validatedBy: TYPE_SHA_ID,
+		deletedAt: DataTypes.DATE,
+	}, {
+		tableName: `${namespace}content_reply`
+	});
 }
 
 /**

@@ -12,7 +12,7 @@
 		<b-button
 			variant="link"
 			class="text-dark"
-			@click="requestShareing(share)"
+			@click="$store.commit('openShareing')"
 		><b-icon-share class="mr-1" />分享</b-button>
 	</b-button-toolbar>
 
@@ -102,19 +102,17 @@ export default {
 		}
 	},
 	methods: {
-		requestShareing(share) {
+		setSharing() {
 			const baseOptions = {
-				title: share.title,
-				imgUrl: `${location.origin}/api/image/${share.imageList[0]}/image.png`,
-				link: `${location.origin}/api/wechat/share?shareType=share&shareItemId=${share.id}`
+				title: this.share.title,
+				imgUrl: `${location.origin}/api/image/${this.share.imageList[0]}/image.png`,
+				link: `${location.origin}/api/wechat/share?shareType=share&shareItemId=${this.share.id}`
 			};
 
 			this.$wx.updateTimelineShareData(baseOptions);
 			this.$wx.updateAppMessageShareData(Object.assign({
 				desc: '欢迎访问“我的非遗圈作品”了解更多中国非遗文化...'
 			}, baseOptions));
-
-			this.$store.commit('openShareing');
 		},
 		async getShare() {
 			const share = await this.$app.Api.Share(this.$route.params.shareId).get();
@@ -128,6 +126,8 @@ export default {
 			this.share.raw = share.raw;
 			this.share.imageList = share.imageList;
 			this.share.like = share.like;
+
+			this.setSharing();
 		},
 		async like() {
 			await this.$app.Api.Share(this.share.id).like();
@@ -144,9 +144,9 @@ export default {
 		},
 	},
 	mounted() {
-		this.getShare();
 		this.getLiked();
 		this.getCityList();
+		this.getShare();
 	}
 };
 </script>
