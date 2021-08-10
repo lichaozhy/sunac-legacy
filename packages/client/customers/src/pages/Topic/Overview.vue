@@ -94,9 +94,8 @@
 	<div
 		v-if="total <= topicList.length"
 		class="text-center mt-4"
-	>
-		<b-form-text>已经到底啦</b-form-text>
-	</div>
+	><b-form-text>已经到底啦</b-form-text></div>
+	<div style="height:60px;background-image: linear-gradient(#FAFAFA, #FFFFFF);"></div>
 </div>
 
 </template>

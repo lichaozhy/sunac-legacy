@@ -22,14 +22,15 @@
 			:items="photoList"
 			:options="{width: 200, padding: 5}"
 			@append="append"
+			v-if="photoList.length > 0"
 		>
 			<template v-slot:default="{item, index}">
 				<b-card
 					no-body
-					footer-class="px-2 py-1"
+					footer-class="px-2 py-1 app-shadow"
 					footer-bg-variant="white"
 					v-if="item"
-					style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 6px 0 rgba(0,0,0,0.2)"
+					style="border-radius:6px;overflow:hidden;box-shadow:1px 1px 4px 0 rgba(0,0,0,0.1)"
 				>
 					<b-img
 						class="w-100"
@@ -92,7 +93,7 @@
 
 	<div
 		v-if="total <= photoList.length"
-		class="text-center mt-5"
+		class="text-center my-5"
 	>
 		<b-form-text>已经到底啦</b-form-text>
 	</div>
@@ -119,6 +120,7 @@
 
 <script>
 import VueMasonryWall from 'vue-masonry-wall';
+import cityList from './city.json';
 
 export default {
 	components: { VueMasonryWall },
@@ -126,7 +128,6 @@ export default {
 		return {
 			lastUpdatedAt: new Date(),
 			photoList: [],
-			cityList: [],
 			currentCity: '310000',
 			total: 0,
 			selected: {
@@ -137,6 +138,11 @@ export default {
 				title: ''
 			}
 		};
+	},
+	computed: {
+		cityList() {
+			return cityList;
+		}
 	},
 	filters: {
 		substring(string) {
@@ -186,9 +192,6 @@ export default {
 				this.selected.like = like;
 			}
 		},
-		async getCityList() {
-			this.cityList = await this.$app.Api.City.query();
-		},
 		previewPhoto(index) {
 			const photo = this.photoList[index];
 
@@ -219,7 +222,6 @@ export default {
 	},
 	async mounted() {
 		this.refresh();
-		this.getCityList();
 	}
 };
 </script>
