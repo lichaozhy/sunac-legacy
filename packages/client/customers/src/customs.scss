@@ -78,3 +78,12 @@ html, body {
 		}
 	}
 }
+
+*:hover, *:focus {
+	text-decoration: none !important;
+	outline: none !important;
+}
+
+button:focus {
+	box-shadow: none !important;
+}

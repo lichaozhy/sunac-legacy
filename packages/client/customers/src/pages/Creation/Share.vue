@@ -80,9 +80,10 @@
 			block
 			style="border-radius: 60px"
 			type="submit"
-			class="my-5"
+			class="mt-5"
 			:disabled="!isValid"
 		>发布</b-button>
+		<b-form-text class="mb-5">温馨提示：您发布的内容将在审核后对其他用户可见</b-form-text>
 	</b-form>
 </div>
 

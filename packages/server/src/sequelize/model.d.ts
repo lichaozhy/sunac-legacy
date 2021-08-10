@@ -23,6 +23,7 @@ export namespace Model {
 		Topic: typeof Sequelize.Model,
 		Post: typeof Sequelize.Model,
 		PostImage: typeof Sequelize.Model,
+		Reply: typeof Sequelize.Model,
 
 		Banner: typeof Sequelize.Model,
 		Figure: typeof Sequelize.Model,

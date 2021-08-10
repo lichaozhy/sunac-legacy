@@ -6,7 +6,10 @@ module.exports = {
 
 	Reference: require('./Reference'),
 	Photo: require('./Photo'),
-	Topic: require('./Topic'),
 	Share: require('./Share'),
-	Figure: require('./Figure')
+	Figure: require('./Figure'),
+
+	Topic: require('./Topic'),
+	Post: require('./Post'),
+	Reply: require('./Reply'),
 };

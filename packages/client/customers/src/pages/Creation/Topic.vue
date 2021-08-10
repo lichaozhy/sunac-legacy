@@ -54,11 +54,12 @@
 		<b-button
 			variant="primary"
 			size="md"
-			class="rounded-pill my-5"
+			class="rounded-pill mt-5"
 			block
 			type="submit"
 			:disabled="!isValid"
 		>创建话题</b-button>
+		<b-form-text class="mb-5">温馨提示：您发布的内容将在审核后对其他用户可见</b-form-text>
 	</b-form>
 
 </div>
