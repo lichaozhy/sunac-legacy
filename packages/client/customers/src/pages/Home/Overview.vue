@@ -52,7 +52,7 @@
 				<b-link :to="{ name: 'Topic' }">
 					<div
 						class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
-						style="background-image:url(/static/image/topic.png);"
+						style="background-image:url(/static/image/topic.png);;background-position: top center"
 					></div>
 				</b-link>
 			</b-col>
@@ -69,7 +69,7 @@
 					<b-link :to="{ name: 'Photo' }">
 						<div
 							class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
-							style="background-image:url(/static/image/photo.png);"
+							style="background-image:url(/static/image/photo.png);background-position: top center"
 						></div>
 					</b-link>
 				</div>

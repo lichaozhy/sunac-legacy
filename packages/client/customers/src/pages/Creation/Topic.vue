@@ -15,24 +15,6 @@
 		</b-form-group>
 
 		<b-form-group
-			label="话题描述"
-			class="required position-relative"
-		>
-			<b-form-textarea
-				class="border-0 bg-secondary round-sm"
-				v-model="form.description"
-				style="height: 10em"
-				placeholder="请输入话题描述"
-				no-resize
-			/>
-			<b-form-text>至少4个字</b-form-text>
-			<b-form-text
-				class="position-absolute"
-				style="bottom:30px;right:10px"
-			>当前{{ form.description.length }}字</b-form-text>
-		</b-form-group>
-
-		<b-form-group
 			label="BANNER"
 			class="required"
 		>
@@ -47,9 +29,26 @@
 					<b-form-text>建议选择接近<b
 						class="mx-1"
 					>16:9</b>比例的图片以达到最好的效果</b-form-text>
+					<b-form-text>* 必须上传话题BANNER图</b-form-text>
 				</b-button>
 			</b-aspect>
-			<b-form-text>必须上传话题BANNER图</b-form-text>
+		</b-form-group>
+
+		<b-form-group
+			label="话题描述"
+			class="position-relative"
+		>
+			<b-form-textarea
+				class="border-0 bg-secondary round-sm"
+				v-model="form.description"
+				style="height: 6em"
+				placeholder="请输入话题描述（可选）"
+				no-resize
+			/>
+			<b-form-text
+				class="position-absolute"
+				style="bottom:10px;right:10px"
+			>当前{{ form.description.length }}字</b-form-text>
 		</b-form-group>
 
 		<b-button
@@ -80,10 +79,6 @@ export default {
 	computed: {
 		isValid() {
 			if (this.form.title.length < 4) {
-				return false;
-			}
-
-			if (this.form.description.length < 4) {
 				return false;
 			}
 

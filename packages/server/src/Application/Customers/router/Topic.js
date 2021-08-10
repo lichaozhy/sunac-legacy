@@ -81,7 +81,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 		})
 		.post('/', async function createTopic(ctx) {
 			const { customer } = ctx.state;
-			const { title, banner, description } = ctx.request.body;
+			const { title, banner, description = '' } = ctx.request.body;
 			const now = new Date();
 			const id = Utils.encodeSHA256(`${title}${now}${description}`);
 
@@ -91,10 +91,6 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 			if (!banner || banner.length !== 64) {
 				return ctx.throw(400, 'Invalid ".banner"');
-			}
-
-			if (!description || description.length < 4) {
-				return ctx.throw(400, 'Invalid ".description"');
 			}
 
 			const topic = await Model.Topic.create({

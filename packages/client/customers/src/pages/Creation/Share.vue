@@ -63,6 +63,8 @@
 		</b-form-group>
 
 		<b-form-group
+			:state="validationPhone"
+			invalid-feedback="输入11位长的正确手机号"
 			description="为了感谢您的积极参与并在参与活动中奖后，官方能够联系到您，请留下您的手机号。"
 		>
 			<b-form-input
@@ -102,6 +104,11 @@ export default {
 		};
 	},
 	computed: {
+		validationPhone() {
+			return this.form.phone.length === 0
+				? null
+				: /[0-9]{11}/.test(this.form.phone);
+		},
 		isValid() {
 			if (this.form.imageList.length < 1) {
 				return false;
@@ -112,6 +119,10 @@ export default {
 			}
 
 			if (this.form.title.length < 4) {
+				return false;
+			}
+
+			if (this.validationPhone === false) {
 				return false;
 			}
 
