@@ -83,6 +83,14 @@ declare namespace Model {
 		imageList: string[];
 	}
 
+	interface Reply {
+		id: string;
+		title: string;
+		raw: string;
+		createdAt: string;
+		createdBy: Customer;
+	}
+
 	interface WechatConfig {
 		debug: boolean;
 		appId: string;
@@ -176,6 +184,12 @@ declare namespace Api {
 		get(): Promise<Model.Post>;
 		delete(): Promise<Model.Post>;
 		like(): Promise<Model.Like>;
+		Reply: TopicInstancePostInstanceReply;
+	}
+
+	interface TopicInstancePostInstanceReply {
+		query(): Promise<Model.Page<Model.Reply>>;
+		create(options: Model.Reply): Promise<Model.Reply>;
 	}
 
 	interface Wechat {

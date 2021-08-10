@@ -29,16 +29,14 @@
 			:key="index"
 		>
 			<template #img>
-				<b-link :href="image">
-					<b-aspect
-						class="w-100"
-						aspect="16:9"
-						style="background-size: cover;background-color: #ccc;background-position:center"
-						:style="{
-							'background-image': `url(/api/image/${image}/image.png)`
-						}"
-					></b-aspect>
-				</b-link>
+				<b-aspect
+					class="w-100"
+					aspect="16:9"
+					style="background-size: cover;background-color: #ccc;background-position:center"
+					:style="{
+						'background-image': `url(/api/image/${image}/image.png)`
+					}"
+				></b-aspect>
 			</template>
 		</b-carousel-slide>
 	</b-carousel>

@@ -9,6 +9,7 @@ module.exports = {
 	Topic: require('./Topic'),
 	Share: require('./Share'),
 	Post: require('./Post'),
+	Reply: require('./Reply'),
 
 	Image: require('./Image'),
 	Prize: require('./Prize'),

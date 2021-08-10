@@ -162,6 +162,25 @@ const app = {
 						},
 						like() {
 							return agent.post(`/topic/${topicId}/post/${postId}/like`).then(pickData);
+						},
+						Reply: {
+							query(query) {
+								const params = {};
+
+								if (typeof query.top === 'number') {
+									params.top = query.top;
+								}
+
+								return agent.get(`/topic/${topicId}/post/${postId}/reply`, {
+									params
+								}).then(pickData);
+							},
+							create(options) {
+								return agent.post(`/topic/${topicId}/post/${postId}/reply`, {
+									raw: options.raw,
+									post: options.post
+								});
+							}
 						}
 					};
 				}, {

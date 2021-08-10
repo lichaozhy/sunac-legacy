@@ -10,83 +10,12 @@
 		:options="{width: 360, padding: 0}"
 		@append="append"
 	>
-		<template v-slot:default="{item, index}">
-
-			<b-card
-				header-class="bg-white border-0 pb-0"
-				footer-class="bg-white border-0 px-2 pt-0"
-				body-class="px-2 pb-2 pt-2"
-				class="round-sm border-0 mb-3"
-				style="box-shadow: 0 2px 4px rgba(0,0,0,0.3)"
-			>
-				<template #header>
-					<b-button-toolbar class="align-items-center">
-						<b-avatar class="mr-2 rounded-circle" :src="item.createdBy.headimgurl" />
-						<div class="mr-auto">{{ item.createdBy.nickname }}</div>
-						<b-form-text class="mt-0">{{ item.createdAt | localDatetime }}</b-form-text>
-					</b-button-toolbar>
-				</template>
-
-				<template #footer>
-					<b-button-toolbar>
-						<b-form-input
-							class="w-75 rounded-pill mr-auto bg-secondary border-0"
-							size="sm"
-							placeholder="说点什么吧…"
-							readonly
-						/>
-
-						<b-button
-							variant="link"
-							v-if="item.validatedAt !== null"
-							@click="likePostByIndex(index)"
-						>{{ item.like }}<b-icon-heart
-							class="ml-1"
-						/></b-button>
-
-						<b-button
-							variant="link"
-							v-if="item.validatedAt === null"
-							disabled
-						>正在审核</b-button>
-					</b-button-toolbar>
-				</template>
-
-				<pre
-					class="mb-0 w-100"
-					style="font-size:14px;white-space:break-spaces"
-					v-if="item.raw.length >= 64 && !item.expanded"
-				>{{ item.raw | sub64 }}</pre>
-
-				<pre
-					class="mb-0 w-100"
-					style="font-size:14px;white-space:break-spaces"
-					v-if="item.raw.length < 64 || item.expanded"
-				>{{ item.raw }}</pre>
-
-				<span v-if="item.raw.length >= 64" style="font-size:14px">
-					<b-link v-if="!item.expanded" @click="expand(index)">展开</b-link>
-					<b-link v-if="item.expanded" @click="collapse(index)">收起</b-link>
-				</span>
-
-				<b-form-row v-if="item.imageList.length > 0" class="mt-2">
-					<b-col
-						cols="4"
-						class="mb-2"
-						v-for="imageId in item.imageList"
-						:key="imageId"
-					>
-						<b-aspect
-							class="w-100 border"
-							aspect="1:1"
-							style="background-size:cover;background-position:center"
-							:style="{'background-image': `url(/api/image/${imageId}/image.png)`}"
-						></b-aspect>
-					</b-col>
-				</b-form-row>
-
-				<h6 class="my-3">#{{ topic.title }}#</h6>
-			</b-card>
+		<template v-slot:default="{item}">
+			<app-post
+				:post="item"
+				:topic-title="topic.title"
+				:topic-id="$route.params.topicId"
+			/>
 		</template>
 
 	</vue-masonry-wall>
@@ -113,8 +42,8 @@
 			background-image: linear-gradient(45deg, #4E4B78, #74B1BE);
 		"
 	>
-		<div style="font-size:24px;margin-top:0"><b-icon-reply /></div>
-		<div style="font-size:14px;margin-top: -6px">回复</div>
+		<div style="font-size:18px;margin-top:2px"><b-icon-chat-dots /></div>
+		<div style="font-size:14px;margin-top: 0px">发布</div>
 	</b-button>
 </div>
 
@@ -122,9 +51,10 @@
 
 <script>
 import VueMasonryWall from 'vue-masonry-wall';
+import AppPost from './Post.vue';
 
 export default {
-	components: { VueMasonryWall },
+	components: { VueMasonryWall, AppPost },
 	data() {
 		return {
 			createdBy: {
@@ -145,23 +75,12 @@ export default {
 			}
 		};
 	},
-	filters: {
-		sub64(string) {
-			return string.length < 64 ? string : `${string.substr(0, 64)}...`;
-		}
-	},
 	computed: {
 		ThisPostApi() {
 			return this.$app.Api.Topic(this.$route.params.topicId);
 		}
 	},
 	methods: {
-		expand(index) {
-			this.post.list[index].expanded = true;
-		},
-		collapse(index) {
-			this.post.list[index].expanded = false;
-		},
 		async getTopic() {
 			const topic = await this.ThisPostApi.get();
 
@@ -185,16 +104,6 @@ export default {
 				this.post.list.push(post);
 			});
 			this.post.total = total;
-		},
-		async likePostByIndex(index) {
-			const post = this.post.list[index];
-			const { like } = await this.ThisPostApi.Post(post.id).like();
-
-			post.like = like;
-		},
-		setMode(value) {
-			this.post.mode = value;
-			this.refresh();
 		},
 		append() {
 			if (this.post.list.length < this.post.total) {

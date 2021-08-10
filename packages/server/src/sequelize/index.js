@@ -112,6 +112,7 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.Share.belongsTo(Model.Customer, FK('createdBy'));
 	Model.Topic.belongsTo(Model.Customer, FK('createdBy'));
 	Model.Post.belongsTo(Model.Customer, FK('createdBy'));
+	Model.Reply.belongsTo(Model.Customer, FK('createdBy'));
 
 	Model.Share.hasMany(Model.ShareImage, FK('share', { as: 'imageList' }));
 	Model.Post.hasMany(Model.PostImage, FK('post', { as: 'imageList' }));

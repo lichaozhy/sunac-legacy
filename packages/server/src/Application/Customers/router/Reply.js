@@ -25,7 +25,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/', async function getReplyList(ctx) {
-			const { top = 3 } = ctx.query;
+			const { top = 1000 } = ctx.query;
 			const { post, customer } = ctx.state;
 
 			const { rows, count } = await Model.Reply.findAndCountAll({
@@ -53,10 +53,9 @@ module.exports = Router(function SunacLegacyApi(router, {
 			const { post, customer } = ctx.state;
 			const { raw } = ctx.request.body;
 			const now = new Date();
-			const id = Utils.encodeSHA256(`${now}${raw}`);
 
 			const reply = await Model.Reply.create({
-				id, raw, post: post.id, createdAt: now, createdBy: customer.id,
+				raw, post: post.id, createdAt: now, createdBy: customer.id,
 			});
 
 			reply.Customer = customer;
