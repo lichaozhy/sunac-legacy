@@ -4,7 +4,9 @@
 	id="app-photo"
 	class="h-100 pb-5"
 >
-	<b-img src="./image/banner.png" class="w-100"></b-img>
+	<b-link href="https://rcsh.wwreward.com/m/Activity.aspx">
+		<b-img src="./image/banner.png" class="w-100"></b-img>
+	</b-link>
 
 	<b-nav class="mt-3 font-weight-bold app-nav flex-nowrap text-nowrap w-100 overflow-auto">
 		<b-nav-item

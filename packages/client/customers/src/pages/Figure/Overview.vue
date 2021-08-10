@@ -5,7 +5,7 @@
 	class="h-100 pb-5"
 >
 	<b-link
-		href="https://fkwcd.cn/v/24ojmZ65"
+		href="https://mp.weixin.qq.com/s/subQEWe_5NUuxAz_QaeF8A"
 	><b-img src="./image/banner.png" class="w-100" /></b-link>
 
 	<div
@@ -16,12 +16,16 @@
 		>
 			<b-row class="text-center text-nowrap">
 				<b-col cols="6">
-					<b-img src="./image/radio.svg" style="height: 60px"  />
-					<h5 class="mt-3 font-weight-bold">非遗电台</h5>
+					<b-link href="https://mp.weixin.qq.com/s/RRr1TRWaUtK100-dycJ7Qw">
+						<b-img src="./image/radio.svg" style="height: 60px"  />
+						<h5 class="mt-3 font-weight-bold text-dark">非遗电台</h5>
+					</b-link>
 				</b-col>
 				<b-col cols="6">
-					<b-img src="./image/figure.png" style="height: 60px"  />
-					<h5 class="mt-3 font-weight-bold">我是非遗传承人</h5>
+					<b-link href="https://mp.weixin.qq.com/s/cA9CUQZx-gETOh0C3fULdQ">
+						<b-img src="./image/figure.png" style="height: 60px"  />
+						<h5 class="mt-3 font-weight-bold text-dark">我是非遗传承人</h5>
+					</b-link>
 				</b-col>
 			</b-row>
 		</b-card>
