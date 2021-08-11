@@ -108,7 +108,7 @@ export default {
 		validationPhone() {
 			return this.form.phone.length === 0
 				? null
-				: /[0-9]{11}/.test(this.form.phone);
+				: /^[0-9]{11}$/.test(this.form.phone);
 		},
 		isValid() {
 			if (this.form.imageList.length < 1) {

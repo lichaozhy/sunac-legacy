@@ -62,8 +62,6 @@
 		:fields="shareFieldList"
 		small
 		bordered
-		:per-page="pagination.size"
-		:current-page="pagination.current"
 		show-empty
 		select-mode="single"
 		selectable
@@ -146,6 +144,11 @@ export default {
 			selectedId: null,
 			isBusy: true
 		};
+	},
+	watch: {
+		'pagination.current'() {
+			this.refreshTable();
+		}
 	},
 	filters: {
 		subtitle(string) {

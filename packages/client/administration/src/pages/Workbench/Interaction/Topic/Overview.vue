@@ -184,6 +184,11 @@ export default {
 			isBusy: true
 		};
 	},
+	watch: {
+		'pagination.current'() {
+			this.getAllTopicList();
+		}
+	},
 	computed: {
 		cityOptionList() {
 			const managedCityOptionList = this.meta.cityList.map(city => {

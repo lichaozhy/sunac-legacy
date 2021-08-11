@@ -119,6 +119,11 @@ export default {
 			selectedId: null
 		};
 	},
+	watch: {
+		'pagination.current'() {
+			this.refreshTable();
+		}
+	},
 	computed: {
 		cityNameMap() {
 			const map = {};
