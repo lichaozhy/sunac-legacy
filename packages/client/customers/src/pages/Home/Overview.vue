@@ -48,29 +48,53 @@
 			no-gutters
 			class="h-100"
 		>
-			<b-col cols="5" class="pr-1">
+			<b-col style="flex: 0 0 45%;" class="pr-1 position-relative">
 				<b-link :to="{ name: 'Topic' }">
 					<div
-						class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
-						style="background-image:url(/static/image/topic.png);;background-position: top center"
+						class="w-100 h-100 app-reference app-background-center app-shadow"
+						style="background-image:url(/static/home/topic.png);background-size: 104%"
 					></div>
+
+					<b-img
+						class="position-absolute"
+						style="top:-12px;left:7px;height:32px"
+						src="./image/heading.png"
+					/>
+
+					<b-img
+						class="position-absolute"
+						style="bottom:20px;left:10px;height:32px"
+						src="./image/tag.png"
+					/>
 				</b-link>
 			</b-col>
-			<b-col cols="7" class="pl-1">
-				<div class="h-50 pb-1">
+			<b-col class="pl-1">
+				<div class="h-50 pb-1 position-relative">
 					<b-link :to="{ name: 'Figure' }">
 						<div
-							class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
-							style="background-image:url(/static/image/figure.png);"
-						></div>
+							class="w-100 h-100 app-reference app-background-center app-shadow"
+							style="background-image:url(/static/home/figure.png);background-size: 104%"
+						>
+							<h6 class="text-white mt-3 ml-2">非遗传承人</h6>
+							<p
+								class="ml-2"
+								style="font-size:12px;color:rgba(255,255,255,0.8);width:45%"
+							>坚守传承 ，大国工匠</p>
+						</div>
 					</b-link>
 				</div>
 				<div class="h-50 pt-1">
 					<b-link :to="{ name: 'Photo' }">
 						<div
 							class="w-100 h-100 position-relative app-reference app-background-center app-shadow"
-							style="background-image:url(/static/image/photo.png);background-position: top center"
-						></div>
+							style="background-image:url(/static/home/photo.png);background-size: 104%"
+						>
+							<h6 class="text-white mt-3 ml-2">活动相册</h6>
+							<p
+								class="ml-2"
+								style="font-size:12px;color:rgba(255,255,255,0.8);width:45%"
+							>非遗的精彩瞬间都在这里</p>
+						</div>
 					</b-link>
 				</div>
 			</b-col>
