@@ -1,42 +1,47 @@
 [
 	{
 		"name": "上海市",
-		"adcode": "310000"
-	},
-	{
-		"name": "南京市",
-		"adcode": "320100"
-	},
-	{
-		"name": "无锡市",
-		"adcode": "320200"
-	},
-	{
-		"name": "徐州市",
-		"adcode": "320300"
+		"adcode": "310000",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx?lo=1&type=1"
 	},
 	{
 		"name": "苏州市",
-		"adcode": "320500"
+		"adcode": "320500",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
 	},
 	{
 		"name": "南通市",
-		"adcode": "320600"
+		"adcode": "320600",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
+	},
+	{
+		"name": "无锡市",
+		"adcode": "320200",
+		"url": "https://rcsh.wwreward.com/m/ActivityDetails.aspx?id=1280"
 	},
 	{
 		"name": "扬州市",
-		"adcode": "321000"
+		"adcode": "321000",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
 	},
 	{
-		"name": "镇江市",
-		"adcode": "321100"
+		"name": "徐州市",
+		"adcode": "320300",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
 	},
 	{
-		"name": "芜湖市",
-		"adcode": "340200"
+		"name": "南京市",
+		"adcode": "320100",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
 	},
 	{
 		"name": "新疆维吾尔自治区",
-		"adcode": "650000"
+		"adcode": "650000",
+		"url": "https://rcsh.wwreward.com/m/Activity.aspx"
+	},
+	{
+		"name": "内蒙古自治区",
+		"adcode": "150000",
+		"url": "https://rcsh.wwreward.com/m/ActivityDetails.aspx?id=1290"
 	}
 ]

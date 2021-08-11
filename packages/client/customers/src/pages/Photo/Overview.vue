@@ -4,7 +4,7 @@
 	id="app-photo"
 	class="h-100 pb-5"
 >
-	<b-link href="https://rcsh.wwreward.com/m/Activity.aspx">
+	<b-link :href="currentCityUrl">
 		<b-img src="./image/banner.png" class="w-100"></b-img>
 	</b-link>
 
@@ -142,6 +142,9 @@ export default {
 	computed: {
 		cityList() {
 			return cityList;
+		},
+		currentCityUrl() {
+			return this.cityList.find(city => city.adcode === this.currentCity).url;
 		}
 	},
 	filters: {
