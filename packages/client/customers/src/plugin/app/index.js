@@ -262,7 +262,16 @@ const app = {
 		}),
 		Wechat: {
 			getConfig() {
-				return agent.get('/wechat/jssdk/config').then(pickData);
+				return agent.get('/wechat/jssdk/config', {
+					maxRedirects: 0
+				}).then(pickData, () => {
+					const { href } = window.location;
+					const url = new URL(href);
+
+					url.pathname = '/';
+					url.searchParams.set('_time', `${Date.now()}`);
+					location.href = url.href;
+				});
 			}
 		},
 		Image: {

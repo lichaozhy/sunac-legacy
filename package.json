@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prod:start": "node ./script/prod-start.js",
+    "prod:start": "node --max-old-space-size=4096 ./script/prod-start.js",
     "prod:install": "node ./script/prod-install.js",
     "dev:start": "node ./script/debug.js",
     "dev:install": "node ./script/install.js",

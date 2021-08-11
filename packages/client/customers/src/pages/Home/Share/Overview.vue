@@ -8,6 +8,7 @@
 		:items="allShareList"
 		:options="{width: 200, padding: 5}"
 		@append="append"
+		v-if="allShareList.length > 0"
 	>
 		<template v-slot:default="{item, index}">
 			<b-card

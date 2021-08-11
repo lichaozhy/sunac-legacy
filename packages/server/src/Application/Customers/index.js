@@ -18,29 +18,29 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 		.use(KoaCompress())
 		.use(KoaSession(app))
 		.use(async function validateSession(ctx, next) {
-			if (!ctx.session.customerId && options.server.customers.dev) {
-				const customer = await Model.Customer.findOne();
-
-				ctx.session.customerId = customer.id;
-			}
-
 			if (ctx.path.indexOf('/api/image/') === 0) {
 				return next();
 			}
 
-			if (!ctx.session.customerId && ctx.path !== '/api/wechat/oauth') {
-				const { shareType, shareItemId } = ctx.query;
-
-				const redirectOptions = {
-					appid: options.wx.appid,
-					origin: options.server.customers.origin,
-				};
-
-				if (shareType) {
-					redirectOptions.state = `${shareType}-${shareItemId}`;
+			if (!ctx.session.customerId) {
+				if (ctx.path === '/api/wechat/jssdk/config') {
+					return ctx.throw(403);
 				}
 
-				return ctx.redirect(Utils.WechatOauthRedirectURL(redirectOptions));
+				if (ctx.path !== '/api/wechat/oauth') {
+					const { shareType, shareItemId } = ctx.query;
+
+					const redirectOptions = {
+						appid: options.wx.appid,
+						origin: options.server.customers.origin,
+					};
+
+					if (shareType) {
+						redirectOptions.state = `${shareType}-${shareItemId}`;
+					}
+
+					return ctx.redirect(Utils.WechatOauthRedirectURL(redirectOptions));
+				}
 			}
 
 			return next();

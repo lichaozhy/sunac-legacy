@@ -101,7 +101,7 @@ module.exports = Duck({
 
 	Log('accessCustomers', {
 		AppenderList: [
-			DuckLog.Appender.Console(),
+			// DuckLog.Appender.Console(),
 			DuckLog.Appender.File({
 				file: { pathname: Workspace.resolve('log', finalOptions.log.access.customers) }
 			})
@@ -111,7 +111,7 @@ module.exports = Duck({
 
 	Log('accessMaintenance', {
 		AppenderList: [
-			DuckLog.Appender.Console(),
+			// DuckLog.Appender.Console(),
 			DuckLog.Appender.File({
 				file: { pathname: Workspace.resolve('log', finalOptions.log.access.maintenance) }
 			})
@@ -121,7 +121,7 @@ module.exports = Duck({
 
 	Log('accessAdministration', {
 		AppenderList: [
-			DuckLog.Appender.Console(),
+			// DuckLog.Appender.Console(),
 			DuckLog.Appender.File({
 				file: { pathname: Workspace.resolve('log', finalOptions.log.access.administration) }
 			})
@@ -171,6 +171,15 @@ module.exports = Duck({
 				server.listen(port, host);
 				Log.system(`Starting: <Customers> on host="${host}", port=${port}, origin=${origin}`);
 			}
+
+			const fs = require('fs');
+
+			process.on('uncaughtException', err => {
+				fs.writeFileSync('crash.log', err.stack);
+			}).on('unhandledRejection', (err) => {
+				fs.writeFileSync('crash.log', err.stack);
+			});
+
 		},
 		async install() {
 			await Workspace.buildAll();
