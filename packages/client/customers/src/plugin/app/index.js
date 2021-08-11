@@ -25,7 +25,11 @@ const app = {
 		},
 		Customer: {
 			get() {
-				return agent.get('/customer').then(pickData);
+				return agent.get('/customer', {
+					params: {
+						_time: Date.now()
+					}
+				}).then(pickData);
 			},
 			update(options) {
 				return agent.put('/customer', {

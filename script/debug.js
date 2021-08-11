@@ -3,7 +3,7 @@ const product = SunacLegacy({
 	server: {
 		customers: {
 			dev: false,
-			origin: 'http://127.0.0.1',
+			origin: 'http://192.168.43.208',
 			port: 8000
 		}
 	},

@@ -108,6 +108,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 				const customer = await Model.Customer.create({
 					id: Utils.encodeSHA256(`${Date.now()}-${Utils.salt()}`),
 					name: userinfo.nickname,
+					phone: '',
 					cityAs: options.defaultCity,
 					createdAt: new Date(),
 					wechat: {

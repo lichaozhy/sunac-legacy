@@ -74,7 +74,7 @@ module.exports = Router(function SunacLegacyApi(router, {
 			return next();
 		})
 		.get('/customer', async function getPrincipalCustomer(ctx) {
-			ctx.set('Cache-Control', 'max-age=3600');
+			// ctx.set('Cache-Control', 'max-age=60');
 			ctx.body = Customer(ctx.state.customer);
 		})
 		.get('/customer/today/like', async function getTodayList(ctx) {
