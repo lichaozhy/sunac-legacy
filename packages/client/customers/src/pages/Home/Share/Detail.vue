@@ -29,14 +29,18 @@
 			:key="index"
 		>
 			<template #img>
-				<b-aspect
-					class="w-100"
-					aspect="16:9"
-					style="background-size: cover;background-color: #ccc;background-position:center"
-					:style="{
-						'background-image': `url(/api/image/${image}/image.png)`
-					}"
-				></b-aspect>
+				<b-link
+					@click="preview(image)"
+				>
+					<b-aspect
+						class="w-100"
+						aspect="16:9"
+						style="background-size: cover;background-color: #ccc;background-position:center"
+						:style="{
+							'background-image': `url(/api/image/${image}/image.png)`
+						}"
+					></b-aspect>
+				</b-link>
 			</template>
 		</b-carousel-slide>
 	</b-carousel>
@@ -68,6 +72,22 @@
 			v-if="likedMap[share.id]"
 		/>{{ share.like }}</b-button>
 	</b-button-toolbar>
+
+	<b-modal
+		ref="previewer"
+		hide-footer
+		hide-header
+		content-class="my-5"
+		@hidden="selectedImage.id=null"
+		centered
+		body-class="p-0"
+	>
+		<b-img
+			class="w-100"
+			:src="`/api/image/${selectedImage.id}/image.png`"
+			@click="$refs.previewer.hide()"
+		/>
+	</b-modal>
 </div>
 
 </template>
@@ -89,7 +109,8 @@ export default {
 				title: '',
 				raw: '',
 				like: 0
-			}
+			},
+			selectedImage: { id: null }
 		};
 	},
 	computed: {
@@ -100,6 +121,10 @@ export default {
 		}
 	},
 	methods: {
+		preview(imageId) {
+			this.$refs.previewer.show();
+			this.selectedImage.id = imageId;
+		},
 		setSharing() {
 			const baseOptions = {
 				title: this.share.title,
