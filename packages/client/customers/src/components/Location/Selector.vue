@@ -154,9 +154,9 @@ export default {
 					car: { left: '56px', top: '23px' }
 				},
 				{
-					name: '镇江',
-					title: '太平泥',
-					adcode: '321100',
+					name: '内蒙',
+					title: '皮雕画',
+					adcode: '150000',
 					direction: 'right',
 					style: { left: '77%', top: '108%' },
 					car: { left: '56px', top: '27px' }
