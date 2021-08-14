@@ -16,7 +16,7 @@
 		>
 			<b-row class="text-center text-nowrap">
 				<b-col cols="6">
-					<b-link href="https://mp.weixin.qq.com/s/RRr1TRWaUtK100-dycJ7Qw">
+					<b-link href="https://mp.weixin.qq.com/s/60J283xJXunOL8SrHTb0Ew">
 						<b-img src="./image/radio.svg" style="height: 60px"  />
 						<h5 class="mt-3 font-weight-bold text-dark">非遗电台</h5>
 					</b-link>
