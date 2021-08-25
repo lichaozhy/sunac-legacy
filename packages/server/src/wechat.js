@@ -65,31 +65,23 @@ async function refreshJsSdkTicket() {
 	await fs.writeFile(path.join(config.dirpath, FILE_NAME.JS_SDK_TIEKCT), jsonOfJsSdkTicket);
 }
 
-const HOUR = 3600000;
+const EXPIRATION = 60000;
 
 setInterval(async () => {
-	if (new Date() - config.access_token.createdAt > HOUR) {
+	if (new Date() - config.access_token.createdAt > EXPIRATION) {
 		await refreshToken();
 	}
 
-	if (new Date() - config.jsapi.createdAt > HOUR) {
+	if (new Date() - config.jsapi.createdAt > EXPIRATION) {
 		await refreshJsSdkTicket();
 	}
 }, 60000);
 
 const wechat = {
 	fetchAccessToken() {
-		if (new Date() - config.access_token.createdAt > HOUR) {
-			refreshToken();
-		}
-
 		return config.access_token.value;
 	},
 	fetchJsSdkTicket() {
-		if (new Date() - config.jsapi.createdAt > HOUR) {
-			refreshJsSdkTicket();
-		}
-
 		return config.jsapi.ticket;
 	},
 	async setDir(pathname) {
@@ -107,7 +99,7 @@ const wechat = {
 			config.access_token.value = access_token;
 			config.access_token.createdAt = new Date(createdAt);
 
-			if (new Date() - config.access_token.createdAt > HOUR) {
+			if (new Date() - config.access_token.createdAt > EXPIRATION) {
 				await refreshToken();
 			}
 		} catch (err) {
@@ -120,7 +112,7 @@ const wechat = {
 			config.jsapi.ticket = ticket;
 			config.jsapi.createdAt = new Date(createdAt);
 
-			if (new Date() - config.jsapi.createdAt > HOUR) {
+			if (new Date() - config.jsapi.createdAt > EXPIRATION) {
 				await refreshJsSdkTicket();
 			}
 		} catch (err) {
