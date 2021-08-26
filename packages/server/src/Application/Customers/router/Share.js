@@ -30,17 +30,11 @@ module.exports = Router(function SunacLegacyApi(router, {
 
 	router
 		.get('/top', async function getShareTop20OfCityList(ctx) {
-			const { customer } = ctx.state;
 			const { number = 20 } = ctx.query;
-			const idList = ShareLike.top(customer.cityAs, number);
-
-			const where = {
-				id: { [Op.in]: idList },
-				city: customer.cityAs, deletedAt: null,
-			};
+			const idList = ShareLike.top(number);
 
 			const list = await Model.Share.findAll({
-				where,
+				where:  { id: { [Op.in]: idList }, deletedAt: null },
 				include: [
 					{ model: Model.ShareImage, as: 'imageList' },
 					{
