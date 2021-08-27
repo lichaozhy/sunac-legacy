@@ -1,7 +1,7 @@
 <template>
 
 <div>
-	<h4>非遗新闻总览</h4><hr>
+	<h4>城市首页轮播图列表</h4><hr>
 
 	<b-button-toolbar>
 		<b-form-input

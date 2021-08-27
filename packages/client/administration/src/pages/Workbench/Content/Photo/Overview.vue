@@ -1,7 +1,7 @@
 <template>
 
 <div>
-	<h4>相片总览</h4><hr>
+	<h4>活动相册</h4><hr>
 
 	<b-button-toolbar>
 		<b-form-input

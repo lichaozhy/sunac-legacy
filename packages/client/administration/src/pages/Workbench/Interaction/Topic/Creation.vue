@@ -4,7 +4,7 @@
 	ref="modal"
 	size="md"
 	centered
-	title="创建非遗圈（作品）"
+	title="创建话题"
 	ok-title="创建"
 	ok-variant="success"
 	:ok-disabled="!isValid"

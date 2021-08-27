@@ -4,7 +4,7 @@
 	ref="modal"
 	size="md"
 	centered
-	title="创建非遗新闻"
+	title="创建城市首页轮播图"
 	ok-title="创建"
 	ok-variant="success"
 	:ok-disabled="!isValid"

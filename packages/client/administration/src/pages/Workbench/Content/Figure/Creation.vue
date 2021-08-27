@@ -4,7 +4,7 @@
 	ref="modal"
 	size="md"
 	centered
-	title="创建非遗新闻"
+	title="创建非遗传承人"
 	ok-title="创建"
 	ok-variant="success"
 	:ok-disabled="!isValid"
