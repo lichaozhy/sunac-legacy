@@ -109,24 +109,9 @@
 			:to="{ name: 'Home.Share.Ranking' }"
 		>排行榜</b-nav-item>
 		<b-nav-item
-			@click="requestViewRule"
+			:to="{ name: 'Home.Rule' }"
 		>活动规则</b-nav-item>
 	</b-nav>
-
-	<b-modal
-		ref="previewer"
-		hide-footer
-		hide-header
-		content-class="my-5"
-		centered
-		body-class="p-0"
-	>
-		<b-img
-			@click="$refs.previewer.hide()"
-			class="w-100"
-			src="./image/rule.png"
-		/>
-	</b-modal>
 </div>
 
 </template>
@@ -160,9 +145,6 @@ export default {
 		}
 	},
 	methods: {
-		requestViewRule() {
-			this.$refs.previewer.show();
-		},
 		async getReferenceList() {
 			const { list } = await this.$app.Api.Reference.query({ from: 0, size: this.referenceList.length});
 

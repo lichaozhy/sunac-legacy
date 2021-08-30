@@ -25,6 +25,11 @@ const router = new VueRouter({
 					path: 'share/ranking',
 					component: Page.Home.Share.Ranking
 				},
+				{
+					name: 'Home.Rule',
+					path: 'rule',
+					component: Page.Home.Rule
+				},
 			],
 			beforeEnter(_to, _from, next) {
 				document.title = '城市记忆博物馆';
