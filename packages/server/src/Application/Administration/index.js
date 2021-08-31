@@ -65,6 +65,10 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 				},
 
 				{
+					prefix: '/news',
+					Router: Router.News
+				},
+				{
 					prefix: '/reference',
 					Router: Router.Reference
 				},

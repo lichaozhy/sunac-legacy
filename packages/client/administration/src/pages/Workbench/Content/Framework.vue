@@ -19,9 +19,9 @@
 				<b-list-group-item
 					:to="{ name: 'Workbench.Content.Photo' }"
 				>活动相册</b-list-group-item>
-				<!-- <b-list-group-item
-					:to="{ name: 'Workbench.Content.Banner' }"
-				>城市BANNER</b-list-group-item> -->
+				<b-list-group-item
+					:to="{ name: 'Workbench.Content.News' }"
+				>活动报道</b-list-group-item>
 				<b-list-group-item
 					:to="{ name: 'Workbench.Content.Figure' }"
 				>非遗传承人</b-list-group-item>

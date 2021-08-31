@@ -167,6 +167,50 @@ const app = {
 				return agent.get('/reference', { params }).then(pickData);
 			},
 		}),
+		News: Object.assign(function News(newsId) {
+			return {
+				get() {
+					return agent.get(`/news/${newsId}`).then(pickData);
+				},
+				delete() {
+					return agent.delete(`/news/${newsId}`).then(pickData);
+				},
+			};
+		}, {
+			create(options) {
+				return agent.post('/news', {
+					title: options.title,
+					href: options.href,
+					thumb: options.thumb,
+					publishedAt: options.publishedAt
+				}).then(pickData);
+			},
+			query(query) {
+				const params = {};
+
+				if (query.title) {
+					params.title = query.title;
+				}
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				if ('sortBy' in query) {
+					params.sortBy = query.sortBy || 'createdAt';
+				}
+
+				if ('sortDesc' in query) {
+					params.sortDesc = query.sortDesc;
+				}
+
+				return agent.get('/news', { params }).then(pickData);
+			},
+		}),
 		Share: Object.assign(function Share(shareId) {
 			return {
 				get() {

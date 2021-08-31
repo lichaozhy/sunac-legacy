@@ -110,6 +110,15 @@ namespace Model {
 		href: string;
 		createdAt: string;
 	}
+
+	interface News {
+		id: string;
+		title: string;
+		thumb: string;
+		href: string;
+		createdAt: string;
+		publishedAt: string;
+	}
 }
 
 namespace Query {
@@ -174,6 +183,17 @@ namespace Api {
 		update(options: Model.Reference): Promise<Model.Reference>;
 		delete(): Promise<Model.Reference>;
 		Comment: ReferenceInstanceComment;
+	}
+
+	interface News {
+		(newsId: string): NewsInstance;
+		query(): Promise<Model.Page<Model.News>>;
+		create(options: Model.News): Promise<Model.News>;
+	}
+
+	interface NewsInstance {
+		get(): Promise<Model.News>;
+		delete(): Promise<Model.News>;
 	}
 
 	interface Share {
@@ -261,6 +281,7 @@ interface Api {
 	Image: Api.Image;
 	Banner: Api.Banner;
 	Figure: Api.Figure;
+	News: Api.News;
 }
 
 namespace Filter {

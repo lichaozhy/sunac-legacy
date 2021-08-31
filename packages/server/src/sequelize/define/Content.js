@@ -61,6 +61,23 @@ function Reference(sequelize, namespace) {
 /**
  * @param {import('sequelize').Sequelize} sequelize
  */
+function News(sequelize, namespace) {
+	sequelize.define('News', {
+		id: { type: TYPE_SHA_ID, primaryKey: true },
+		title: DataTypes.STRING,
+		thumb: TYPE_SHA_ID,
+		href: DataTypes.STRING(512),
+		publishedAt: DataTypes.DATE,
+		createdAt: DataTypes.DATE,
+		deletedAt: DataTypes.DATE,
+	}, {
+		tableName: `${namespace}content_news`
+	});
+}
+
+/**
+ * @param {import('sequelize').Sequelize} sequelize
+ */
 function Topic(sequelize, namespace) {
 	sequelize.define('Topic', {
 		id: { type: TYPE_SHA_ID, primaryKey: true },
@@ -159,5 +176,6 @@ module.exports = {
 	Topic, // 话题
 	Share, // 朋友圈
 	Photo, // 活动照片
-	Figure
+	Figure,
+	News
 };

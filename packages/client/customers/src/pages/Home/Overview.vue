@@ -109,6 +109,9 @@
 			:to="{ name: 'Home.Share.Ranking' }"
 		>排行榜</b-nav-item>
 		<b-nav-item
+			:to="{ name: 'Home.News' }"
+		>活动报道</b-nav-item>
+		<b-nav-item
 			:to="{ name: 'Home.Rule' }"
 		>活动规则</b-nav-item>
 	</b-nav>

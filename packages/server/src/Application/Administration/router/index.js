@@ -4,6 +4,7 @@ module.exports = {
 	Customer: require('./Customer'),
 	City: require('./City'),
 
+	News: require('./News'),
 	Reference: require('./Reference'),
 	Photo: require('./Photo'),
 	Topic: require('./Topic'),

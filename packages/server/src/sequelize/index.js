@@ -19,6 +19,7 @@ const ModelFactory = {
 	Customer: User.Customer,
 	WechatOpenid: Wechat.WechatOpenid,
 
+	News: Content.News,
 	Reference: Content.Reference,
 	Topic: Content.Topic,
 	Share: Content.Share,
@@ -66,6 +67,7 @@ module.exports = function SunacLegacySequelize(options) {
 		ShareImage: sequelize.model('ShareImage'),
 		CustomerLikeShare: sequelize.model('CustomerLikeShare'),
 
+		News: sequelize.model('News'),
 		Reference: sequelize.model('Reference'),
 
 		Topic: sequelize.model('Topic'),
@@ -119,6 +121,7 @@ module.exports = function SunacLegacySequelize(options) {
 
 	Model.ShareImage.belongsTo(Model.Image, FK('image'));
 	Model.ShareImage.belongsTo(Model.Share, FK('share'));
+	Model.News.belongsTo(Model.Image, FK('thumb'));
 	Model.Reference.belongsTo(Model.Image, FK('thumb'));
 	Model.Topic.belongsTo(Model.Image, FK('banner'));
 	Model.PostImage.belongsTo(Model.Image, FK('image'));
