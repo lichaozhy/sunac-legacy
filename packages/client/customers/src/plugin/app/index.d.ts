@@ -107,6 +107,15 @@ declare namespace Model {
 		href: string;
 		createdAt: string;
 	}
+
+	interface News {
+		id: string;
+		title: string;
+		thumb: string;
+		href: string;
+		createdAt: string;
+		publishedAt: string;
+	}
 }
 
 declare namespace Api {
@@ -203,6 +212,10 @@ declare namespace Api {
 	interface Figure {
 		query(): Promise<Model.Figure[]>;
 	}
+
+	interface News {
+		query(): Promise<Model.Page<Model.News>>;
+	}
 }
 
 interface Api {
@@ -216,6 +229,7 @@ interface Api {
 	Wechat: Api.Wechat;
 	Image: Api.Image;
 	Figure: Api.Figure;
+	News: Api.News;
 }
 
 interface App {

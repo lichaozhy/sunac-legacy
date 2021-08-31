@@ -4,6 +4,7 @@ module.exports = {
 
 	City: require('./City'),
 
+	News: require('./News'),
 	Reference: require('./Reference'),
 	Photo: require('./Photo'),
 	Share: require('./Share'),

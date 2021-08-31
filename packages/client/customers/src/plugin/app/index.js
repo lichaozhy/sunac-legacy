@@ -98,6 +98,25 @@ const app = {
 				return agent.get('/reference', { params }).then(pickData);
 			}
 		},
+		News: {
+			query(query) {
+				const params = {};
+
+				if ('from' in query) {
+					params.from = query.from;
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				if (query.createdAt) {
+					params.createdAt = query.createdAt;
+				}
+
+				return agent.get('/news', { params }).then(pickData);
+			}
+		},
 		Share: Object.assign(function Share(shareId) {
 			return {
 				get() {

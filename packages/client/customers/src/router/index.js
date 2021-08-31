@@ -26,6 +26,11 @@ const router = new VueRouter({
 					component: Page.Home.Share.Ranking
 				},
 				{
+					name: 'Home.News',
+					path: 'news',
+					component: Page.Home.News
+				},
+				{
 					name: 'Home.Rule',
 					path: 'rule',
 					component: Page.Home.Rule
