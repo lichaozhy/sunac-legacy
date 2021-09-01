@@ -73,6 +73,16 @@ const router = new VueRouter({
 		},
 
 		{
+			name: 'Radio',
+			path: '/radio',
+			component: Page.Radio.Overview,
+			beforeEnter(_to, _from, next) {
+				document.title = '往期电台';
+				next();
+			}
+		},
+
+		{
 			name: 'Topic',
 			path: '/topic',
 			component: Page.Topic.Overview,

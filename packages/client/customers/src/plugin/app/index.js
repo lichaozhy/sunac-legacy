@@ -23,6 +23,11 @@ const app = {
 				return agent.get('/banner').then(pickData);
 			}
 		},
+		Config: {
+			get(key) {
+				return agent.get(`/config/${key}`).then(pickData);
+			}
+		},
 		Customer: {
 			get() {
 				return agent.get('/customer', {
@@ -115,6 +120,25 @@ const app = {
 				}
 
 				return agent.get('/news', { params }).then(pickData);
+			}
+		},
+		Programme: {
+			query(query) {
+				const params = {};
+
+				if ('from' in query) {
+					params.from = query.from;
+				}
+
+				if (query.size) {
+					params.size = query.size;
+				}
+
+				if (query.createdAt) {
+					params.createdAt = query.createdAt;
+				}
+
+				return agent.get('/programme', { params }).then(pickData);
 			}
 		},
 		Share: Object.assign(function Share(shareId) {

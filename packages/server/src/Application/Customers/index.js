@@ -92,6 +92,10 @@ module.exports = DuckWebKoa(function SunacLegacyApplication(app, {
 							Router: Router.News
 						},
 						{
+							prefix: '/programme',
+							Router: Router.Programme
+						},
+						{
 							prefix: '/share',
 							Router: Router.Share
 						},

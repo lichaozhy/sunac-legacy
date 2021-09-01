@@ -16,7 +16,7 @@ function Image(data) {
 }
 
 module.exports = Router(function SunacLegacyApi(router, {
-	Model, Workspace, AccessControl: $ac, Utils, Wechat
+	Model, Workspace, AccessControl: $ac, Utils, Wechat, Config
 }) {
 	function Customer(data) {
 		return {
@@ -72,6 +72,9 @@ module.exports = Router(function SunacLegacyApi(router, {
 			ctx.state.customer = customer;
 
 			return next();
+		})
+		.get('/config/:key', function getConfigByKey(ctx) {
+			ctx.body = { value: Config.get(ctx.params.key) };
 		})
 		.get('/customer', async function getPrincipalCustomer(ctx) {
 			// ctx.set('Cache-Control', 'max-age=60');

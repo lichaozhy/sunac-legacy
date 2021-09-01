@@ -9,6 +9,7 @@ module.exports = {
 	Photo: require('./Photo'),
 	Share: require('./Share'),
 	Figure: require('./Figure'),
+	Programme: require('./Programme'),
 
 	Topic: require('./Topic'),
 	Post: require('./Post'),

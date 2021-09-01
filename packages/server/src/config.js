@@ -32,7 +32,7 @@ const ConfigureManager = {
 	},
 	set(key, value) {
 		state.store[key] = value;
-		fs.writeFile(state.dirpath, JSON.stringify(state.store));
+		fs.writeFile(getFilePath(), JSON.stringify(state.store));
 
 		return value;
 	}

@@ -116,6 +116,19 @@ declare namespace Model {
 		createdAt: string;
 		publishedAt: string;
 	}
+
+	interface Programme {
+		id: string;
+		title: string;
+		thumb: string;
+		href: string;
+		createdAt: string;
+		publishedAt: string;
+	}
+
+	interface ValueObject {
+		value: any;
+	}
 }
 
 declare namespace Api {
@@ -216,6 +229,14 @@ declare namespace Api {
 	interface News {
 		query(): Promise<Model.Page<Model.News>>;
 	}
+
+	interface Programme {
+		query(): Promise<Model.Page<Model.Programme>>;
+	}
+
+	interface Config {
+		get(key: string): Promise<Model.ValueObject>;
+	}
 }
 
 interface Api {
@@ -230,6 +251,8 @@ interface Api {
 	Image: Api.Image;
 	Figure: Api.Figure;
 	News: Api.News;
+	Programme: Api.Programme;
+	Config: Api.Config;
 }
 
 interface App {

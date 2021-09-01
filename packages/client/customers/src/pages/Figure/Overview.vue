@@ -15,16 +15,22 @@
 			class="mt-3 app-shadow round-sm"
 		>
 			<b-row class="text-center text-nowrap">
-				<b-col cols="6">
-					<b-link href="https://mp.weixin.qq.com/s/60J283xJXunOL8SrHTb0Ew">
-						<b-img src="./image/radio.svg" style="height: 60px"  />
-						<h5 class="mt-3 font-weight-bold text-dark">非遗电台</h5>
+				<b-col cols="4">
+					<b-link :href="config.recommand">
+						<b-img src="./image/recommanded.png" style="height: 60px"  />
+						<h6 class="mt-3 font-weight-bold text-dark">本期推荐</h6>
 					</b-link>
 				</b-col>
-				<b-col cols="6">
-					<b-link href="https://mp.weixin.qq.com/s/cA9CUQZx-gETOh0C3fULdQ">
-						<b-img src="./image/figure.png" style="height: 60px"  />
-						<h5 class="mt-3 font-weight-bold text-dark">我是非遗传承人</h5>
+				<b-col cols="4">
+					<b-link :to="{ name: 'Radio' }">
+						<b-img src="./image/history.png" style="height: 60px"  />
+						<h6 class="mt-3 font-weight-bold text-dark">往期电台</h6>
+					</b-link>
+				</b-col>
+				<b-col cols="4">
+					<b-link :href="config.recruit">
+						<b-img src="./image/recruit.png" style="height: 60px"  />
+						<h6 class="mt-3 font-weight-bold text-dark">主播招募</h6>
 					</b-link>
 				</b-col>
 			</b-row>
@@ -75,6 +81,10 @@ const staticItem = {
 export default {
 	data() {
 		return {
+			config: {
+				recommand: '',
+				recruit: ''
+			},
 			figureList: []
 		};
 	},
@@ -117,10 +127,18 @@ export default {
 	methods: {
 		async getFigureList() {
 			this.figureList = await this.$app.Api.Figure.query();
+		},
+		getConfig() {
+			['recommand', 'recruit'].forEach(async key => {
+				const { value } = await this.$app.Api.Config.get(key);
+
+				this.config[key] = value;
+			});
 		}
 	},
 	mounted() {
 		this.getFigureList();
+		this.getConfig();
 	}
 };
 </script>
