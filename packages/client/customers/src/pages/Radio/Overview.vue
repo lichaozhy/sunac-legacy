@@ -2,7 +2,7 @@
 
 <div
 	id="app-radio"
-	class="h-100 pb-5"
+	class="h-100 pb-5 overflow-auto"
 >
 	<b-link><b-img src="./image/banner.png" class="w-100" /></b-link>
 
