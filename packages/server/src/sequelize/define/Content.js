@@ -186,6 +186,13 @@ function Figure(sequelize, namespace) {
 	}, {
 		tableName: `${namespace}content_figure`
 	});
+
+	sequelize.define('FigureFile', {
+		figureId: { type: TYPE_SHA_ID, primaryKey: true },
+		body: DataTypes.TEXT({ length: 'long' })
+	}, {
+		tableName: `${namespace}content_figure_file`
+	});
 }
 
 module.exports = {

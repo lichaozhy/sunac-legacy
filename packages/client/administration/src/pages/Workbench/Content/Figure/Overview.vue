@@ -20,8 +20,15 @@
 		<b-button
 			@click="requestCreatingFigure"
 			variant="success"
-			class="mr-auto"
+			class="mr-5"
 		>创建</b-button>
+
+		<b-button
+			@click="requestUpdatingFigureFile"
+			variant="primary"
+			class="mr-auto"
+			:disabled="selectedId === null"
+		>更新人物档案</b-button>
 	</b-button-toolbar>
 
 	<b-table
@@ -69,15 +76,21 @@
 		@created="getFigureList"
 		ref="creation"
 	/>
+
+	<app-figure-file-updator
+		ref="file"
+		:figure-id="selectedId"
+	/>
 </div>
 
 </template>
 
 <script>
 import AppFigureCreation from './Creation.vue';
+import AppFigureFileUpdator from './File.vue';
 
 export default {
-	components: { AppFigureCreation },
+	components: { AppFigureCreation, AppFigureFileUpdator },
 	data() {
 		return {
 			figureList: [],
@@ -101,6 +114,9 @@ export default {
 		},
 		requestCreatingFigure() {
 			this.$refs.creation.open();
+		},
+		requestUpdatingFigureFile() {
+			this.$refs.file.open();
 		},
 		async getFigureList() {
 			this.figureList = await this.$app.Api.Figure.query();

@@ -440,6 +440,14 @@ const app = {
 				},
 				delete() {
 					return agent.delete(`/figure/${figureId}`).then(pickData);
+				},
+				File: {
+					get() {
+						return agent.get(`/figure/${figureId}/file`).then(pickData);
+					},
+					update(body) {
+						return agent.put(`/figure/${figureId}/file`, body).then(pickData);
+					}
 				}
 			};
 		}, {

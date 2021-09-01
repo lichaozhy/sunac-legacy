@@ -78,6 +78,7 @@ module.exports = function SunacLegacySequelize(options) {
 
 		Photo: sequelize.model('Photo'),
 		Figure: sequelize.model('Figure'),
+		FigureFile: sequelize.model('FigureFile'),
 		Programme: sequelize.model('Programme'),
 
 		Image: sequelize.model('Image'),
