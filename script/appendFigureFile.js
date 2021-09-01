@@ -1,6 +1,6 @@
 function normalizeFigureFile(_options) {
 	const finalOptions = {
-		banner: null,
+		banner: '',
 		profile: {
 			name: '',
 			title: '',

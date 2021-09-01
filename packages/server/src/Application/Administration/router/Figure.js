@@ -65,13 +65,16 @@ module.exports = Router(function SunacLegacyAdministrationFigure(router, {
 			}
 
 			const now = new Date();
+			const id = Utils.encodeSHA256(`${name}${profile}${href}${now}`);
 
 			const figure = await Model.Figure.create({
-				id: Utils.encodeSHA256(`${name}${profile}${href}${now}`),
-				name, profile, image, href,
-				createdAt: now
+				id, name, profile, image, href, createdAt: now
 			});
 
+			const body = normalizeFigureFile({});
+
+			body.id = id;
+			await Model.FigureFile.create({ figureId: figure.id, body: JSON.stringify(body) });
 			ctx.body = Figure(figure);
 		})
 		.param('figureId', async function fetchFigure(id, ctx, next) {
