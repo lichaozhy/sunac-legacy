@@ -324,11 +324,19 @@ const app = {
 				}).then(pickData);
 			}
 		},
-		Figure: {
+		Figure: Object.assign(function Figure(figureId) {
+			return {
+				File: {
+					get() {
+						return agent.get(`/figure/${figureId}/file`).then(pickData);
+					}
+				}
+			};
+		}, {
 			query() {
 				return agent.get('/figure').then(pickData);
 			}
-		}
+		})
 	},
 	Filter: {
 		localDate,

@@ -71,6 +71,15 @@ const router = new VueRouter({
 				next();
 			}
 		},
+		{
+			name: 'Figure.File',
+			path: '/figure/:figureId/file',
+			component: Page.Figure.File,
+			beforeEnter(_to, _from, next) {
+				document.title = '非遗传承人档案';
+				next();
+			}
+		},
 
 		{
 			name: 'Radio',

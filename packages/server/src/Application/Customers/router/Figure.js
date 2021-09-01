@@ -19,5 +19,13 @@ module.exports = Router(function SunacLegacyCustomersFigure(router, {
 			const list = await Model.Figure.findAll({ where: { deletedAt: null } });
 
 			ctx.body = list.map(Figure);
+		})
+		.get('/:figureId/file', async function getFigureFile(ctx) {
+			const figureFile = await Model.FigureFile.findOne({
+				where: { figureId: ctx.params.figureId }
+			});
+
+			ctx.type = 'json';
+			ctx.body = figureFile.body;
 		});
 });

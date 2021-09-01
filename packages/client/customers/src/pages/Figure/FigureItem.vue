@@ -6,7 +6,7 @@
 	no-body
 >
 	<b-link
-		:href="options.href"
+		:to="{ name: 'Figure.File', params: { figureId: options.id } }"
 	>
 		<b-aspect
 			aspect="3:4"

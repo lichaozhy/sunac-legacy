@@ -76,7 +76,7 @@
 					label="个人工作照"
 				>
 					<b-aspect
-						aspect="4:3"
+						aspect="16:9"
 						class="border"
 						style="background-color: #f0f0f0; background-size: cover; background-position: center"
 						:style="{ 'background-image': `url(/api/image/${form.photo}/image.png)` }"
