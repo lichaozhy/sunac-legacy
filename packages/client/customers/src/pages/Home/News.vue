@@ -26,9 +26,9 @@
 						<b-col
 							cols="9"
 							class="p-2 d-flex align-items-center"
-						><h5
+						><h6
 							class="m-0 text-dark font-weight-bold"
-						>{{ item.title }}</h5></b-col>
+						>{{ item.title }}</h6></b-col>
 
 						<b-col cols="3" class="p-2">
 							<b-aspect

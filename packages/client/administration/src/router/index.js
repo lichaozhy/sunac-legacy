@@ -62,6 +62,11 @@ const router = new VueRouter({
 							component: Page.Workbench.Content.News.Overview
 						},
 						{
+							name: 'Workbench.Content.Programme',
+							path: 'programme',
+							component: Page.Workbench.Content.Programme.Overview
+						},
+						{
 							name: 'Workbench.Content.Figure',
 							path: 'figure',
 							component: Page.Workbench.Content.Figure.Overview

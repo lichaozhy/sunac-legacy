@@ -119,6 +119,19 @@ namespace Model {
 		createdAt: string;
 		publishedAt: string;
 	}
+
+	interface Programme {
+		id: string;
+		title: string;
+		thumb: string;
+		href: string;
+		createdAt: string;
+		publishedAt: string;
+	}
+
+	interface ConfigValue {
+		value: any;
+	}
 }
 
 namespace Query {
@@ -268,6 +281,22 @@ namespace Api {
 		get(): Model.Figure;
 		delete(): Model.Figure;
 	}
+
+	interface Programme {
+		(programmeId: string): ProgrammeInstance;
+		query(): Promise<Model.Page<Model.Programme>>;
+		create(options: Model.Programme): Promise<Model.Programme>;
+	}
+
+	interface ProgrammeInstance {
+		get(): Promise<Model.Programme>;
+		delete(): Promise<Model.Programme>;
+	}
+
+	interface Config {
+		set(key: string, value: any): Promise<Model.ConfigValue>;
+		get(key: string): Promise<Model.ConfigValue>;
+	}
 }
 
 interface Api {
@@ -282,6 +311,8 @@ interface Api {
 	Banner: Api.Banner;
 	Figure: Api.Figure;
 	News: Api.News;
+	Programme: Api.Programme;
+	Config: Api.Config;
 }
 
 namespace Filter {

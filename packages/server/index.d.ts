@@ -12,6 +12,7 @@ declare module '@produck/duck' {
 		Model: typeof Model;
 		Wechat: Wechat;
 		ShareLike: ShareLike;
+		Config: ConfigureManager;
 	}
 }
 
@@ -24,6 +25,12 @@ interface ShareLike {
 interface Wechat {
 	readonly accessToken: string;
 	readonly jsSdkTicket: string;
+}
+
+interface ConfigureManager {
+	init(dirpath): Promise<void>;
+	get(key: string): any;
+	set<T>(key: string, value: T): T;
 }
 
 interface SunacLegacy {

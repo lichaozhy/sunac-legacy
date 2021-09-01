@@ -25,6 +25,7 @@ const ModelFactory = {
 	Share: Content.Share,
 	Photo: Content.Photo,
 	Figure: Content.Figure,
+	Programme: Content.Programme,
 
 	PrizeTopic: Activity.PrizeTopic,
 
@@ -77,6 +78,7 @@ module.exports = function SunacLegacySequelize(options) {
 
 		Photo: sequelize.model('Photo'),
 		Figure: sequelize.model('Figure'),
+		Programme: sequelize.model('Programme'),
 
 		Image: sequelize.model('Image'),
 
@@ -123,6 +125,7 @@ module.exports = function SunacLegacySequelize(options) {
 	Model.ShareImage.belongsTo(Model.Share, FK('share'));
 	Model.News.belongsTo(Model.Image, FK('thumb'));
 	Model.Reference.belongsTo(Model.Image, FK('thumb'));
+	Model.Programme.belongsTo(Model.Image, FK('thumb'));
 	Model.Topic.belongsTo(Model.Image, FK('banner'));
 	Model.PostImage.belongsTo(Model.Image, FK('image'));
 	Model.Photo.belongsTo(Model.Image, FK('image'));

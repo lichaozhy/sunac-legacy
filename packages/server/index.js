@@ -11,6 +11,7 @@ const meta = require('./package.json');
 const SunacLegacyDatabase = require('./src/sequelize');
 const normalize = require('./src/normalize');
 const wechat = require('./src/wechat');
+const ConfigureManager = require('./src/config');
 const ShareLikeCache = require('./src/shareLike');
 
 module.exports = Duck({
@@ -51,6 +52,7 @@ module.exports = Duck({
 
 	injection.options = finalOptions;
 	injection.Utils = utils;
+	injection.Config = ConfigureManager;
 
 	Workspace.root = finalOptions.storage.path;
 	Workspace.setPath('root', '');
@@ -58,6 +60,7 @@ module.exports = Duck({
 	Workspace.setPath('temp', 'tmp');
 	Workspace.setPath('image', 'images');
 	Workspace.setPath('wechat', 'wechat');
+	Workspace.setPath('config', 'config');
 
 	const { sequelize, Model } = SunacLegacyDatabase({
 		namespace: `${product.meta.namespace}_`,
@@ -137,6 +140,7 @@ module.exports = Duck({
 			}());
 
 			await wechat.setDir(Workspace.getPath('wechat'));
+			await ConfigureManager.init(Workspace.getPath('config'));
 
 			if (finalOptions.server.maintenance.tls === null) {
 				const { host, port } = finalOptions.server.maintenance;

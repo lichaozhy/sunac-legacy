@@ -22,9 +22,15 @@
 				<b-list-group-item
 					:to="{ name: 'Workbench.Content.News' }"
 				>活动报道</b-list-group-item>
+			</b-list-group>
+
+			<b-list-group class="mt-1">
 				<b-list-group-item
 					:to="{ name: 'Workbench.Content.Figure' }"
 				>非遗传承人</b-list-group-item>
+				<b-list-group-item
+					:to="{ name: 'Workbench.Content.Programme' }"
+				>非遗电台</b-list-group-item>
 			</b-list-group>
 		</b-col>
 

@@ -4,6 +4,8 @@ module.exports = {
 	Customer: require('./Customer'),
 	City: require('./City'),
 
+	Config: require('./Config'),
+
 	News: require('./News'),
 	Reference: require('./Reference'),
 	Photo: require('./Photo'),
@@ -15,5 +17,6 @@ module.exports = {
 	Image: require('./Image'),
 	Prize: require('./Prize'),
 	Banner: require('./Banner'),
-	Figure: require('./Figure')
+	Figure: require('./Figure'),
+	Programme: require('./Programme')
 };

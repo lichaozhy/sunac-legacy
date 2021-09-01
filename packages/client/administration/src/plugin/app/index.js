@@ -51,6 +51,14 @@ const app = {
 				}
 			}
 		},
+		Config: {
+			get(key) {
+				return agent.get(`/config/${key}`).then(pickData);
+			},
+			set(key, value) {
+				return agent.put(`/config/${key}`, { value }).then(pickData);
+			}
+		},
 		City: Object.assign(function City(adcode) {
 			return {
 				get() {
@@ -209,6 +217,50 @@ const app = {
 				}
 
 				return agent.get('/news', { params }).then(pickData);
+			},
+		}),
+		Programme: Object.assign(function Programme(newsId) {
+			return {
+				get() {
+					return agent.get(`/programme/${newsId}`).then(pickData);
+				},
+				delete() {
+					return agent.delete(`/programme/${newsId}`).then(pickData);
+				},
+			};
+		}, {
+			create(options) {
+				return agent.post('/programme', {
+					title: options.title,
+					href: options.href,
+					thumb: options.thumb,
+					publishedAt: options.publishedAt
+				}).then(pickData);
+			},
+			query(query) {
+				const params = {};
+
+				if (query.title) {
+					params.title = query.title;
+				}
+
+				if ('pageCurrent' in query) {
+					params.pageCurrent = query.pageCurrent;
+				}
+
+				if ('pageSize' in query) {
+					params.pageSize = query.pageSize;
+				}
+
+				if ('sortBy' in query) {
+					params.sortBy = query.sortBy || 'createdAt';
+				}
+
+				if ('sortDesc' in query) {
+					params.sortDesc = query.sortDesc;
+				}
+
+				return agent.get('/programme', { params }).then(pickData);
 			},
 		}),
 		Share: Object.assign(function Share(shareId) {

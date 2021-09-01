@@ -28,6 +28,7 @@ export namespace Model {
 
 		Banner: typeof Sequelize.Model,
 		Figure: typeof Sequelize.Model,
+		Programme: typeof Sequelize.Model,
 
 		Image: typeof Sequelize.Model,
 		PrizeTopic: typeof Sequelize.Model;
