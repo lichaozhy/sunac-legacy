@@ -16,7 +16,7 @@
 	>
 		<b-form-row class="mt-3">
 			<b-col cols="6">
-				<h5 class="text-center font-weight-bold mb-1">人物简介</h5>
+				<h6 class="text-center font-weight-bold mb-1">人物简介</h6>
 				<ul class="list-unstyled text-nowrap" style="font-size:12px">
 					<li
 						v-for="(field, index) in profileFieldList"
@@ -35,11 +35,11 @@
 					:style="{ 'background-image': `url(/api/image/${file.photo}/image.png)` }"
 					aspect="16:9"
 				></b-aspect>
-				<h5 class="text-center font-weight-bold mt-3">个人工作照</h5>
+				<h6 class="text-center font-weight-bold mt-3">个人工作照</h6>
 			</b-col>
 		</b-form-row>
 
-		<h5 class="text-center font-weight-bold mt-3">代表作品</h5>
+		<h6 class="text-center font-weight-bold mt-3">代表作品</h6>
 
 		<div
 			class="w-100 d-flex flex-nowrap w-100 overflow-auto mt-3"
@@ -53,13 +53,17 @@
 			/>
 		</div>
 
-		<h5 class="text-center font-weight-bold mt-5">和非遗的故事</h5>
+		<h6 class="text-center font-weight-bold mt-5">和非遗的故事</h6>
 
-		<pre class="mt-4">{{ file.description }}</pre>
+		<pre
+			class="mt-4"
+			style="white-space:break-spaces"
+		>{{ file.description }}</pre>
 
 		<p class="mb-0 font-weight-bold mt-5">相关报道链接</p>
-		<ul class="list-unstyled">
+		<ul class="list-unstyled w-100">
 			<li
+				class="text-truncate"
 				v-for="(reference, index) in file.referenceList"
 				:key="index"
 			><b-link :href="reference">{{ reference }}</b-link></li>
