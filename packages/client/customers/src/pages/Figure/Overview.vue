@@ -11,6 +11,7 @@
 	<div
 		class="px-2"
 	>
+		<h5 class="mt-3 mb-2 font-weight-bold">非遗电台</h5>
 		<b-card
 			class="mt-3 app-shadow round-sm"
 		>
@@ -36,6 +37,7 @@
 			</b-row>
 		</b-card>
 
+		<h5 class="mt-3 mb-2 font-weight-bold">非遗传承人</h5>
 		<div id="app-figure-list" class="mt-3 pb-5" style="background-color:#FAFAFA">
 			<b-form-row>
 				<b-col
