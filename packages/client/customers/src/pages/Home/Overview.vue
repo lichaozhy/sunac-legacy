@@ -101,7 +101,10 @@
 		</b-row>
 	</b-aspect>
 
-	<b-nav class="mt-3 font-weight-bold app-nav">
+	<b-nav
+		class="mt-3 font-weight-bold app-nav flex-nowrap text-nowrap w-100"
+		style="overflow-x: auto;overflow:hidden"
+	>
 		<b-nav-item
 			:to="{ name: 'Home.Share.Overview' }"
 		>非遗圈</b-nav-item>

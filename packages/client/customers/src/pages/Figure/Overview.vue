@@ -55,8 +55,6 @@
 			</b-form-row>
 		</div>
 	</div>
-
-	<div style="height: 60px;background-image:linear-gradient(#FAFAFA, rgba(0,0,0,0))"></div>
 </div>
 
 </template>

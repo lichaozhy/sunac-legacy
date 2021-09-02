@@ -8,7 +8,10 @@
 		<b-img src="./image/banner.png" class="w-100"></b-img>
 	</b-link>
 
-	<b-nav class="mt-3 font-weight-bold app-nav flex-nowrap text-nowrap w-100 overflow-auto">
+	<b-nav
+		class="mt-3 font-weight-bold app-nav flex-nowrap text-nowrap w-100"
+		style="overflow-x: auto;overflow-y: hidden"
+	>
 		<b-nav-item
 			v-for="city in cityList"
 			:key="city.adcode"
