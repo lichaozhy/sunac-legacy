@@ -163,6 +163,15 @@ const app = {
 
 				return agent.get('/share/top', { params }).then(pickData);
 			},
+			getTopOfCustomerCity(query) {
+				const params = {};
+
+				if (query.number <= 20) {
+					params.number = query.number;
+				}
+
+				return agent.get('/share/customer/city/top', { params }).then(pickData);
+			},
 			query(query) {
 				const params = {};
 

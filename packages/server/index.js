@@ -136,7 +136,7 @@ module.exports = Duck({
 		async start() {
 			(async function computeShareLike() {
 				await injection.ShareLike.compute();
-				setTimeout(computeShareLike, 3600000);
+				setTimeout(computeShareLike, 1800000);
 			}());
 
 			await wechat.setDir(Workspace.getPath('wechat'));

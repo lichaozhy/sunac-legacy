@@ -29,6 +29,33 @@ module.exports = Router(function SunacLegacyApi(router, {
 	}
 
 	router
+		.get('/customer/city/top', async function getShareTop20OfCityList(ctx) {
+			const { customer } = ctx.state;
+			const { number = 20 } = ctx.query;
+			const idList = ShareLike.top(customer.cityAs, number);
+
+			const where = {
+				id: { [Op.in]: idList },
+				city: customer.cityAs, deletedAt: null,
+			};
+
+			const list = await Model.Share.findAll({
+				where,
+				include: [
+					{ model: Model.ShareImage, as: 'imageList' },
+					{
+						model: Model.Customer, required: true,
+						include: [{ model: Model.WechatOpenid, as: 'wechat', required: true }]
+					},
+				],
+				order: [['createdAt', 'DESC']]
+			});
+
+			ctx.body = idList
+				.map(id => list.find(share => share.id === id))
+				.filter(share => share)
+				.map(Share);
+		})
 		.get('/top', async function getShareTop20OfCityList(ctx) {
 			const { number = 20 } = ctx.query;
 			const idList = ShareLike.top(number);

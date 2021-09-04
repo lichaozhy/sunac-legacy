@@ -147,7 +147,7 @@ export default {
 			list.forEach(like => this.$set(this.likedMap, like.share, true));
 		},
 		async getShareTop3List() {
-			this.sharetop3 = await this.$app.Api.Share.top({ number: 3 });
+			this.sharetop3 = await this.$app.Api.Share.getTopOfCustomerCity({ number: 3 });
 		},
 		async getShareList() {
 			const from = this.shareList.length;
